@@ -6,9 +6,9 @@ import scipy.sparse as sp
 
 from tensorflow.python.keras.callbacks import History
 
-from classes.utils import preprocess_nxgraph
-from classes.utils import create_model
-from classes.utils import l_2nd, l_1st
+from embedders.utils import preprocess_nxgraph
+from embedders.utils import create_model
+from embedders.utils import l_2nd, l_1st
 
 ### ========== ========== ========= ========== ========== ###
 ### CLASS SDNE ###

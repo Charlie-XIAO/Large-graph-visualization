@@ -7,9 +7,9 @@ import networkx as nx
 import plotly.express as px
 from sklearn.manifold import TSNE
 
-from classes.utils import *
-from classes.DeepWalk import DeepWalk
-from classes.SDNE import SDNE
+from embedders.utils import *
+from embedders.previous_works.DeepWalk import DeepWalk
+from embedders.previous_works.SDNE import SDNE
 
 ### ========== ========= ========== ========== ========== ###
 ### ========== =========    TEST    ========== ========== ###

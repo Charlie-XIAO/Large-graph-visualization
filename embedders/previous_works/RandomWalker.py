@@ -3,9 +3,9 @@ import random
 
 from joblib import Parallel, delayed
 
-from classes.utils import create_alias_table
-from classes.utils import partition_num
-from classes.utils import alias_sample
+from embedders.utils import create_alias_table
+from embedders.utils import partition_num
+from embedders.utils import alias_sample
 
 ### CLASS RANDOM WALKER ###
 class RandomWalker:

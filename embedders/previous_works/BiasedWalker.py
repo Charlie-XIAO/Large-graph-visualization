@@ -5,8 +5,8 @@ import random
 import pandas as pd
 from joblib import Parallel, delayed
 
-from classes.utils import partition_num
-from classes.utils import chooseNeighbor
+from embedders.utils import partition_num
+from embedders.utils import chooseNeighbor
 
 ### CLASS BIASED WALKER ###
 class BiasedWalker:

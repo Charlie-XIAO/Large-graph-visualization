@@ -1,6 +1,6 @@
 from gensim.models import Word2Vec
 
-from classes.RandomWalker import RandomWalker
+from embedders.previous_works.RandomWalker import RandomWalker
 
 ### ========== ========== ========= ========== ========== ###
 ### CLASS DEEP WALK ###
