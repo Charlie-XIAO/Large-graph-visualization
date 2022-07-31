@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import networkx as nx
 
-class AbstractTest(ABC):
+class AbstractEmbedTest(ABC):
 
     def __init__(self, edgeset, featureset=None):
         self.edgeset = edgeset

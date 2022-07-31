@@ -3,9 +3,9 @@ import pandas as pd
 from embedders.utils import *
 from embedders.previous_works.SDNE import SDNE
 
-from tests.AbstractTest import AbstractTest
+from embedding_tests.AbstractEmbedTest import AbstractEmbedTest
 
-class SDNETest(AbstractTest):
+class SDNETest(AbstractEmbedTest):
 
     def __init__(self, edgeset, featureset=None, hidden_size=[256, 128], batch_size=3000, epochs=40, verbose=2):
         super().__init__(edgeset, featureset)
