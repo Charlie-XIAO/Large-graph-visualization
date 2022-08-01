@@ -14,3 +14,12 @@ def print_block(title):
         print("###" + " " * left + title + " " * right + "###")
         print("###" + " " * 56 + "###")
         print("### " + "========== " * 5 + "###")
+
+def get_index():
+    while True:
+        try:
+            i = int(input("Enter test index:"))
+            break
+        except:
+            print("Invalid index.")
+    return i

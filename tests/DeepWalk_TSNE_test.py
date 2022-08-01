@@ -5,12 +5,7 @@ from visualizing_tests.TSNETest import TSNETest
 
 if __name__ == "__main__":
 
-    while True:
-        try:
-            i = int(input("Enter test index:"))
-            break
-        except:
-            print("Invalid index.")
+    i = get_index()
 
     if i == 1:
         print_block("Test 1: wiki edgeset")
