@@ -5,7 +5,7 @@ from embedders.previous_works.DeepWalk import DeepWalk
 
 from embedding_tests.AbstractEmbedTest import AbstractEmbedTest
 
-class SDNETest(AbstractEmbedTest):
+class DeepWalkTest(AbstractEmbedTest):
 
     def __init__(self, edgeset, featureset=None, walk_length=10, num_walks=80, workers=1, window_size=5, iter=3):
         super().__init__(edgeset, featureset)
