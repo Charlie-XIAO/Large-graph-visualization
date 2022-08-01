@@ -1,4 +1,4 @@
-from tests.utils import *
+from utils import *
 
 from embedding_tests.DeepWalkTest import DeepWalkTest
 from visualizing_tests.TSNETest import TSNETest
