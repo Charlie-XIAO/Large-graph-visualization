@@ -1,9 +1,9 @@
-from utils import *
+from tests.utils import *
 
 from embedding_tests.DeepWalkTest import DeepWalkTest
 from visualizing_tests.TSNETest import TSNETest
 
-if __name__ == "__main__":
+def DeepWalk_TSNE_test():
 
     i = get_index()
 
@@ -11,13 +11,23 @@ if __name__ == "__main__":
         print_block("Test 1: wiki edgeset")
         deepwalk = DeepWalkTest("./datasets/wiki/wiki_edgelist.txt", featureset="./datasets/wiki/wiki_labels.txt",
             walk_length=10, num_walks=80, workers=1, window_size=5, iter=3)
-        deepwalk.addFeature()  # optional
         deepwalk.getEmbeddings()
-        tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, "./images/wiki/1.jpg",
+        deepwalk.addFeature()  # optional
+        tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, "./images/wiki/wiki_DeepWalk_TSNE_1.jpg",
+            n_components=2, verbose=1, random_state=0)
+        tsne.savePlot()
+    
+    elif i == 2:
+        print_block("Test 2: hr2 edgeset")
+        deepwalk = DeepWalkTest("./datasets/hr2/hr2_edgelist.txt", featureset="./datasets/hr2/hr2_labels.txt",
+            walk_length=10, num_walks=80, workers=1, window_size=5, iter=3)
+        deepwalk.getEmbeddings()
+        deepwalk.addFeature()  # optional
+        tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, "./images/hr2/hr2_DeepWalk_TSNE_1.jpg",
             n_components=2, verbose=1, random_state=0)
         tsne.savePlot()
 
-    #elif i == 2:
+    #elif i == 3:
     
     else:
-        print("Test of this index currently unavailable.")
+        print("Test of index {} currently unavailable.".format(i))

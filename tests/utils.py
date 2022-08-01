@@ -1,4 +1,5 @@
 def print_block(title):
+    print()
     if (len(title) > 52):
         length = len(title)
         print("### " + "=" * length + " ###")
@@ -14,11 +15,12 @@ def print_block(title):
         print("###" + " " * left + title + " " * right + "###")
         print("###" + " " * 56 + "###")
         print("### " + "========== " * 5 + "###")
+    print()
 
 def get_index():
     while True:
         try:
-            i = int(input("Enter test index:"))
+            i = int(input("Enter test index: "))
             break
         except:
             print("Invalid index.")

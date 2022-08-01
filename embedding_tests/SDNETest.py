@@ -8,6 +8,16 @@ from embedding_tests.AbstractEmbedTest import AbstractEmbedTest
 class SDNETest(AbstractEmbedTest):
 
     def __init__(self, edgeset, featureset=None, hidden_size=[256, 128], batch_size=3000, epochs=40, verbose=2):
+        """
+        :param self:
+        :param edgeset: absolute path of the node-node edgeset in .txt format
+        :param featureset: absolute path of the node-feature featureset in .txt format
+        :param hidden_size:
+        :param batch_size:
+        :param epochs:
+        :param verbose:
+        :return: None
+        """
         super().__init__(edgeset, featureset)
         self.hidden_size = hidden_size
         self.batch_size = batch_size

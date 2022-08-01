@@ -10,7 +10,7 @@ class AbstractEmbedTest(ABC):
         self.featureset = featureset
         self.embeddings = None
         self.has_feature = False
-        self.addFeature()
+        print(self.graph)
 
     def readGraph(self):
         print("Reading graph data", end="... ")
@@ -20,6 +20,13 @@ class AbstractEmbedTest(ABC):
 
     @abstractmethod
     def getEmbeddings(self):
+        """
+        :param self:
+        :return: None
+        
+        Set self.embeddings to the high-dimensional embeddings with one node per row.
+        Need to get transpose of the default embeddings as: embeddings.T
+        """
         pass
 
     def addFeature(self):
@@ -37,3 +44,4 @@ class AbstractEmbedTest(ABC):
         if features:
             self.embeddings["feature"] = [features[node] for node in self.embeddings.index]
             self.has_feature = True
+            print("Done.")

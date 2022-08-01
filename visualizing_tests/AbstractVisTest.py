@@ -13,10 +13,17 @@ class AbstractVisTest(ABC):
     
     @abstractmethod
     def getProjection(self):
+        """
+        :param self:
+        :return: None
+        
+        Set self.projections to projections data.
+        """
         pass
 
     def savePlot(self):
         self.getProjection()
+        print("Projections done.")
         if self.has_feature:
             fig = px.scatter(self.projections, x=0, y=1, color=self.embeddings.feature)
         else:
