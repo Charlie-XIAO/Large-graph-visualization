@@ -1,6 +1,29 @@
 # Instructions
 
-To be updated...
+1. Clone the repository. Use `Clone Git Repository...` tab in an empty window of VSCode or use the following command line in Command Prompt:
+
+```
+git clone https://github.com/Charlie-XIAO/embedding-visualization-test.git
+```
+
+2. Set the Python virtual environment using the following command lines in Command Prompt:
+
+```
+python -m venv myvenv
+myvenv\Scripts\activate (for Windows) source myvenv/bin/activate (for Mac/Linux)
+```
+
+3. Install required packages in the Python virtual environment using the following command line in Command Prompt:
+
+```
+pip install -r requirements.txt
+```
+
+4. Run `main.py` using the following command line in Command Prompt:
+
+```
+python main.py
+```
 
 # Graph Embedding
 
