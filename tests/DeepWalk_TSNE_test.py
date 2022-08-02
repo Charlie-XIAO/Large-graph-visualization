@@ -9,23 +9,25 @@ def DeepWalk_TSNE_test():
 
     if i == 1:
         print_block("Test 1: wiki edgeset")
-        deepwalk = DeepWalkTest("./datasets/wiki/wiki_edgelist.txt", featureset="./datasets/wiki/wiki_labels.txt",
-            walk_length=10, num_walks=80, workers=1, window_size=5, iter=3)
+        edgeset = "./datasets/wiki/wiki_edgelist.txt"
+        featureset = "./datasets/wiki/wiki_labels.txt"
+        location = "./images/wiki/wiki_DeepWalk_TSNE_1.jpg"
+        deepwalk = DeepWalkTest(edgeset, featureset=featureset, walk_length=20, num_walks=150, workers=1, window_size=5, iter=3)
         deepwalk.getEmbeddings()
         deepwalk.addFeature()  # optional
-        tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, "./images/wiki/wiki_DeepWalk_TSNE_1.jpg",
-            n_components=2, verbose=1, random_state=0)
-        tsne.savePlot()
+        tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, location, n_components=2, verbose=1, random_state=0)
+        tsne.savePlot(edgeset)
     
     elif i == 2:
         print_block("Test 2: hr2 edgeset")
-        deepwalk = DeepWalkTest("./datasets/hr2/hr2_edgelist.txt", featureset="./datasets/hr2/hr2_labels.txt",
-            walk_length=10, num_walks=80, workers=1, window_size=5, iter=3)
+        edgeset = "./datasets/hr2/hr2_edgelist.txt"
+        featureset = "./datasets/hr2/hr2_labels.txt"
+        location = "./images/hr2/hr2_DeepWalk_TSNE_1.jpg"
+        deepwalk = DeepWalkTest(edgeset, featureset=featureset, walk_length=10, num_walks=80, workers=1, window_size=5, iter=3)
         deepwalk.getEmbeddings()
         deepwalk.addFeature()  # optional
-        tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, "./images/hr2/hr2_DeepWalk_TSNE_1.jpg",
-            n_components=2, verbose=1, random_state=0)
-        tsne.savePlot()
+        tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, location, n_components=2, verbose=1, random_state=0)
+        tsne.savePlot(edgeset)
 
     #elif i == 3:
     
