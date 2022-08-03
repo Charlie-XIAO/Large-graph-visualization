@@ -12,7 +12,7 @@ def DeepWalk_TSNE_test():
         edgeset = "./datasets/wiki/wiki_edgelist.txt"
         featureset = "./datasets/wiki/wiki_labels.txt"
         location = "./images/wiki/wiki_DeepWalk_TSNE_1.jpg"
-        deepwalk = DeepWalkTest(edgeset, featureset=featureset, walk_length=20, num_walks=150, workers=1, window_size=5, iter=3)
+        deepwalk = DeepWalkTest(edgeset, featureset=featureset, walk_length=10, num_walks=80, workers=1, window_size=5, iter=3)
         deepwalk.getEmbeddings()
         deepwalk.addFeature()  # optional
         tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, location, n_components=2, verbose=1, random_state=0)
