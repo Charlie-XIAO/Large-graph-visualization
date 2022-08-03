@@ -43,8 +43,11 @@ def construct_knn_from_embeddings(embeddings, k):
 
 def construct_knn_from_graph(graph, k):
     knn_of_graph = scipy.sparse.lil_matrix((len(graph), len(graph)), dtype=np.intc)  # initialize the knn matrix
+    
     for v in range(len(graph)):
-        knn_of_graph[v, list(nx.bfs_tree(graph, v))[0: k]] = 1
+        tree = nx.bfs_tree(nx.convert_node_labels_to_integers(graph), v)
+        knn_indices = list(tree)[0: k]
+        knn_of_graph[v, knn_indices] = 1
     return scipy.sparse.csr_matrix(knn_of_graph)
 
 
@@ -80,21 +83,20 @@ def compare_KNN(graph, embeddings, k):
     :parem embeddings: arbitrary embedding of the graph (in $R_n$ or $R_2$), of type pd.DataFrame 
     :param k: the size of neighborhood, the K in KNN
     :return: knn_accuracy, a number between 0 and 1 that measures how the KNN in graph_data and embeddings differ 
-            Define distance between two sets to be $d(X, Y) = |X \cap Y| / (|X| \cup |Y|)$
-            
-                for node v in V:
-                    KNN_accuracy += d(KNN_graph, KNN_embed)
-                KNN_accuracy /= |V|
+        Define distance between two sets to be $d(X, Y) = |X \cap Y| / (|X| \cup |Y|)$
+        
+            for node v in V:
+                KNN_accuracy += d(KNN_graph, KNN_embed)
+            KNN_accuracy /= |V|
 
-            (e.g. 1 means two KNNs are exactly the same, 0 means exactly different)
+        (e.g. 1 means two KNNs are exactly the same, 0 means exactly different)
+
     """
-
-    knn_accuracies = np.zeros(len(graph))
-
-    knn_of_embed = construct_knn_from_embeddings(embeddings, k)
+    
     knn_of_graph = construct_knn_from_graph(graph, k)
+    knn_of_embed = construct_knn_from_embeddings(embeddings, k)
 
-    knn_of_embed.multiply(knn_of_graph).sum(axis=0)
-    (knn_of_embed + knn_of_graph).astype('bool').sum(axis=0)
+    knn_accuracies = compare_KNN_matrix(knn_of_graph, knn_of_embed)
+    knn_accuracy = np.average(knn_accuracies)
 
-    return np.average(knn_accuracies)
+    return knn_accuracy

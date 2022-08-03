@@ -1,0 +1,12 @@
+Dataset Name:
+    Scottish company interlocks (1904)
+Description: 
+    A bipartite network of the largest joint stock companies and the directors that sat on their boards, in Scotland, 1904-1905.
+Source: 
+    http://vlado.fmf.uni-lj.si/pub/networks/data/esna/scotland.htm
+Size: 
+    244 vertices, 356 edges, 10kb
+Type: 
+    unweighted, undirected
+Notes: 
+    A small dataset for quick functionality test
