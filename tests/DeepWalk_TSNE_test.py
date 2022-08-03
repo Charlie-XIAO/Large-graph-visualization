@@ -33,3 +33,18 @@ def DeepWalk_TSNE_test():
     deepwalk.embed(k=20)
     tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, location, n_components=2, verbose=1, random_state=0)
     tsne.savePlot()
+
+    graph = deepwalk.readGraph()
+    highDimEmbed = deepwalk.embeddings
+    lowDimEmbed = tsne.projections
+    randomHighDimEmbed = randomEmbeddings(deepwalk.embeddings)
+    randomLowDimEmbed = randomEmbeddings(tsne.projections)
+
+    k = 10
+    # compared with d(graph, random_embedding)
+    print(f"high dim embedding: {compare_KNN(graph, highDimEmbed, k):.2f}")
+    print(f"random high dim embedding: {compare_KNN(graph, randomHighDimEmbed, k):.2f}")
+    print(f"low dim embedding: {compare_KNN(graph, lowDimEmbed, k):.2f}")
+    print(f"random low dim embedding: {compare_KNN(graph, randomLowDimEmbed, k):.2f}")
+    high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed), construct_knn_from_embeddings(lowDimEmbed)))
+    print(f"high dim vs low dim: {high_v_low:.2f}")
