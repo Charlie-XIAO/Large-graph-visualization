@@ -25,3 +25,6 @@ def get_index():
         except:
             print("Invalid index.")
     return i
+
+def compare_KNN(graph, embeddings, k):
+    pass
