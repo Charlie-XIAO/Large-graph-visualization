@@ -22,7 +22,7 @@ def DeepWalk_TSNE_test():
     elif i == 3:
         print_block("Test 3: lock edgeset")
         edgeset = "./datasets/lock/lock_edgelist.txt"
-        featureset = "./datasets/lock/hr2_labels.txt"
+        featureset = "./datasets/lock/lock_labels.txt"
         location = "./images/lock/lock_DeepWalk_TSNE_1.jpg"
     
     else:
