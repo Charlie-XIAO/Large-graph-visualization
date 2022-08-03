@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from embedding_tests.utils import *
 
 import networkx as nx
 
@@ -28,6 +29,15 @@ class AbstractEmbedTest(ABC):
         Need to get transpose of the default embeddings as: embeddings.T
         """
         pass
+
+    def embed(self, k=20):
+        """
+        :param self:
+        :return: None
+        """
+        self.getEmbeddings()
+        print("Embedding KNN accuracy: {}".format(compare_KNN(self.graph, self.embeddings, k)))
+        self.addFeature()
 
     def addFeature(self):
         if not self.featureset:
