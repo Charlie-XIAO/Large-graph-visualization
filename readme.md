@@ -85,3 +85,9 @@ To be updated...
 model = TSNE(n_components=2, verbose=1, random_state=0)
 self.projections = model.fit_transform(self.X)
 ```
+
+
+# Datasets
+- [Index of Complex Networks (colorado.edu)](https://icon.colorado.edu/#!/networks)
+  
+- [Stanford Large Network Dataset Collection](https://snap.stanford.edu/data/)
