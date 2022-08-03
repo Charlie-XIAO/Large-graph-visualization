@@ -44,9 +44,9 @@ class Node2Vec:
         kwargs["workers"] = workers
         kwargs["window"] = window_size
         kwargs["epochs"] = iter
-        print("Learning embedding vectors...")
+        print("Learning embedding vectors", end="... ")
         model = Word2Vec(**kwargs)
-        print("Learning embedding vectors done.")
+        print("Done.")
         self.w2v_model = model
         return model
     
