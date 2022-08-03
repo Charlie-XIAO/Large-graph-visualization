@@ -19,14 +19,17 @@ def Node2Vec_TSNE_test():
         featureset = "./datasets/hr2/hr2_labels.txt"
         location = "./images/hr2/hr2_Node2Vec_TSNE_1.jpg"
 
-    #elif i == 3:
+    elif i == 3:
+        print_block("Test 3: lock edgeset")
+        edgeset = "./datasets/lock/lock_edgelist.txt"
+        featureset = "./datasets/lock/hr2_labels.txt"
+        location = "./images/lock/lock_Node2Vec_TSNE_1.jpg"
     
     else:
         print("Test of index {} currently unavailable.".format(i))
         return
         
     node2vec = Node2VecTest(edgeset, featureset=featureset, walk_length=10, num_walks=80, p=0.25, q=4, workers=1, window_size=5, iter=3)
-    node2vec.getEmbeddings()
-    node2vec.addFeature()  # optional
+    node2vec.embed(k=20)
     tsne = TSNETest(node2vec.embeddings, node2vec.has_feature, location, n_components=2, verbose=1, random_state=0)
-    tsne.savePlot(edgeset)
+    tsne.savePlot()
