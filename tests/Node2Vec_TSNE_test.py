@@ -22,7 +22,7 @@ def Node2Vec_TSNE_test():
     elif i == 3:
         print_block("Test 3: lock edgeset")
         edgeset = "./datasets/lock/lock_edgelist.txt"
-        featureset = "./datasets/lock/hr2_labels.txt"
+        featureset = "./datasets/lock/lock_labels.txt"
         location = "./images/lock/lock_Node2Vec_TSNE_1.jpg"
     
     else:
@@ -30,6 +30,5 @@ def Node2Vec_TSNE_test():
         return
         
     node2vec = Node2VecTest(edgeset, featureset=featureset, walk_length=10, num_walks=80, p=0.25, q=4, workers=1, window_size=5, iter=3)
-    node2vec.embed(k=20)
     tsne = TSNETest(node2vec.embeddings, node2vec.has_feature, location, n_components=2, verbose=1, random_state=0)
-    tsne.savePlot()
+    show_evaluation_results(node2vec, tsne)

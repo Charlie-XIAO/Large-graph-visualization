@@ -22,7 +22,7 @@ def SDNE_TSNE_test():
     elif i == 3:
         print_block("Test 3: lock edgeset")
         edgeset = "./datasets/lock/lock_edgelist.txt"
-        featureset = "./datasets/lock/hr2_labels.txt"
+        featureset = "./datasets/lock/lock_labels.txt"
         location = "./images/lock/lock_SDNE_TSNE_1.jpg"
     
     else:
@@ -30,6 +30,5 @@ def SDNE_TSNE_test():
         return
 
     sdne = SDNETest(edgeset, featureset=featureset, hidden_size=[256, 128], batch_size=3000, epochs=40, verbose=2)
-    sdne.embed(k=20)
     tsne = TSNETest(sdne.embeddings, sdne.has_feature, location, n_components=2, verbose=1, random_state=0)
-    tsne.savePlot()
+    show_evaluation_results(sdne, tsne)

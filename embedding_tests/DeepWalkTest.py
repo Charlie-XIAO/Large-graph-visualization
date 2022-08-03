@@ -25,6 +25,8 @@ class DeepWalkTest(AbstractEmbedTest):
         self.workers = workers
         self.window_size = window_size
         self.iter = iter
+        self.getEmbeddings()
+        self.addFeature()
     
     def getEmbeddings(self):
         model = DeepWalk(self.graph, walk_length=self.walk_length, num_walks=self.num_walks, workers=self.workers)

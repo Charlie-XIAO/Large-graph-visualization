@@ -4,35 +4,6 @@ import pandas as pd
 import scipy
 from sklearn.neighbors import NearestNeighbors
 
-def print_block(title):
-    print()
-    if (len(title) > 52):
-        length = len(title)
-        print("### " + "=" * length + " ###")
-        print("### " + " " * length + " ###")
-        print("### " + title + " ###")
-        print("### " + " " * length + " ###")
-        print("### " + "=" * length + " ###")
-    else:
-        print("### " + "========== " * 5 + "###")
-        print("###" + " " * 56 + "###")
-        left = (56 - len(title)) // 2
-        right = 56 - len(title) - left
-        print("###" + " " * left + title + " " * right + "###")
-        print("###" + " " * 56 + "###")
-        print("### " + "========== " * 5 + "###")
-    print()
-
-
-def get_index():
-    while True:
-        try:
-            i = int(input("Enter test index: "))
-            break
-        except:
-            print("Invalid index.")
-    return i
-
 
 def randomEmbeddings(embeddings, distribution="uniform"):
     """
@@ -50,7 +21,7 @@ def randomEmbeddings(embeddings, distribution="uniform"):
     elif distribution == "normal":
         pass
     else:
-        raise ValueError(f"'{distribution}' distribution not implemented")
+        raise ValueError(f"'{distribution}' distribution not implemented.")
 
 
 def construct_knn_from_embeddings(embeddings, k):
@@ -121,3 +92,95 @@ def compare_KNN(graph, embeddings, k):
     knn_accuracy = np.average(knn_accuracies)
 
     return knn_accuracy
+
+
+### ========== ========== ========== ========== ========== ###
+###                     FORMAT ISSUES                      ###
+### ========== ========== ========== ========== ========== ###
+def print_block(title):
+    print()
+    if (len(title) > 52):
+        length = len(title)
+        print("### " + "=" * length + " ###")
+        print("### " + " " * length + " ###")
+        print("### " + title + " ###")
+        print("### " + " " * length + " ###")
+        print("### " + "=" * length + " ###")
+    else:
+        print("### " + "========== " * 5 + "###")
+        print("###" + " " * 56 + "###")
+        left = (56 - len(title)) // 2
+        right = 56 - len(title) - left
+        print("###" + " " * left + title + " " * right + "###")
+        print("###" + " " * 56 + "###")
+        print("### " + "========== " * 5 + "###")
+    print()
+
+
+def get_index():
+    print("### 1: wiki")
+    print("### 2: hr2")
+    print("### 3: lock")
+    while True:
+        try:
+            i = int(input("Enter test index: "))
+            break
+        except:
+            print("Invalid index.")
+    return i
+
+
+def show_evaluation_results(embed_obj, vis_obj, k=10):
+    graph = embed_obj.graph
+    highDimEmbed = embed_obj.embeddings
+    lowDimEmbed = vis_obj.projections
+    randomHighDimEmbed = randomEmbeddings(embed_obj.embeddings)
+    randomLowDimEmbed = randomEmbeddings(vis_obj.projections)
+
+    keepGoing = True
+    high, high_base, low, low_base, high_v_low = -1, -1, -1, -1, -1
+    while keepGoing:
+        print()
+        print("### 1: KNN embedding accuracy")
+        print("### 2: KNN visualizing accuracy")
+        print("### 3: KNN dimension reduction accuracy")
+        print("### A/a: select all types")
+        print("### Q/q: quit evaluation")
+        check = input("Select evaluation benchmark: ")
+        print()
+        
+        # compared with d(graph, random_embedding)
+        if check == "1":
+            if high == -1:
+                high = compare_KNN(graph, highDimEmbed, k)
+            if high_base == -1:
+                high_base = compare_KNN(graph, randomHighDimEmbed, k)
+            print("KNN embedding accuracy: {:.2f}, with baseline: {:.2f}".format(high, high_base))
+        elif check == "2":
+            if low == -1:
+                low = compare_KNN(graph, lowDimEmbed, k)
+            if low_base == -1:
+                low_base = compare_KNN(graph, randomLowDimEmbed, k)
+            print("KNN visualizing accuracy: {:.2f}, with baseline: {:.2f}".format(low, low_base))
+        elif check == "3":
+            if high_v_low == -1:
+                high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
+            print("KNN dimension reduction accuracy: {:.2f}".format(high_v_low))
+        elif check.upper() == "A":
+            if high == -1:
+                high = compare_KNN(graph, highDimEmbed, k)
+            if high_base == -1:
+                high_base = compare_KNN(graph, randomHighDimEmbed, k)
+            if low == -1:
+                low = compare_KNN(graph, lowDimEmbed, k)
+            if low_base == -1:
+                low_base = compare_KNN(graph, randomLowDimEmbed, k)
+            if high_v_low == -1:
+                high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
+            print("KNN embedding accuracy: {:.2f}, with baseline: {:.2f}".format(high, high_base))
+            print("KNN visualizing accuracy: {:.2f}, with baseline: {:.2f}".format(low, low_base))
+            print("KNN dimension reduction accuracy: {:.2f}".format(high_v_low))
+        elif check.upper() == "Q":
+            keepGoing = False
+        else:
+            print("Invalid evaluation type.")

@@ -19,6 +19,7 @@ class TSNETest(AbstractVisTest):
         self.n_components = n_components
         self.verbose = verbose
         self.random_state = random_state
+        self.savePlot()
     
     def getProjection(self):
         model = TSNE(n_components=self.n_components, verbose=self.verbose, random_state=self.random_state)

@@ -23,6 +23,8 @@ class SDNETest(AbstractEmbedTest):
         self.batch_size = batch_size
         self.epochs = epochs
         self.verbose = verbose
+        self.getEmbeddings()
+        self.addFeature()
     
     def getEmbeddings(self):
         model = SDNE(self.graph, hidden_size=self.hidden_size)

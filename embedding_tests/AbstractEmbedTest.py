@@ -30,15 +30,6 @@ class AbstractEmbedTest(ABC):
         """
         pass
 
-    def embed(self, k=20):
-        """
-        :param self:
-        :return: None
-        """
-        self.getEmbeddings()
-        print("Embedding KNN accuracy: {}".format(compare_KNN(self.graph, self.embeddings, k)))
-        self.addFeature()
-
     def addFeature(self):
         if not self.featureset:
             return
