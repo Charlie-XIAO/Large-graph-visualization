@@ -12,14 +12,13 @@ def randomEmbeddings(embeddings, distribution="uniform"):
     """
     if isinstance(embeddings, pd.DataFrame):
         embeddings = embeddings.to_numpy()[:,:-1]
-    if distribution == "uniform":
+    if distribution == "uniform":       # Unif(min(embeddings), max(embeddings))
         min = embeddings.min()
         max = embeddings.max()
         length = embeddings.shape[0]*embeddings.shape[1]
         return np.random.rand(length).reshape(embeddings.shape) * (int(max) - int(min)) + min
-        
-    elif distribution == "normal":
-        pass
+    elif distribution == "normal":      # Norm(mean(embeddings), std(embeddings))
+        return np.random.normal(embeddings.mean(), embeddings.std(), embeddings.shape)
     else:
         raise ValueError(f"'{distribution}' distribution not implemented.")
 
