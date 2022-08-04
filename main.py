@@ -30,12 +30,12 @@ if __name__ == "__main__":
     parser.add_argument("--visualization", help="name of the visualization method to use", default="tsne")
     
     # Below are some less used options. Feel free to tune them.
-    parser.add_argument("--dim", help="dimension of the high-dimensional embedding", default=128)
-    parser.add_argument("--k", help="k neighbors to use for the knn graph construction", default=10)
-    parser.add_argument("--verbose", help="verbose output", default=False)
-    parser.add_argument("--seed", help="random seed", default=20220804)             #TODO: fix a random seed for reproducibility
+    parser.add_argument("--dim", help="dimension of the high-dimensional embedding", type=int, default=128)
+    parser.add_argument("--k", help="k neighbors to use for the knn graph construction", type=int, default=10)
+    parser.add_argument("--verbose", help="verbose output", type=bool, default=False)
+    parser.add_argument("--seed", help="random seed", type=int, default=20220804)             #TODO: fix a random seed for reproducibility
     parser.add_argument("--image_format", help="image format", default="png")
-    parser.add_argument("--timing", help="show timing", default=False)
+    parser.add_argument("--timing", help="show timing", type=bool, default=False)
 
 
     ###  parse arguments
