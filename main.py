@@ -7,9 +7,12 @@ from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
 # SDNE + vis
 from tests.SDNE_TSNE_test import SDNE_TSNE_test
 
+# ShortestPath + vis
+from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
+
 if __name__ == "__main__":
 
-    EMBED_METHODS = ("DeepWalk", "Node2Vec", "SDNE",)
+    EMBED_METHODS = ("DeepWalk", "Node2Vec", "SDNE", "ShortestPath")
     VIS_METHODS = ("TSNE",)
 
     print()
@@ -59,3 +62,9 @@ if __name__ == "__main__":
 
         if vis_method == "TSNE":
             SDNE_TSNE_test()
+
+    # ShortestPath + vis
+    elif embed_method == "SHORTESTPATH":
+
+        if vis_method == "TSNE":
+            ShortestPath_TSNE_test()
