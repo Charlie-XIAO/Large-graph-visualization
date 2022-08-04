@@ -3,6 +3,7 @@ import networkx as nx
 import pandas as pd
 import scipy
 from sklearn.neighbors import NearestNeighbors
+import time
 
 
 def randomEmbeddings(embeddings, distribution="uniform"):
@@ -31,14 +32,23 @@ def construct_knn_from_embeddings(embeddings, k):
     neigh.fit(embeddings)
     return neigh.kneighbors_graph(embeddings)
 
-
-def construct_knn_from_graph(graph, k):
+# TODO: computation bottleneck
+def construct_knn_from_graph(graph, k, sampling_method="knn"):
     knn_of_graph = scipy.sparse.lil_matrix((len(graph), len(graph)), dtype=np.intc)  # initialize the knn matrix
     
-    for v in range(len(graph)):
-        tree = nx.bfs_tree(nx.convert_node_labels_to_integers(graph), v)
-        knn_indices = list(tree)[0: k]
-        knn_of_graph[v, knn_indices] = 1
+    
+    if sampling_method == "knn":        # based on knn
+        for v in range(len(graph)):
+            tree = nx.bfs_tree(nx.convert_node_labels_to_integers(graph), v)
+            knn_indices = list(tree)[0: k]
+            knn_of_graph[v, knn_indices] = 1
+    elif sampling_method == "random walk":      # based on random walk
+        # random walk over each node for k steps
+        # for v in range(len(graph)):
+        #     pass
+        pass
+
+
     return scipy.sparse.csr_matrix(knn_of_graph)
 
 
@@ -68,7 +78,7 @@ def compare_KNN_matrix(A, B):
     return np.array([intersect_sizes[v] / union_sizes[v] for v in range(len(intersect_sizes)) if union_sizes[v] != 0])
 
 
-def compare_KNN(graph, embeddings, k):
+def compare_KNN(graph, embeddings, k, timing=False):
     """
     :param graph: the graph-structured data, of type nx.Graph
     :param embeddings: arbitrary embedding of the graph (in $R_n$ or $R_2$), of type pd.DataFrame 
@@ -84,11 +94,25 @@ def compare_KNN(graph, embeddings, k):
 
     """
     
+    t0 = time.time()
     knn_of_graph = construct_knn_from_graph(graph, k)
-    knn_of_embed = construct_knn_from_embeddings(embeddings, k)
+    t1 = time.time()
+    if timing:
+        print(f"Time to construct KNN of graph: {t1-t0}")
 
+    t2 = time.time()
+    knn_of_embed = construct_knn_from_embeddings(embeddings, k)
+    t3 = time.time()
+    if timing:
+        print(f"Time to construct KNN of embeddings: {t3-t2}")
+
+    t4 = time.time()
     knn_accuracies = compare_KNN_matrix(knn_of_graph, knn_of_embed)
     knn_accuracy = np.average(knn_accuracies)
+    t5 = time.time()
+    if timing:
+        print(f"Time to compare KNNs: {t5-t4}")
+    
 
     return knn_accuracy
 
@@ -129,7 +153,7 @@ def get_index():
     return i
 
 
-def show_evaluation_results(embed_obj, vis_obj, k=10):
+def show_evaluation_results(embed_obj, vis_obj, k=10, timing=False):
     graph = embed_obj.graph
     highDimEmbed = embed_obj.embeddings
     lowDimEmbed = vis_obj.projections
@@ -167,15 +191,19 @@ def show_evaluation_results(embed_obj, vis_obj, k=10):
             print("KNN dimension reduction accuracy: {:.2f}".format(high_v_low))
         elif check.upper() == "A":
             if high == -1:
-                high = compare_KNN(graph, highDimEmbed, k)
+                high = compare_KNN(graph, highDimEmbed, k, timing=timing)
             if high_base == -1:
-                high_base = compare_KNN(graph, randomHighDimEmbed, k)
+                high_base = compare_KNN(graph, randomHighDimEmbed, k, timing=timing)
             if low == -1:
-                low = compare_KNN(graph, lowDimEmbed, k)
+                low = compare_KNN(graph, lowDimEmbed, k, timing=timing)
             if low_base == -1:
-                low_base = compare_KNN(graph, randomLowDimEmbed, k)
+                low_base = compare_KNN(graph, randomLowDimEmbed, k, timing=timing)
             if high_v_low == -1:
+                t0 = time.time()
                 high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
+                t1 = time.time()
+                if timing:
+                    print(f"Time to compare high-low KNNs: {t1-t0}")
             print("KNN embedding accuracy: {:.2f}, with baseline: {:.2f}".format(high, high_base))
             print("KNN visualizing accuracy: {:.2f}, with baseline: {:.2f}".format(low, low_base))
             print("KNN dimension reduction accuracy: {:.2f}".format(high_v_low))
