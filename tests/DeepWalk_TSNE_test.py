@@ -31,4 +31,4 @@ def DeepWalk_TSNE_test():
 
     deepwalk = DeepWalkTest(edgeset, featureset=featureset, walk_length=10, num_walks=80, workers=1, window_size=5, iter=3)
     tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, location, n_components=2, verbose=1, random_state=0)
-    show_evaluation_results(deepwalk, tsne)
+    show_evaluation_results(deepwalk, tsne, timing=True)
