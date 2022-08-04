@@ -5,6 +5,9 @@ import scipy
 from sklearn.neighbors import NearestNeighbors
 
 
+### ========== ========== ========== ========== ========== ###
+###                      KNN ACCURACY                      ###
+### ========== ========== ========== ========== ========== ###
 def randomEmbeddings(embeddings, distribution="uniform"):
     """
     Generate a random embedding of the same size as the input embedding,
@@ -95,6 +98,75 @@ def compare_KNN(graph, embeddings, k):
 
 
 ### ========== ========== ========== ========== ========== ###
+###                    CLUSTER QUALITY                     ###
+### ========== ========== ========== ========== ========== ###
+def density_check(projections, k=10, threshold=0.5):
+
+    x_min = projections[0][0]
+    for i in range(projections.shape[0]):
+        if projections[i][0] < x_min:
+            x_min = projections[i][0]
+    y_min = projections[0][1]
+    for i in range(projections.shape[0]):
+        if projections[i][1] < y_min:
+            y_min = projections[i][1]
+    x_max = projections[0][0]
+    for i in range(projections.shape[0]):
+        if projections[i][0] > x_max:
+            x_max = projections[i][0]
+
+    y_max = projections[0][1]
+    for i in range(projections.shape[0]):
+        if projections[i][1] > y_max:
+            y_max = projections[i][1]
+
+    x_unit = (x_max - x_min) / k
+    y_unit = (y_max - y_min) / k
+    grid_dic = density_grid(k)
+    grid_dic_input = density_grid_input(projections, x_min, y_min, x_unit, y_unit, grid_dic, k)
+    portion = density_grid_cal(grid_dic_input, k, threshold)
+    return portion
+
+def density_grid(k):
+    """
+    :param k:
+    :return: a dictionary of the grids for partitioning items and check density
+    """
+    grid_dic = {}
+    for i in range(k):
+        grid_dic[i] = {}
+        for j in range(k):
+            grid_dic[i][j] = [{}, 0]
+    return grid_dic
+
+def density_grid_input(projections, x_min, y_min, x_unit, y_unit, grid_dic, k):
+    for i in range(projections.shape[0]):
+        x = (projections[i][0] - x_min) // x_unit
+        if x == k:
+            x -= 1
+        y = (projections[i][1] - y_min) // y_unit
+        if y == k:
+            y -= 1
+        feature = int(projections[i][2])
+        try:
+            grid_dic[x][y][0][feature] += 1
+        except:
+            grid_dic[x][y][0][feature] = 1
+        grid_dic[x][y][1] += 1
+    return grid_dic
+
+def density_grid_cal(grid_dic_input, k, threshold):
+    satisfy_num = 0
+    for i in range(k):
+        for j in range(k):
+            total = grid_dic_input[i][j][1]
+            for item in grid_dic_input[i][j][0].items():
+                if item[1] > total * threshold:
+                    satisfy_num += 1
+    return satisfy_num / (k * k)
+
+
+### ========== ========== ========== ========== ========== ###
 ###                     FORMAT ISSUES                      ###
 ### ========== ========== ========== ========== ========== ###
 def print_block(title):
@@ -131,6 +203,11 @@ def get_index():
 
 
 def show_evaluation_results(embed_obj, vis_obj, k=10):
+
+    if embed_obj.has_feature:
+        featured_projection = np.insert(vis_obj.projections, 2, list(vis_obj.embeddings.feature), axis=1)
+        print("Visualization quality: {}".format(density_check(featured_projection, k=10, threshold=0.5)))
+
     graph = embed_obj.graph
     highDimEmbed = embed_obj.embeddings
     lowDimEmbed = vis_obj.projections
