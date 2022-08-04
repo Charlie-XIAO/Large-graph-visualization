@@ -12,6 +12,7 @@ class AbstractEmbedTest(ABC):
         self.embeddings = None
         self.has_feature = False
         print(self.graph)
+        print()
 
     def readGraph(self):
         print("Reading graph data", end="... ")
@@ -46,3 +47,10 @@ class AbstractEmbedTest(ABC):
             self.embeddings["feature"] = [features[node] for node in self.embeddings.index]
             self.has_feature = True
             print("Done.")
+    
+    def embed(self):
+        self.getEmbeddings()
+        self.addFeature()
+        print("Embeddings generated as follows:")
+        print(self.embeddings)
+        print()

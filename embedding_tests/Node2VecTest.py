@@ -29,8 +29,7 @@ class Node2VecTest(AbstractEmbedTest):
         self.workers = workers
         self.window_size = window_size
         self.iter = iter
-        self.getEmbeddings()
-        self.addFeature()
+        self.embed()
     
     def getEmbeddings(self):
         model = Node2Vec(self.graph, walk_length=self.walk_length, num_walks=self.num_walks, p=self.p, q=self.q, workers=self.workers)
