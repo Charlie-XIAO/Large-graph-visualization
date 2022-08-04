@@ -1,22 +1,20 @@
-# DeepWalk + vis
-from tests.DeepWalk_TSNE_test import DeepWalk_TSNE_test
-
-# Node2Vec + vis
-from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
-
-# SDNE + vis
-from tests.SDNE_TSNE_test import SDNE_TSNE_test
-
 import argparse
 import os
 import sys
 
+# DeepWalk + vis
+from tests.DeepWalk_TSNE_test import DeepWalk_TSNE_test
+# Node2Vec + vis
+from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
+# SDNE + vis
+from tests.SDNE_TSNE_test import SDNE_TSNE_test
+
 
 if __name__ == "__main__":
 
-    ####  default settings
-    dataset_folder = os.path.join(os.path.dirname(__file__), 'datasets')
-    image_folder = os.path.join(os.path.dirname(__file__), 'images')
+    ### default settings
+    dataset_folder = os.path.join(os.path.dirname(__file__), "datasets")
+    image_folder = os.path.join(os.path.dirname(__file__), "images")
 
     if not os.path.exists(dataset_folder):
         os.makedirs(dataset_folder)
@@ -36,6 +34,7 @@ if __name__ == "__main__":
     parser.add_argument("--seed", help="random seed", type=int, default=20220804)             #TODO: fix a random seed for reproducibility
     parser.add_argument("--image_format", help="image format", default="png")
     parser.add_argument("--timing", help="show timing", type=bool, default=False)
+    parser.add_argument("--description", help="extra description of current test", default="")
 
 
     ###  parse arguments
@@ -69,8 +68,6 @@ if __name__ == "__main__":
         sys.exit(1)
     else:
         config["visualization"] = VIS_METHODS[config["visualization"]]
-
-    print(f"Running {config['embedding']} + {config['visualization']} on {config['dataset']}")
 
     if config["image_format"] not in ['png', 'jpg', 'jpeg', 'webp', 'svg', 'pdf', 'eps', 'json']:
         print(f"{config['image_format']} is not a valid image format. Valid formats are: png, pdf")
