@@ -1,4 +1,5 @@
 from sklearn.manifold import TSNE
+import numpy as np
 
 from visualizing_tests.AbstractVisTest import AbstractVisTest
 

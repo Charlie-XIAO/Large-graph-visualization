@@ -9,7 +9,10 @@ class AbstractVisTest(ABC):
     def __init__(self, embeddings, has_feature, location):
         self.embeddings = embeddings
         self.has_feature = has_feature
-        self.X = self.embeddings.iloc[:, :-has_feature]
+        if has_feature:
+            self.X = self.embeddings.iloc[:, :-1]
+        else:
+            self.X = self.embeddings.iloc[:, :]
         self.location = location
         self.projections = None
     

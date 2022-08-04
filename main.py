@@ -12,22 +12,24 @@ if __name__ == "__main__":
     EMBED_METHODS = ("DeepWalk", "Node2Vec", "SDNE",)
     VIS_METHODS = ("TSNE",)
 
+    print()
+    print("Available:", end="  ")
+    for name in EMBED_METHODS:
+        print(name, end="  ")
+    print()
     while True:
-        print("### Available:", end="  ")
-        for name in EMBED_METHODS:
-            print(name, end="  ")
-        print()
         embed_method = input("(Case insensitive) Select embedding method: ")
         if embed_method.upper() in (name.upper() for name in EMBED_METHODS):
             break
         else:
             print("Invalid embedding method.")
     
+    print()
+    print("Available:", end="  ")
+    for name in VIS_METHODS:
+        print(name, end="  ")
+    print()
     while True:
-        print("### Available:", end="  ")
-        for name in VIS_METHODS:
-            print(name, end="  ")
-        print()
         vis_method = input("(Case insensitive) Select visualizing method: ")
         if vis_method.upper() in (name.upper() for name in VIS_METHODS):
             break
@@ -38,6 +40,7 @@ if __name__ == "__main__":
 
     embed_method = embed_method.upper()
     vis_method = vis_method.upper()
+    print("{} + {} selected.".format(embed_method, vis_method))
 
     # DeepWalk + vis
     if embed_method == "DEEPWALK":

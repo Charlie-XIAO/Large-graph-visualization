@@ -118,12 +118,12 @@ def print_block(title):
 
 
 def get_index():
-    print("### 1: wiki")
-    print("### 2: hr2")
-    print("### 3: lock")
+    print("1: wiki edgeset")
+    print("2: hr2 edgeset")
+    print("3: lock edgeset")
     while True:
         try:
-            i = int(input("Enter test index: "))
+            i = int(input("(Index) Select tested edgeset: "))
             break
         except:
             print("Invalid index.")
@@ -139,16 +139,16 @@ def show_evaluation_results(embed_obj, vis_obj, k=10):
 
     keepGoing = True
     high, high_base, low, low_base, high_v_low = -1, -1, -1, -1, -1
+    print()
+    print("1: KNN embedding accuracy")
+    print("2: KNN visualizing accuracy")
+    print("3: KNN dimension reduction accuracy")
+    print("A/a: select all types")
+    print("Q/q: quit evaluation")
+    print()
+
     while keepGoing:
-        print()
-        print("### 1: KNN embedding accuracy")
-        print("### 2: KNN visualizing accuracy")
-        print("### 3: KNN dimension reduction accuracy")
-        print("### A/a: select all types")
-        print("### Q/q: quit evaluation")
-        check = input("Select evaluation benchmark: ")
-        print()
-        
+        check = input("(Index) Select evaluation benchmark: ")
         # compared with d(graph, random_embedding)
         if check == "1":
             if high == -1:
