@@ -88,6 +88,10 @@ self.projections = model.fit_transform(self.X)
 
 
 # Datasets
+## Usage
+In the `datasets` folder, create a folder with the name of the dataset (e.g. `lock`). In this folder, put the dataset file (edgelist and labels (optional)), and name it `datasetName_edgelist.txt`, `datasetName_labels.txt` (e.g. `lock_edgelist.txt`, `lock_labels.txt`). If necessary, you could add an explanation file `explanation.txt` to specify the size / origin / subject / etc. of the dataset.
+
+## Source
 - [Index of Complex Networks (colorado.edu)](https://icon.colorado.edu/#!/networks)
   
 - [Stanford Large Network Dataset Collection](https://snap.stanford.edu/data/)

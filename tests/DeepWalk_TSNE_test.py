@@ -2,33 +2,35 @@ from tests.utils import *
 
 from embedding_tests.DeepWalkTest import DeepWalkTest
 from visualizing_tests.TSNETest import TSNETest
+import os
 
-def DeepWalk_TSNE_test():
+def DeepWalk_TSNE_test(config):
 
-    i = get_index()
 
-    if i == 1:
-        print_block("Test 1: wiki edgeset")
-        edgeset = "./datasets/wiki/wiki_edgelist.txt"
-        featureset = "./datasets/wiki/wiki_labels.txt"
-        location = "./images/wiki/wiki_DeepWalk_TSNE_1.jpg"
-    
-    elif i == 2:
-        print_block("Test 2: hr2 edgeset")
-        edgeset = "./datasets/hr2/hr2_edgelist.txt"
-        featureset = "./datasets/hr2/hr2_labels.txt"
-        location = "./images/hr2/hr2_DeepWalk_TSNE_1.jpg"
+    print_block(f"Test: {config['dataset']} edgeset")
+    edgeset = config['edgeset']
+    featureset = config['featureset']
+    verbose = config['verbose']
+    timing = config['timing']
 
-    elif i == 3:
-        print_block("Test 3: lock edgeset")
-        edgeset = "./datasets/lock/lock_edgelist.txt"
-        featureset = "./datasets/lock/lock_labels.txt"
-        location = "./images/lock/lock_DeepWalk_TSNE_1.jpg"
-    
-    else:
-        print("Test of index {} currently unavailable.".format(i))
-        return
 
-    deepwalk = DeepWalkTest(edgeset, featureset=featureset, walk_length=10, num_walks=80, workers=1, window_size=5, iter=3)
-    tsne = TSNETest(deepwalk.embeddings, deepwalk.has_feature, location, n_components=2, verbose=1, random_state=0)
-    show_evaluation_results(deepwalk, tsne, timing=True)
+    # specify some parameters, and determine the name of the image
+    config["location"] = os.path.join(config["image_folder"], f"{config['dataset']}_{config['embedding']}_{config['visualization']}.{config['image_format']}")
+    location = config["location"]
+
+    deepwalk = DeepWalkTest(
+        edgeset, 
+        featureset=featureset, 
+        walk_length=10, 
+        num_walks=80, 
+        workers=1, 
+        window_size=5, 
+        iter=3)
+    tsne = TSNETest(
+        deepwalk.embeddings, 
+        deepwalk.has_feature, 
+        location, 
+        n_components=2, 
+        verbose=verbose,      # an example of passing parameter from terminal to function 
+        random_state=0)
+    show_evaluation_results(deepwalk, tsne, timing=timing)
