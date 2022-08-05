@@ -9,4 +9,4 @@ def ShortestPath_TSNE_test(config):
 
     shortestpath = ShortestPathTest(edgeset, featureset=featureset)
     tsne = TSNETest(shortestpath.embeddings, shortestpath.has_feature, location, n_components=2, verbose=1, random_state=0)
-    show_evaluation_results(config, shortestpath, tsne)
+    show_evaluation_results(config, shortestpath, tsne, k=10)

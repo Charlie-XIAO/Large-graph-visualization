@@ -76,7 +76,7 @@ if __name__ == "__main__":
     else:
         config["vis"] = VIS_METHODS[config["vis"]]
 
-    if config["image_format"] not in ['png', 'jpg', 'jpeg', 'webp', 'svg', 'pdf', 'eps', 'json']:
+    if config["image_format"] not in ["png", "jpg", "jpeg", "webp", "svg", "pdf", "eps", "json"]:
         print(f"{config['image_format']} is not a valid image format. Valid formats are: png, pdf")
         sys.exit(1)
 

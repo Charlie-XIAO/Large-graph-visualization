@@ -251,9 +251,23 @@ def print_block(title):
         print("### " + "========== " * 5 + "###")
     print()
 
-def show_evaluation_results(embed_obj, vis_obj, k=10):
+def show_evaluation_results(config, embed_obj, vis_obj, k=10):
 
-    print()
+    print_block("EVALUATION RESULTS on {} EDGELIST".format(config["data"]))
+
+    print("Embedding method: {}".format(config["embed"]), end=" ( ")
+    #print({x: vars(embed_obj)[x] for x in vars(embed_obj) if x not in ["edgeset", "graph", "featureset", "embeddings", "has_feature"]})
+    for x in vars(embed_obj):
+        if x not in ["edgeset", "graph", "featureset", "embeddings", "has_feature"]:
+            print("{} = {}".format(x, vars(embed_obj)[x]), end=", ")
+    print(")")
+    print("Visualization method: {}".format(config["vis"]), end=" ( ")
+    #print({x: vars(vis_obj)[x] for x in vars(vis_obj) if x not in ["embeddings", "has_feature", "X", "location", "projections"]})
+    for x in vars(vis_obj):
+        if x not in ["embeddings", "has_feature", "X", "location", "projections"]:
+            print("{} = {}".format(x, vars(vis_obj)[x]), end=", ")
+    print(")\n")
+
     if embed_obj.has_feature:
         featured_projection = np.insert(vis_obj.projections, 2, list(vis_obj.embeddings.feature), axis=1)
         print("Visualization quality: {}\n".format(density_check(featured_projection, k=10, threshold=0.5)))
@@ -265,15 +279,15 @@ def show_evaluation_results(embed_obj, vis_obj, k=10):
     randomLowDimEmbed = randomEmbeddings(vis_obj.projections)
 
     high = compare_KNN(graph, highDimEmbed, k)
-    print("Embedding KNN accuracy: {:.2f}".format(high), end=" ")
+    print("k = {}, Embedding KNN accuracy: {:.2f}".format(k, high), end=", ")
     high_base = compare_KNN(graph, randomHighDimEmbed, k)
-    print("(Baseline) {:.2f}".format(high_base))
+    print("with baseline {:.2f}".format(high_base))
     low = compare_KNN(graph, lowDimEmbed, k)
-    print("Visualization KNN accuracy: {:.2f}".format(low), end=" ")
+    print("k = {}, Visualization KNN accuracy: {:.2f}".format(k, low), end=", ")
     low_base = compare_KNN(graph, randomLowDimEmbed, k)
-    print("(Baseline) {:.2f}".format(low_base))
+    print("with baseline {:.2f}".format(low_base))
     high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
-    print("Dimension reduction KNN accuracy: {:.2f}".format(high_v_low))
+    print("k = {}, Dimension reduction KNN accuracy: {:.2f}".format(k, high_v_low))
 
 def setup(config):
     """
