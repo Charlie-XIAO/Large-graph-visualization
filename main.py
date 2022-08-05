@@ -8,6 +8,9 @@ from tests.DeepWalk_TSNE_test import DeepWalk_TSNE_test
 from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
 # SDNE + vis
 from tests.SDNE_TSNE_test import SDNE_TSNE_test
+# ShortestPath + vis
+from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
+
 
 
 if __name__ == "__main__":
@@ -51,7 +54,8 @@ if __name__ == "__main__":
     EMBED_METHODS = {
         "deepwalk": "DeepWalk", 
         "node2vec": "Node2Vec", 
-        "snde": "SDNE",
+        "sdne": "SDNE",
+        "shortestpath": "ShortestPath",
         }
     VIS_METHODS = {
         "tsne": "TSNE",
@@ -85,3 +89,7 @@ if __name__ == "__main__":
     elif config["embedding"] == "SDNE":
         if config["visualization"] == "TSNE":
             SDNE_TSNE_test(config)
+    
+    elif config["embedding"] == "ShortestPath":
+        if config["visualization"] == "TSNE":
+            ShortestPath_TSNE_test(config)

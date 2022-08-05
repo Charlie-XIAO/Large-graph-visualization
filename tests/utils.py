@@ -279,7 +279,9 @@ def get_index():
     return i
 
 
-def show_evaluation_results(embed_obj, vis_obj, k=10, timing=False):
+def show_evaluation_results(config, embed_obj, vis_obj, k=10):
+    timing = config["timing"]
+
 
     if embed_obj.has_feature:
         featured_projection = np.insert(vis_obj.projections, 2, list(vis_obj.embeddings.feature), axis=1)
@@ -297,9 +299,11 @@ def show_evaluation_results(embed_obj, vis_obj, k=10, timing=False):
     low_base = compare_KNN(graph, randomLowDimEmbed, k, timing=timing)
     high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
 
-    print("KNN embedding accuracy: {:.2f}, with baseline: {:.2f}".format(high, high_base))
-    print("KNN visualizing accuracy: {:.2f}, with baseline: {:.2f}".format(low, low_base))
-    print("KNN dimension reduction accuracy: {:.2f}".format(high_v_low))
+    # print embed and vis method from config
+    print(f"embedding: {config['embedding']}, visualization: {config['visualization']} on dataset: {config['dataset']}")
+    print(f"k={k}, KNN embedding accuracy: {high:.2f}, with baseline: {high_base:.2f}")
+    print(f"k={k}, KNN visualizing accuracy: {low:.2f}, with baseline: {low_base:.2f}")
+    print(f"k={k}, KNN dimension reduction accuracy: {high_v_low:.2f}")
 
     # while keepGoing:
     #     check = input("(Index) Select evaluation benchmark: ")
