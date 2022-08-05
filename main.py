@@ -68,7 +68,7 @@ if __name__ == "__main__":
         print()
         sys.exit(1)
     else:
-        config["embed"] = EMBED_METHODS[config["embed"]]
+        config["embed"] = EMBED_METHODS[config["embed"].lower()]
     
     if config["vis"].lower() not in VIS_METHODS:
         print(f"{config['vis']} is not a valid visualization method. Valid methods are:", end=" ")
@@ -77,7 +77,7 @@ if __name__ == "__main__":
         print()
         sys.exit(1)
     else:
-        config["vis"] = VIS_METHODS[config["vis"]]
+        config["vis"] = VIS_METHODS[config["vis"].lower()]
 
     if config["image_format"] not in ["png", "jpg", "jpeg", "webp", "svg", "pdf", "eps", "json"]:
         print(f"{config['image_format']} is not a valid image format. Valid formats are: png, pdf")
