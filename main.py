@@ -10,6 +10,8 @@ from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
 from tests.SDNE_TSNE_test import SDNE_TSNE_test
 # ShortestPath + vis
 from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
+# LEE + vis
+from tests.LEE_TSNE_test import LEE_TSNE_test
 
 
 if __name__ == "__main__":
@@ -53,6 +55,7 @@ if __name__ == "__main__":
         "node2vec": "Node2Vec", 
         "sdne": "SDNE",
         "shortestpath": "ShortestPath",
+        "lee": "LEE"
         }
     VIS_METHODS = {
         "tsne": "TSNE",
@@ -96,3 +99,7 @@ if __name__ == "__main__":
     elif config["embed"] == "ShortestPath":
         if config["vis"] == "TSNE":
             ShortestPath_TSNE_test(config)
+    
+    elif config["embed"] == "LEE":
+        if config["vis"] == "TSNE":
+            LEE_TSNE_test(config)
