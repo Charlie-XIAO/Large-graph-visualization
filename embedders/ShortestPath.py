@@ -1,5 +1,6 @@
 import numpy as np
 import networkx as nx
+import math
 
 ### ========== ========== ========= ========== ========== ###
 ### CLASS SHORTEST PATH ###
@@ -20,8 +21,7 @@ class ShortestPath:
         :param embed_size DEFAULT 128:
         :return: embeddings
         """
-        edge_count = self.graph.number_of_edges()
-        node_count = self.graph.number_of_nodes()
+        unconnected = self.graph.number_of_edges()
         X = np.random.choice(list(self.graph.nodes()), size=embed_size)
         self._embeddings = {}
         for source in self.graph.nodes():
@@ -30,6 +30,6 @@ class ShortestPath:
                 try:
                     position.append(nx.shortest_path_length(self.graph, source=source, target=target))
                 except:
-                    position.append(edge_count)
+                    position.append(unconnected)
             self._embeddings[source] = position
         return self._embeddings

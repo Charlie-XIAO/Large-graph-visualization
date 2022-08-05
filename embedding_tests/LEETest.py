@@ -7,19 +7,19 @@ from embedding_tests.AbstractEmbedTest import AbstractEmbedTest
 
 class LEETest(AbstractEmbedTest):
 
-    def __init__(self, edgeset, featureset=None, iter=100):
+    def __init__(self, edgeset, embed_size=128, featureset=None, iter=100):
         """
         :param self:
         :param edgeset: absolute path of the node-node edgeset in .txt format
         :param featureset: absolute path of the node-feature featureset in .txt format
         :return: None
         """
-        super().__init__(edgeset, featureset)
+        super().__init__(edgeset, embed_size, featureset)
         self.iter = iter
         self.embed()
     
     def getEmbeddings(self):
         model = LEE(self.graph)
-        model.train(iter=self.iter)
+        model.train(embed_size=self.embed_size, iter=self.iter)
         embeddings = pd.DataFrame.from_dict(model.get_embeddings())
         self.embeddings = embeddings.T

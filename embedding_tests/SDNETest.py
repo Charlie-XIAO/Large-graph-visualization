@@ -18,7 +18,7 @@ class SDNETest(AbstractEmbedTest):
         :param verbose:
         :return: None
         """
-        super().__init__(edgeset, featureset)
+        super().__init__(edgeset, hidden_size[1], featureset)
         self.hidden_size = hidden_size
         self.batch_size = batch_size
         self.epochs = epochs

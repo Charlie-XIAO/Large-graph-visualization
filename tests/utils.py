@@ -256,16 +256,14 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
     print_block("EVALUATION RESULTS on {} EDGELIST".format(config["data"]))
 
     print("Embedding method: {}".format(config["embed"]), end=" ( ")
-    #print({x: vars(embed_obj)[x] for x in vars(embed_obj) if x not in ["edgeset", "graph", "featureset", "embeddings", "has_feature"]})
     for x in vars(embed_obj):
         if x not in ["edgeset", "graph", "featureset", "embeddings", "has_feature"]:
-            print("{} = {}".format(x, vars(embed_obj)[x]), end=", ")
+            print("{}={}".format(x, vars(embed_obj)[x]), end=", ")
     print(")")
     print("Visualization method: {}".format(config["vis"]), end=" ( ")
-    #print({x: vars(vis_obj)[x] for x in vars(vis_obj) if x not in ["embeddings", "has_feature", "X", "location", "projections"]})
     for x in vars(vis_obj):
         if x not in ["embeddings", "has_feature", "X", "location", "projections"]:
-            print("{} = {}".format(x, vars(vis_obj)[x]), end=", ")
+            print("{}={}".format(x, vars(vis_obj)[x]), end=", ")
     print(")\n")
 
     if embed_obj.has_feature:
@@ -292,11 +290,11 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
 def setup(config):
     """
     :param config:
-    :return: edgeset, featureset, location
+    :return: dim, edgeset, featureset, location
     """
     print_block(f"Running {config['embed']} + {config['vis']} on {config['data']}")
     if config["description"] == "":
         config["location"] = os.path.join(config["image_folder"], f"{config['data']}_{config['embed']}_{config['vis']}.{config['image_format']}")
     else:
         config["location"] = os.path.join(config["image_folder"], f"{config['data']}_{config['embed']}_{config['vis']}_{config['description']}.{config['image_format']}")
-    return config["edgeset"], config["featureset"], config["location"]
+    return config["dim"], config["edgeset"], config["featureset"], config["location"]
