@@ -13,7 +13,7 @@ from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
 
 
 if __name__ == "__main__":
-
+    
     ### default settings
     dataset_folder = os.path.join(os.path.dirname(__file__), "datasets")
     image_folder = os.path.join(os.path.dirname(__file__), "images")
