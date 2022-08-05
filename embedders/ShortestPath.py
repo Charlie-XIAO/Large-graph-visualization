@@ -20,7 +20,8 @@ class ShortestPath:
         :param embed_size DEFAULT 128:
         :return: embeddings
         """
-        max = self.graph.number_of_edges()
+        edge_count = self.graph.number_of_edges()
+        node_count = self.graph.number_of_nodes()
         X = np.random.choice(list(self.graph.nodes()), size=embed_size)
         self._embeddings = {}
         for source in self.graph.nodes():
@@ -29,6 +30,6 @@ class ShortestPath:
                 try:
                     position.append(nx.shortest_path_length(self.graph, source=source, target=target))
                 except:
-                    position.append(max)
+                    position.append(edge_count)
             self._embeddings[source] = position
         return self._embeddings

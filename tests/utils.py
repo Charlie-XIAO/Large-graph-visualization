@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import networkx as nx
 import pandas as pd
@@ -273,3 +274,15 @@ def show_evaluation_results(embed_obj, vis_obj, k=10):
     print("(Baseline) {:.2f}".format(low_base))
     high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
     print("Dimension reduction KNN accuracy: {:.2f}".format(high_v_low))
+
+def setup(config):
+    """
+    :param config:
+    :return: edgeset, featureset, location
+    """
+    print_block(f"Running {config['embed']} + {config['vis']} on {config['data']}")
+    if config["description"] == "":
+        config["location"] = os.path.join(config["image_folder"], f"{config['data']}_{config['embed']}_{config['vis']}.{config['image_format']}")
+    else:
+        config["location"] = os.path.join(config["image_folder"], f"{config['data']}_{config['embed']}_{config['vis']}_{config['description']}.{config['image_format']}")
+    return config["edgeset"], config["featureset"], config["location"]

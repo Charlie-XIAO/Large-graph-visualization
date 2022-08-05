@@ -8,6 +8,8 @@ from tests.DeepWalk_TSNE_test import DeepWalk_TSNE_test
 from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
 # SDNE + vis
 from tests.SDNE_TSNE_test import SDNE_TSNE_test
+# ShortestPath + vis
+from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
 
 
 if __name__ == "__main__":
@@ -23,9 +25,9 @@ if __name__ == "__main__":
 
     ###  set up argument parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("--dataset", help="name of the dataset to use", default="lock")
-    parser.add_argument("--embedding", help="name of the graph embedding method to use", default="deepwalk")
-    parser.add_argument("--visualization", help="name of the visualization method to use", default="tsne")
+    parser.add_argument("--data", help="name of the dataset to use", default="lock")
+    parser.add_argument("--embed", help="name of the graph embedding method to use", default="deepwalk")
+    parser.add_argument("--vis", help="name of the visualization method to use", default="tsne")
     
     # Below are some less used options. Feel free to tune them.
     parser.add_argument("--dim", help="dimension of the high-dimensional embedding", type=int, default=128)
@@ -40,46 +42,57 @@ if __name__ == "__main__":
     config = dict()
     for arg in vars(args):
         config[arg] = getattr(args, arg)
-    config["dataset_folder"] = os.path.join(dataset_folder, config["dataset"])
-    config["image_folder"] = os.path.join(image_folder, config["dataset"])
-    config["edgeset"] = os.path.join(config["dataset_folder"], f"{config['dataset']}_edgelist.txt")
-    config["featureset"] = os.path.join(config["dataset_folder"], f"{config['dataset']}_labels.txt")
+    config["dataset_folder"] = os.path.join(dataset_folder, config["data"])
+    config["image_folder"] = os.path.join(image_folder, config["data"])
+    config["edgeset"] = os.path.join(config["dataset_folder"], f"{config['data']}_edgelist.txt")
+    config["featureset"] = os.path.join(config["dataset_folder"], f"{config['data']}_labels.txt")
 
 
     EMBED_METHODS = {
         "deepwalk": "DeepWalk", 
         "node2vec": "Node2Vec", 
-        "snde": "SDNE",
+        "sdne": "SDNE",
+        "shortestpath": "ShortestPath",
         }
     VIS_METHODS = {
         "tsne": "TSNE",
         }
     
-    if config["embedding"].lower() not in EMBED_METHODS:
-        print(f"{config['embedding']} is not a valid embedding method. Valid methods are: {EMBED_METHODS}")
+    if config["embed"].lower() not in EMBED_METHODS:
+        print(f"{config['embed']} is not a valid embedding method. Valid methods are:", end=" ")
+        for name in EMBED_METHODS.values():
+            print(name, end="  ")
+        print()
         sys.exit(1)
     else:
-        config["embedding"] = EMBED_METHODS[config["embedding"]]
+        config["embed"] = EMBED_METHODS[config["embed"]]
     
-    if config["visualization"].lower() not in VIS_METHODS:
-        print(f"{config['visualization']} is not a valid visualization method. Valid methods are: {VIS_METHODS}")
+    if config["vis"].lower() not in VIS_METHODS:
+        print(f"{config['vis']} is not a valid visualization method. Valid methods are:", end=" ")
+        for name in VIS_METHODS.values():
+            print(name, end="  ")
+        print()
         sys.exit(1)
     else:
-        config["visualization"] = VIS_METHODS[config["visualization"]]
+        config["vis"] = VIS_METHODS[config["vis"]]
 
     if config["image_format"] not in ['png', 'jpg', 'jpeg', 'webp', 'svg', 'pdf', 'eps', 'json']:
         print(f"{config['image_format']} is not a valid image format. Valid formats are: png, pdf")
         sys.exit(1)
 
 
-    if config["embedding"] == "DeepWalk":
-        if config["visualization"] == "TSNE":
+    if config["embed"] == "DeepWalk":
+        if config["vis"] == "TSNE":
             DeepWalk_TSNE_test(config)
 
-    elif config["embedding"] == "Node2Vec":
-        if config["visualization"] == "TSNE":
+    elif config["embed"] == "Node2Vec":
+        if config["vis"] == "TSNE":
             Node2Vec_TSNE_test(config)
     
-    elif config["embedding"] == "SDNE":
-        if config["visualization"] == "TSNE":
+    elif config["embed"] == "SDNE":
+        if config["vis"] == "TSNE":
             SDNE_TSNE_test(config)
+    
+    elif config["embed"] == "ShortestPath":
+        if config["vis"] == "TSNE":
+            ShortestPath_TSNE_test(config)

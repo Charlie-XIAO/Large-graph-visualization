@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from visualizing_tests.utils import *
 
-#import networkx as nx
 import plotly.express as px
 
 class AbstractVisTest(ABC):
@@ -38,6 +37,7 @@ class AbstractVisTest(ABC):
     
     def savePlot(self):
         fig = self.getScatterPlot()
-        print("Saving plot at [ {} ]".format(self.location), end="... ")
+        print("Saving scatter plot", end="... ")
         fig.write_image(self.location)
         print("Done.")
+        print("Location: {}".format(self.location))
