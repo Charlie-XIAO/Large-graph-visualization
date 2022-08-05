@@ -13,7 +13,7 @@ from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
 
 
 if __name__ == "__main__":
-
+    
     ### default settings
     dataset_folder = os.path.join(os.path.dirname(__file__), "datasets")
     image_folder = os.path.join(os.path.dirname(__file__), "images")
@@ -77,7 +77,7 @@ if __name__ == "__main__":
         config["vis"] = VIS_METHODS[config["vis"]]
 
     if config["image_format"] not in ['png', 'jpg', 'jpeg', 'webp', 'svg', 'pdf', 'eps', 'json']:
-        print(f"{config['image_format']} is not a valid image format. Valid formats are: png, pdf")
+        print(f"{config['image_format']} is not a valid image format. Valid formats are: 'png', 'jpg', 'jpeg', 'webp', 'svg', 'pdf', 'eps', 'json'.")
         sys.exit(1)
 
 
