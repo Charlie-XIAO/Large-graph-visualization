@@ -44,12 +44,14 @@ if __name__ == "__main__":
     config["edgeset"] = os.path.join(config["dataset_folder"], f"{config['data']}_edgelist.txt")
     config["featureset"] = os.path.join(config["dataset_folder"], f"{config['data']}_labels.txt")
 
-    if not os.path.exists(dataset_folder):
-        os.makedirs(dataset_folder)
     if not os.path.exists(image_folder):
         os.makedirs(image_folder)
 
-
+    ### ========== ========== ========== ========== ========== ###
+    ###           EMBEDDING AND VISUALIZING METHODS            ###
+    ### ========== ========== ========== ========== ========== ###
+    ### V V V V V V V V V V V V V V V V V V V V V V V V V V V  ###
+    
     EMBED_METHODS = {
         "deepwalk": "DeepWalk", 
         "node2vec": "Node2Vec", 
@@ -60,6 +62,11 @@ if __name__ == "__main__":
     VIS_METHODS = {
         "tsne": "TSNE",
         }
+    
+    ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
+    ### ========== ========== ========== ========== ========== ###
+    ###       END OF EMBEDDING AND VISUALIZING METHODS         ###
+    ### ========== ========== ========== ========== ========== ###
     
     if config["embed"].lower() not in EMBED_METHODS:
         print(f"{config['embed']} is not a valid embedding method. Valid methods are:", end=" ")
@@ -84,6 +91,11 @@ if __name__ == "__main__":
         sys.exit(1)
 
 
+    ### ========== ========== ========== ========== ========== ###
+    ###       CALLING EMBEDDING AND VISUALIZING METHODS        ###
+    ### ========== ========== ========== ========== ========== ###
+    ### V V V V V V V V V V V V V V V V V V V V V V V V V V V  ###
+
     if config["embed"] == "DeepWalk":
         if config["vis"] == "TSNE":
             DeepWalk_TSNE_test(config)
@@ -103,3 +115,8 @@ if __name__ == "__main__":
     elif config["embed"] == "LEE":
         if config["vis"] == "TSNE":
             LEE_TSNE_test(config)
+
+    ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
+    ### ========== ========== ========== ========== ========== ###
+    ###   END OF CALLING EMBEDDING AND VISUALIZING METHODS     ###
+    ### ========== ========== ========== ========== ========== ###
