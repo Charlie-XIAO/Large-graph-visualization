@@ -297,44 +297,48 @@ def show_evaluation_results(embed_obj, vis_obj, k=10, timing=False):
     low_base = compare_KNN(graph, randomLowDimEmbed, k, timing=timing)
     high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
 
-    while keepGoing:
-        check = input("(Index) Select evaluation benchmark: ")
-        # compared with d(graph, random_embedding)
-        if check == "1":
-            if high == -1:
-                high = compare_KNN(graph, highDimEmbed, k, timing=timing)
-            if high_base == -1:
-                high_base = compare_KNN(graph, randomHighDimEmbed, k, timing=timing)
-            print("KNN embedding accuracy: {:.2f}, with baseline: {:.2f}".format(high, high_base))
-        elif check == "2":
-            if low == -1:
-                low = compare_KNN(graph, lowDimEmbed, k, timing=timing)
-            if low_base == -1:
-                low_base = compare_KNN(graph, randomLowDimEmbed, k, timing=timing)
-            print("KNN visualizing accuracy: {:.2f}, with baseline: {:.2f}".format(low, low_base))
-        elif check == "3":
-            if high_v_low == -1:
-                t0 = time.time()
-                high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
-                t1 = time.time()
-                if timing:
-                    print("Time to compare high-low KNNs: {:.2f}".format(t1 - t0))
-            print("KNN dimension reduction accuracy: {:.2f}".format(high_v_low))
-        elif check.upper() == "A":
-            if high == -1:
-                high = compare_KNN(graph, highDimEmbed, k)
-            if high_base == -1:
-                high_base = compare_KNN(graph, randomHighDimEmbed, k)
-            if low == -1:
-                low = compare_KNN(graph, lowDimEmbed, k)
-            if low_base == -1:
-                low_base = compare_KNN(graph, randomLowDimEmbed, k)
-            if high_v_low == -1:
-                high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
-            print("KNN embedding accuracy: {:.2f}, with baseline: {:.2f}".format(high, high_base))
-            print("KNN visualizing accuracy: {:.2f}, with baseline: {:.2f}".format(low, low_base))
-            print("KNN dimension reduction accuracy: {:.2f}".format(high_v_low))
-        elif check.upper() == "Q":
-            keepGoing = False
-        else:
-            print("Invalid evaluation type.")
+    print("KNN embedding accuracy: {:.2f}, with baseline: {:.2f}".format(high, high_base))
+    print("KNN visualizing accuracy: {:.2f}, with baseline: {:.2f}".format(low, low_base))
+    print("KNN dimension reduction accuracy: {:.2f}".format(high_v_low))
+
+    # while keepGoing:
+    #     check = input("(Index) Select evaluation benchmark: ")
+    #     # compared with d(graph, random_embedding)
+    #     if check == "1":
+    #         if high == -1:
+    #             high = compare_KNN(graph, highDimEmbed, k, timing=timing)
+    #         if high_base == -1:
+    #             high_base = compare_KNN(graph, randomHighDimEmbed, k, timing=timing)
+    #         print("KNN embedding accuracy: {:.2f}, with baseline: {:.2f}".format(high, high_base))
+    #     elif check == "2":
+    #         if low == -1:
+    #             low = compare_KNN(graph, lowDimEmbed, k, timing=timing)
+    #         if low_base == -1:
+    #             low_base = compare_KNN(graph, randomLowDimEmbed, k, timing=timing)
+    #         print("KNN visualizing accuracy: {:.2f}, with baseline: {:.2f}".format(low, low_base))
+    #     elif check == "3":
+    #         if high_v_low == -1:
+    #             t0 = time.time()
+    #             high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
+    #             t1 = time.time()
+    #             if timing:
+    #                 print("Time to compare high-low KNNs: {:.2f}".format(t1 - t0))
+    #         print("KNN dimension reduction accuracy: {:.2f}".format(high_v_low))
+    #     elif check.upper() == "A":
+    #         if high == -1:
+    #             high = compare_KNN(graph, highDimEmbed, k)
+    #         if high_base == -1:
+    #             high_base = compare_KNN(graph, randomHighDimEmbed, k)
+    #         if low == -1:
+    #             low = compare_KNN(graph, lowDimEmbed, k)
+    #         if low_base == -1:
+    #             low_base = compare_KNN(graph, randomLowDimEmbed, k)
+    #         if high_v_low == -1:
+    #             high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
+    #         print("KNN embedding accuracy: {:.2f}, with baseline: {:.2f}".format(high, high_base))
+    #         print("KNN visualizing accuracy: {:.2f}, with baseline: {:.2f}".format(low, low_base))
+    #         print("KNN dimension reduction accuracy: {:.2f}".format(high_v_low))
+    #     elif check.upper() == "Q":
+    #         keepGoing = False
+    #     else:
+    #         print("Invalid evaluation type.")
