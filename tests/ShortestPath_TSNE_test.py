@@ -2,7 +2,6 @@ from tests.utils import *
 
 from embedding_tests.ShortestPathTest import ShortestPathTest
 from visualizing_tests.TSNETest import TSNETest
-import os
 
 def ShortestPath_TSNE_test(config):
 

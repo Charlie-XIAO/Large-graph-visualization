@@ -2,7 +2,6 @@ from tests.utils import *
 
 from embedding_tests.SDNETest import SDNETest
 from visualizing_tests.TSNETest import TSNETest
-import os
 
 def SDNE_TSNE_test(config):
 

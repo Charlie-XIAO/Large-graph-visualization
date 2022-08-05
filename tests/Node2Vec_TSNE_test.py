@@ -2,7 +2,6 @@ from tests.utils import *
 
 from embedding_tests.Node2VecTest import Node2VecTest
 from visualizing_tests.TSNETest import TSNETest
-import os
 
 def Node2Vec_TSNE_test(config):
 
