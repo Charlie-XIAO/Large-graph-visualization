@@ -18,11 +18,6 @@ if __name__ == "__main__":
     dataset_folder = os.path.join(os.path.dirname(__file__), "datasets")
     image_folder = os.path.join(os.path.dirname(__file__), "images")
 
-    if not os.path.exists(dataset_folder):
-        os.makedirs(dataset_folder)
-    if not os.path.exists(image_folder):
-        os.makedirs(image_folder)
-
     ###  set up argument parser
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", help="name of the dataset to use", default="lock")
@@ -46,6 +41,11 @@ if __name__ == "__main__":
     config["image_folder"] = os.path.join(image_folder, config["data"])
     config["edgeset"] = os.path.join(config["dataset_folder"], f"{config['data']}_edgelist.txt")
     config["featureset"] = os.path.join(config["dataset_folder"], f"{config['data']}_labels.txt")
+
+    if not os.path.exists(dataset_folder):
+        os.makedirs(dataset_folder)
+    if not os.path.exists(image_folder):
+        os.makedirs(image_folder)
 
 
     EMBED_METHODS = {
