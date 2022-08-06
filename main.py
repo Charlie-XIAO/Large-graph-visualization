@@ -4,14 +4,19 @@ import sys
 
 # DeepWalk + vis
 from tests.DeepWalk_TSNE_test import DeepWalk_TSNE_test
+from tests.DeepWalk_PCA_test import DeepWalk_PCA_test
 # Node2Vec + vis
 from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
+from tests.Node2Vec_PCA_test import Node2Vec_PCA_test
 # SDNE + vis
 from tests.SDNE_TSNE_test import SDNE_TSNE_test
+from tests.SDNE_PCA_test import SDNE_PCA_test
 # ShortestPath + vis
 from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
+from tests.ShortestPath_PCA_test import ShortestPath_PCA_test
 # LEE + vis
 from tests.LEE_TSNE_test import LEE_TSNE_test
+from tests.LEE_PCA_test import LEE_PCA_test
 
 
 if __name__ == "__main__":
@@ -61,6 +66,7 @@ if __name__ == "__main__":
         }
     VIS_METHODS = {
         "tsne": "TSNE",
+        "pca": "PCA",
         }
     
     ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
@@ -99,22 +105,32 @@ if __name__ == "__main__":
     if config["embed"] == "DeepWalk":
         if config["vis"] == "TSNE":
             DeepWalk_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            DeepWalk_PCA_test(config)
 
     elif config["embed"] == "Node2Vec":
         if config["vis"] == "TSNE":
             Node2Vec_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            Node2Vec_PCA_test(config)
     
     elif config["embed"] == "SDNE":
         if config["vis"] == "TSNE":
             SDNE_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            SDNE_PCA_test(config)
     
     elif config["embed"] == "ShortestPath":
         if config["vis"] == "TSNE":
             ShortestPath_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            ShortestPath_PCA_test(config)
     
     elif config["embed"] == "LEE":
         if config["vis"] == "TSNE":
             LEE_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            LEE_PCA_test(config)
 
     ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
     ### ========== ========== ========== ========== ========== ###

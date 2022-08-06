@@ -54,12 +54,12 @@ class ShortestPath:
 
         # Generate node embeddings
         self._embeddings = {}
-        edgecount = self.graph.number_of_edges()
+        edgecount = math.log(self.graph.number_of_edges())
         for source in self.graph.nodes():
             node_embedding = []
             for target in X:
                 try:
-                    node_embedding.append(nx.shortest_path_length(self.graph, source=source, target=target))
+                    node_embedding.append(math.log(nx.shortest_path_length(self.graph, source=source, target=target)))
                 except:
                     node_embedding.append(edgecount)
             self._embeddings[source] = node_embedding
