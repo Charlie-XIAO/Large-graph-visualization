@@ -19,5 +19,5 @@ class ShortestPathTest(AbstractEmbedTest):
     
     def getEmbeddings(self):
         model = ShortestPath(self.graph)
-        embeddings = pd.DataFrame.from_dict(model.get_embeddings(embed_size=self.embed_size))
+        embeddings = pd.DataFrame.from_dict(model.get_embeddings(embed_size=self.embed_size, sampling="random"))
         self.embeddings = embeddings.T
