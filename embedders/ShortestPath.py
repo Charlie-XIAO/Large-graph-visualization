@@ -14,6 +14,7 @@ class ShortestPath:
         :return: None
         """
         self.graph = graph
+        self._embeddings = {}
     
     def get_embeddings(self, embed_size=128):
         """

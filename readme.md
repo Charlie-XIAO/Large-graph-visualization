@@ -41,8 +41,7 @@ python main.py --dataset lock --embedding deepwalk --visualization tsne --timing
 
 ```python
 model = LEE(self.graph)
-model.train(iter=100)
-embeddings = pd.DataFrame.from_dict(model.get_embeddings())
+embeddings = pd.DataFrame.from_dict(model.get_embeddings(embed_size=128, iter=100))
 self.embeddings = embeddings.T
 ```
 
@@ -50,7 +49,7 @@ self.embeddings = embeddings.T
 
 ```python
 model = DeepWalk(self.graph, walk_length=10, num_walks=80, workers=1)
-model.train(window_size=5, iter=3)
+model.train(embed_size=128, window_size=5, iter=3)
 embeddings = pd.DataFrame.from_dict(model.get_embeddings())
 self.embeddings = embeddings.T
 ```
@@ -68,7 +67,7 @@ self.embeddings = embeddings.T
 
 ```python
 model = Node2Vec(self.graph, walk_length=10, num_walks=80, p=0.25, q=4, workers=1)
-model.train(window_size=5, iter=3)
+model.train(embed_size=128, window_size=5, iter=3)
 embeddings = pd.DataFrame.from_dict(model.get_embeddings())
 self.embeddings = embeddings.T
 ```

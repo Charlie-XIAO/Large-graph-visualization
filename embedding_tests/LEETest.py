@@ -20,6 +20,5 @@ class LEETest(AbstractEmbedTest):
     
     def getEmbeddings(self):
         model = LEE(self.graph)
-        model.train(embed_size=self.embed_size, iter=self.iter)
-        embeddings = pd.DataFrame.from_dict(model.get_embeddings())
+        embeddings = pd.DataFrame.from_dict(model.get_embeddings(embed_size=self.embed_size, iter=self.iter))
         self.embeddings = embeddings.T
