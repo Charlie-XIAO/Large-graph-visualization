@@ -17,6 +17,9 @@ from tests.ShortestPath_PCA_test import ShortestPath_PCA_test
 # LEE + vis
 from tests.LEE_TSNE_test import LEE_TSNE_test
 from tests.LEE_PCA_test import LEE_PCA_test
+# GLEE + vis
+from tests.GLEE_TSNE_test import GLEE_TSNE_test
+from tests.GLEE_PCA_test import GLEE_PCA_test
 
 
 if __name__ == "__main__":
@@ -62,7 +65,8 @@ if __name__ == "__main__":
         "node2vec": "Node2Vec", 
         "sdne": "SDNE",
         "shortestpath": "ShortestPath",
-        "lee": "LEE"
+        "lee": "LEE",
+        "glee": "GLEE",
         }
     VIS_METHODS = {
         "tsne": "TSNE",
@@ -131,6 +135,12 @@ if __name__ == "__main__":
             LEE_TSNE_test(config)
         elif config["vis"] == "PCA":
             LEE_PCA_test(config)
+    
+    elif config["embed"] == "GLEE":
+        if config["vis"] == "TSNE":
+            GLEE_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            GLEE_PCA_test(config)
 
     ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
     ### ========== ========== ========== ========== ========== ###
