@@ -1,4 +1,5 @@
 import numpy as np
+import scipy.sparse
 
 import tensorflow as tf
 
@@ -167,3 +168,50 @@ def create_model(node_size, hidden_size=[256, 128], l1=1e-5, l2=1e-4):
     model = Model(inputs=[A, L], outputs=[A_, Y])
     emb = Model(inputs=A, outputs=Y)
     return model, emb
+
+def distance_matrix(graph):
+    """
+    :param graph:
+    :return: a lil_matrix D that is the distance matrix of the graph
+    """
+    node2idx = {node: i for i, node in enumerate(graph.nodes())}
+    nodecount, unconnected = graph.number_of_nodes(), graph.number_of_edges() + 1
+    D = scipy.sparse.lil_matrix((nodecount, nodecount))
+    for i in range(nodecount):
+        for j in range(nodecount):
+            if i == j:
+                D[i, j] = 0
+            else:
+                D[i, j] = unconnected
+    for u, v, d in graph.edges(data=True):
+        edgeweight = d.get("weight", 1)
+        i, j = node2idx[u], node2idx[v]
+        D[i, j] = min(edgeweight, D[i, j])
+        if not graph.is_directed():
+            D[j, i] = min(edgeweight, D[i, j])
+    for w in graph:
+        k = node2idx[w]
+        for u in graph:
+            i = node2idx[u]
+            for v in graph:
+                j = node2idx[v]
+                if D[i, j] > D[i, k] + D[k, j]:
+                    D[i, j] = D[i, k] + D[k, j]
+    for i in range(nodecount):
+        for j in range(nodecount):
+            if D[i, j] == unconnected:
+                D[i, j] = 0
+    return D
+
+def unnormalized_laplacian_matrix(A):
+    """
+    :param A: adjacency matrix of a graph (can be weighted), should be a sparse matrix
+    :return L: the unnormalized Laplacian matrix of the graph corresponding to A, which is a sparse matrix
+    -------------------------------------------------------------------------------
+    Explanation: L = D - W, where W is the adjacency matrix (weight matrix) and D is s.t. $D_{ii} = \sum_j W_{ji}$
+
+    """
+    nodecount = A.shape[0]
+    D = scipy.sparse.lil_matrix((nodecount, nodecount))
+    D.setdiag(A.todense().sum(axis=1))
+    return D - A
