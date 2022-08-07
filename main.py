@@ -20,6 +20,9 @@ from tests.LEE_PCA_test import LEE_PCA_test
 # GLEE + vis
 from tests.GLEE_TSNE_test import GLEE_TSNE_test
 from tests.GLEE_PCA_test import GLEE_PCA_test
+# SPLEE + vis
+from tests.SPLEE_TSNE_test import SPLEE_TSNE_test
+from tests.SPLEE_PCA_test import SPLEE_PCA_test
 
 
 if __name__ == "__main__":
@@ -67,6 +70,7 @@ if __name__ == "__main__":
         "shortestpath": "ShortestPath",
         "lee": "LEE",
         "glee": "GLEE",
+        "splee": "SPLEE",
         }
     VIS_METHODS = {
         "tsne": "TSNE",
@@ -141,6 +145,12 @@ if __name__ == "__main__":
             GLEE_TSNE_test(config)
         elif config["vis"] == "PCA":
             GLEE_PCA_test(config)
+
+    elif config["embed"] == "SPLEE":
+        if config["vis"] == "TSNE":
+            SPLEE_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            SPLEE_PCA_test(config)
 
     ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
     ### ========== ========== ========== ========== ========== ###
