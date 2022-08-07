@@ -12,6 +12,7 @@ class LEETest(AbstractEmbedTest):
         :param self:
         :param edgeset: absolute path of the node-node edgeset in .txt format
         :param featureset: absolute path of the node-feature featureset in .txt format
+        :param iter:
         :return: None
         """
         super().__init__(edgeset, embed_size, featureset)
