@@ -1,5 +1,5 @@
+import math
 import numpy as np
-import networkx as nx
 import scipy.sparse
 
 import tensorflow as tf
@@ -193,6 +193,56 @@ def distance_matrix(graph):
                     queue.append(neighbor)
                     dists[node_i, neighbor_i] = dists[node_i, curNode_i] + 1
     return dists
+
+def distance_matrix_new(graph):
+    """
+    :param graph:
+    :return: a sparse matrix that is the distance matrix of the graph
+    """
+    nodecount = graph.number_of_nodes()
+    node2idx = {node: i for i, node in enumerate(graph.nodes())}
+    dists = np.zeros(shape=(nodecount, nodecount))
+    for node in graph.nodes():
+        node_i = node2idx[node]
+        queue = [node]
+        visited = [0] * nodecount
+        visited[node_i] = 1
+        while queue:
+            curNode = queue.pop(0)
+            curNode_i = node2idx[curNode]
+            for neighbor in graph.neighbors(curNode):
+                neighbor_i = node2idx[neighbor]
+                if not visited[neighbor_i]:
+                    visited[neighbor_i] = 1
+                    queue.append(neighbor)
+                    temp = dists[node_i, curNode_i]
+                    if temp == 0:
+                        dists[node_i, neighbor_i] = 1
+                    else:
+                        dists[node_i, neighbor_i] = 1 / (1 / temp + 1)
+    return dists
+
+def RBF_distance_metric(D, sigma2=0.5):
+    """
+    :param D: a numpy ndarray representing the distance matrix of a graph
+    :param sigma2: the RBF parameter
+    :return: the distance matrix after changing the distance metric of the graph
+    -----------------------------------------------------------------------------
+    Explanation:
+
+    - RBF[sigma^2]  This is using a variant of the radial basis function kernel (RBF kernel).
+                    The RBF kernel on two samples x and x' in R^k, represented as feature vectors in some input space,
+                    is defined as: K(x, x') = exp(-d^2/(2\sigma^2)), where d is some norm that represents the distance between x and x'.
+                    In the graph data structure, d can intuitively represent the shortest path length between two nodes.
+
+    """
+    nodecount = D.shape[0]
+    denom = 2 * sigma2
+    for i in range(nodecount):
+        for j in range(nodecount):
+            if D[i, j] != 0:
+                    D[i, j] = math.e ** (-D[i, j] ** 2 / denom)
+    return D
 
 def unnormalized_laplacian_matrix(A):
     """
