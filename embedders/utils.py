@@ -173,30 +173,30 @@ def create_model(node_size, hidden_size=[256, 128], l1=1e-5, l2=1e-4):
 def distance_matrix(graph):
     """
     :param graph:
-    :return: a sparse matrix that is the distance matrix of the graph
+    :return: a numpy matrix that is the distance matrix of the graph
     """
     nodecount = graph.number_of_nodes()
-    dists = []
-    i = 0
-    for source in graph.nodes():
-        j = 0
-        for target in graph.nodes():
-            if i == j:
-                dists.append(0)
-            elif i > j:
-                dists.append(dists[j * nodecount + i])
-            else:
-                try:
-                    dists.append(nx.shortest_path_length(graph, source, target))
-                except:
-                    dists.append(0)
-            j += 1
-        i += 1
-    return scipy.sparse.csr_matrix((dists, (list(range(nodecount)), list(range(nodecount)))))
+    node2idx = {node: i for i, node in enumerate(graph.nodes())}
+    dists = np.zeros(shape=(nodecount, nodecount))
+    for node in graph.nodes():
+        node_i = node2idx[node]
+        queue = [node]
+        visited = [0] * nodecount
+        visited[node_i] = 1
+        while queue:
+            curNode = queue.pop(0)
+            curNode_i = node2idx[curNode]
+            for neighbor in graph.neighbors(curNode):
+                neighbor_i = node2idx[neighbor]
+                if not visited[neighbor_i]:
+                    visited[neighbor_i] = 1
+                    queue.append(neighbor)
+                    dists[node_i, neighbor_i] = dists[node_i, curNode_i] + 1
+    return dists
 
 def unnormalized_laplacian_matrix(A):
     """
-    :param A: adjacency matrix of a graph (can be weighted), should be a sparse matrix
+    :param A: adjacency matrix of a graph (can be weighted), should be a numpy matrix
     :return L: the unnormalized Laplacian matrix of the graph corresponding to A, which is a sparse matrix
     -------------------------------------------------------------------------------
     Explanation: L = D - W, where W is the adjacency matrix (weight matrix) and D is s.t. $D_{ii} = \sum_j W_{ji}$
@@ -204,5 +204,5 @@ def unnormalized_laplacian_matrix(A):
     """
     nodecount = A.shape[0]
     D = scipy.sparse.lil_matrix((nodecount, nodecount))
-    D.setdiag(A.todense().sum(axis=1))
+    D.setdiag(A.sum(axis=1))
     return D - A
