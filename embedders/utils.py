@@ -1,5 +1,6 @@
 import numpy as np
 import scipy.sparse
+from collections import defaultdict
 
 import tensorflow as tf
 
@@ -170,38 +171,40 @@ def create_model(node_size, hidden_size=[256, 128], l1=1e-5, l2=1e-4):
     return model, emb
 
 def distance_matrix(graph):
+    import time
     """
     :param graph:
-    :return: a lil_matrix D that is the distance matrix of the graph
+    :return: a sparse matrix D that is the distance matrix of the graph
     """
-    node2idx = {node: i for i, node in enumerate(graph.nodes())}
     nodecount, unconnected = graph.number_of_nodes(), graph.number_of_edges() + 1
-    D = scipy.sparse.lil_matrix((nodecount, nodecount))
-    for i in range(nodecount):
-        for j in range(nodecount):
-            if i == j:
-                D[i, j] = 0
-            else:
-                D[i, j] = unconnected
+    dist = defaultdict(lambda: defaultdict(lambda: unconnected))
+    for u in range(nodecount):
+        dist[u][u] = 0
+    doReflection = not graph.is_directed()
+    print("O(n^3) stage begin.")
     for u, v, d in graph.edges(data=True):
         edgeweight = d.get("weight", 1)
-        i, j = node2idx[u], node2idx[v]
-        D[i, j] = min(edgeweight, D[i, j])
-        if not graph.is_directed():
-            D[j, i] = min(edgeweight, D[i, j])
+        dist[u][v] = min(edgeweight, dist[u][v])
+        if doReflection:
+            dist[v][u] = min(edgeweight, dist[v][u])
     for w in graph:
-        k = node2idx[w]
+        t0 = time.time()
         for u in graph:
-            i = node2idx[u]
             for v in graph:
-                j = node2idx[v]
-                if D[i, j] > D[i, k] + D[k, j]:
-                    D[i, j] = D[i, k] + D[k, j]
-    for i in range(nodecount):
-        for j in range(nodecount):
-            if D[i, j] == unconnected:
-                D[i, j] = 0
-    return D
+                if dist[u][v] > dist[u][w] + dist[w][v]:
+                    dist[u][v] = dist[u][w] + dist[w][v]
+        print("Time: {}".format(time.time() - t0))
+    node2idx = {node: i for i, node in enumerate(graph.nodes())}
+    rows, cols, vals = [], [], []
+    for nodex, mapping in dist.items():
+        for nodey, val in mapping.items():
+            rows.append(node2idx[nodex])
+            cols.append(node2idx[nodey])
+            if val == unconnected:
+                vals.append(0)
+            else:
+                vals.append(val)
+    return scipy.sparse.csr_matrix((vals, (rows, cols)))
 
 def unnormalized_laplacian_matrix(A):
     """
