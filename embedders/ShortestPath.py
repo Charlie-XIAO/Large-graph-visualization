@@ -17,7 +17,7 @@ class ShortestPath:
         self.graph = graph
         self._embeddings = {}
     
-    def get_embeddings(self, embed_size=200, sampling="random"):
+    def get_embeddings(self, embed_size=128, sampling="random"):
         """
         :param self:
         :param embed_size DEFAULT 128:

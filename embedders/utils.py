@@ -1,6 +1,6 @@
 import numpy as np
+import networkx as nx
 import scipy.sparse
-from collections import defaultdict
 
 import tensorflow as tf
 
@@ -171,40 +171,28 @@ def create_model(node_size, hidden_size=[256, 128], l1=1e-5, l2=1e-4):
     return model, emb
 
 def distance_matrix(graph):
-    import time
     """
     :param graph:
-    :return: a sparse matrix D that is the distance matrix of the graph
+    :return: a sparse matrix that is the distance matrix of the graph
     """
-    nodecount, unconnected = graph.number_of_nodes(), graph.number_of_edges() + 1
-    dist = defaultdict(lambda: defaultdict(lambda: unconnected))
-    for u in range(nodecount):
-        dist[u][u] = 0
-    doReflection = not graph.is_directed()
-    print("O(n^3) stage begin.")
-    for u, v, d in graph.edges(data=True):
-        edgeweight = d.get("weight", 1)
-        dist[u][v] = min(edgeweight, dist[u][v])
-        if doReflection:
-            dist[v][u] = min(edgeweight, dist[v][u])
-    for w in graph:
-        t0 = time.time()
-        for u in graph:
-            for v in graph:
-                if dist[u][v] > dist[u][w] + dist[w][v]:
-                    dist[u][v] = dist[u][w] + dist[w][v]
-        print("Time: {}".format(time.time() - t0))
-    node2idx = {node: i for i, node in enumerate(graph.nodes())}
-    rows, cols, vals = [], [], []
-    for nodex, mapping in dist.items():
-        for nodey, val in mapping.items():
-            rows.append(node2idx[nodex])
-            cols.append(node2idx[nodey])
-            if val == unconnected:
-                vals.append(0)
+    nodecount = graph.number_of_nodes()
+    dists = []
+    i = 0
+    for source in graph.nodes():
+        j = 0
+        for target in graph.nodes():
+            if i == j:
+                dists.append(0)
+            elif i > j:
+                dists.append(dists[j * nodecount + i])
             else:
-                vals.append(val)
-    return scipy.sparse.csr_matrix((vals, (rows, cols)))
+                try:
+                    dists.append(nx.shortest_path_length(graph, source, target))
+                except:
+                    dists.append(0)
+            j += 1
+        i += 1
+    return scipy.sparse.csr_matrix((dists, (list(range(nodecount)), list(range(nodecount)))))
 
 def unnormalized_laplacian_matrix(A):
     """
