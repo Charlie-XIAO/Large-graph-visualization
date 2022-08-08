@@ -17,7 +17,7 @@ class ShortestPath:
         self.graph = graph
         self._embeddings = {}
     
-    def get_embeddings(self, embed_size=128, sampling="random"):
+    def get_embeddings(self, embed_size=200, sampling="random"):
         """
         :param self:
         :param embed_size DEFAULT 128:
@@ -54,13 +54,17 @@ class ShortestPath:
 
         # Generate node embeddings
         self._embeddings = {}
-        edgecount = math.log(self.graph.number_of_edges())
+        edge_count = self.graph.number_of_edges()
         for source in self.graph.nodes():
-            node_embedding = []
+            position = []
             for target in X:
                 try:
-                    node_embedding.append(math.log(nx.shortest_path_length(self.graph, source=source, target=target)))
+                    l=nx.shortest_path_length(self.graph, source=source, target=target)
+                    if l<=(edge_count**(1/2)):
+                        position.append(l)
+                    else:
+                        position.append(edge_count**(1/2)+1)
                 except:
-                    node_embedding.append(edgecount)
-            self._embeddings[source] = node_embedding
+                    position.append(edge_count**(1/2)+2)
+            self._embeddings[source] = position
         return self._embeddings

@@ -180,9 +180,10 @@ def density_check(projections, k=10, threshold=0.5):
     x_unit = (x_max - x_min) / k
     y_unit = (y_max - y_min) / k
     grid_dic = density_grid(k)
-    grid_dic_input = density_grid_input(projections, x_min, y_min, x_unit, y_unit, grid_dic, k)
-    portion = density_grid_cal(grid_dic_input, k, threshold)
-    return portion
+    grid_dic_input, feature_dic = density_grid_input(projections, x_min, y_min, x_unit, y_unit, grid_dic, k)
+    portion, feature_dic_final = density_grid_cal(grid_dic_input, k, threshold,feature_dic)
+    distance_rate=feature_dis_cal(feature_dic_final,k)
+    return portion, distance_rate
 
 def density_grid(k):
     """
@@ -197,6 +198,7 @@ def density_grid(k):
     return grid_dic
 
 def density_grid_input(projections, x_min, y_min, x_unit, y_unit, grid_dic, k):
+    feature_dic={}
     for i in range(projections.shape[0]):
         x = (projections[i][0] - x_min) // x_unit
         if x == k:
@@ -205,28 +207,64 @@ def density_grid_input(projections, x_min, y_min, x_unit, y_unit, grid_dic, k):
         if y == k:
             y -= 1
         feature = int(projections[i][2])
-        try:
+        feature_dic[feature]=[]
+        try: 
             grid_dic[x][y][0][feature] += 1
         except:
             grid_dic[x][y][0][feature] = 1
         grid_dic[x][y][1] += 1
-    return grid_dic
+    return grid_dic, feature_dic
 
-def density_grid_cal(grid_dic_input, k, threshold):
+def density_grid_cal(grid_dic_input, k, threshold, feature_dic):
     satisfy_num = 0
     for i in range(k):
         for j in range(k):
             total = grid_dic_input[i][j][1]
             not_found, all_zero = True, True
-            for n in grid_dic_input[i][j][0].values():
-                if n != 0:
-                    all_zero = False
+            dominant=None
+            dominant_value=0
+            for feature, n in grid_dic_input[i][j][0].items():
+                '''if n != 0:
+                    all_zero = False'''
                 if not_found and n > total * threshold:
                     satisfy_num += 1
                     not_found = False
+                    dominant=feature
+                    dominant_value=n
+                elif n>dominant_value:
+                    dominant=feature
+                    dominant_value=n
             '''if all_zero:
                 satisfy_num += 1'''
-    return satisfy_num / (k * k)
+            if dominant is not None:
+                feature_dic[dominant].append([i,j])
+    return satisfy_num / (k * k), feature_dic
+
+def feature_dis_cal(feature_dic_final,k):
+    feature_count=0
+    x_total_sum=0
+    y_total_sum=0
+    for feature, grid_list in feature_dic_final.items():
+        feature_count+=1
+        grid_n=len(grid_list)
+        x_dis_sum=0
+        y_dis_sum=0
+        if grid_list!=[]:
+            for i in range(grid_n):
+                for j in range(grid_n):
+                    if abs(grid_list[i][0]-grid_list[j][0])>1:
+                        x_dis_sum+=abs(grid_list[i][0]-grid_list[j][0])
+                    if abs(grid_list[i][1]-grid_list[j][1])>1:
+                        y_dis_sum+=abs(grid_list[i][1]-grid_list[j][1])
+        if len(grid_list)==0:
+            x_total_sum+=1
+            y_total_sum+=1
+        elif len(grid_list)>1:
+            x_avr=x_dis_sum/(grid_n*(grid_n-1))
+            y_avr=y_dis_sum/(grid_n*(grid_n-1))
+            x_total_sum+=x_avr/k
+            y_total_sum+=y_avr/k
+    return (x_total_sum/feature_count)*(y_total_sum/feature_count)
 
 
 ### ========== ========== ========== ========== ========== ###
@@ -268,7 +306,10 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
 
     if embed_obj.has_feature:
         featured_projection = np.insert(vis_obj.projections, 2, list(vis_obj.embeddings.feature), axis=1)
-        print("Visualization quality: {}\n".format(density_check(featured_projection, k=10, threshold=0.5)))
+        density, distance = density_check(featured_projection, k=10, threshold=0.6)
+        print("Visualization quality (density): {}\n".format(density))
+        print("Visualization quality (distance): {}\n".format(distance))
+        print("Overall visualization quality (>0, less is better): {}\n".format(distance/(density**2)))
     
     graph = embed_obj.graph
     highDimEmbed = embed_obj.embeddings
