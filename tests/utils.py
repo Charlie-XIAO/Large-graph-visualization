@@ -224,8 +224,8 @@ def density_grid_cal(grid_dic_input, k, threshold):
                 if not_found and n > total * threshold:
                     satisfy_num += 1
                     not_found = False
-            if all_zero:
-                satisfy_num += 1
+            '''if all_zero:
+                satisfy_num += 1'''
     return satisfy_num / (k * k)
 
 
