@@ -25,7 +25,7 @@ class ShortestPath:
         :return: embeddings
         """
         if sampling == "random":
-            # Random node samplinng
+            # Random node sampling
             X = np.random.choice(list(self.graph.nodes()), size=embed_size)
         elif sampling == "hd":
             # Select nodes of highest degrees as base nodes
