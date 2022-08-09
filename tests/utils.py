@@ -298,9 +298,9 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
     if embed_obj.has_feature:
         featured_projection = np.insert(vis_obj.projections, 2, list(vis_obj.embeddings.feature), axis=1)
         density, distance = density_check(featured_projection, k=10, threshold=0.6)
-        print("Visualization quality (density): {:.2f}".format(density))
-        print("Visualization quality (distance): {:.2f}".format(distance))
-        print("Score (lower is better): {:.2f}\n".format(distance / (density ** 2)))
+        print("Visualization quality (density): {:.4f}".format(density))
+        print("Visualization quality (distance): {:.4f}".format(distance))
+        print("Score (lower is better): {:.4f}\n".format(distance / (density ** 2)))
     
     graph = embed_obj.graph
     highDimEmbed = embed_obj.embeddings
@@ -309,15 +309,15 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
     randomLowDimEmbed = randomEmbeddings(vis_obj.projections)
 
     high = compare_KNN(graph, highDimEmbed, k)
-    print("k = {}, Embedding KNN accuracy: {:.2f}".format(k, high), end=", ")
+    print("k = {}, Embedding KNN accuracy: {:.4f}".format(k, high), end=", ")
     high_base = compare_KNN(graph, randomHighDimEmbed, k)
-    print("with baseline {:.2f}".format(high_base))
+    print("with baseline {:.4f}".format(high_base))
     low = compare_KNN(graph, lowDimEmbed, k)
-    print("k = {}, Visualization KNN accuracy: {:.2f}".format(k, low), end=", ")
+    print("k = {}, Visualization KNN accuracy: {:.4f}".format(k, low), end=", ")
     low_base = compare_KNN(graph, randomLowDimEmbed, k)
-    print("with baseline {:.2f}".format(low_base))
+    print("with baseline {:.4f}".format(low_base))
     high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
-    print("k = {}, Dimension reduction KNN accuracy: {:.2f}".format(k, high_v_low))
+    print("k = {}, Dimension reduction KNN accuracy: {:.4f}".format(k, high_v_low))
 
 def setup(config):
     """
