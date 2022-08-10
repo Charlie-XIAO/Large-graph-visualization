@@ -1,6 +1,7 @@
 import argparse
 import os
 import sys
+from tests.utils import print_block
 
 # DeepWalk + vis
 from tests.DeepWalk_TSNE_test import DeepWalk_TSNE_test
@@ -55,8 +56,11 @@ if __name__ == "__main__":
     config["edgeset"] = os.path.join(config["dataset_folder"], f"{config['data']}_edgelist.txt")
     config["featureset"] = os.path.join(config["dataset_folder"], f"{config['data']}_labels.txt")
 
-    if not os.path.exists(image_folder):
-        os.makedirs(image_folder)
+    if not os.path.exists(config["image_folder"]):
+        os.makedirs(config["image_folder"])
+        print(f"Created folder: {config['image_folder']}")
+
+
 
     ### ========== ========== ========== ========== ========== ###
     ###           EMBEDDING AND VISUALIZING METHODS            ###
@@ -76,6 +80,18 @@ if __name__ == "__main__":
         "tsne": "TSNE",
         "pca": "PCA",
         }
+
+    print_block("Configuration")
+    print(f"Dataset: {config['data']}")
+    print(f"Embedding: {EMBED_METHODS[config['embed']]}")
+    print(f"Dimension: {config['dim']}")
+    print(f"Visualization: {VIS_METHODS[config['vis']]}")
+    print(f"dataset_folder: {config['dataset_folder']}")
+    print(f"image_folder: {config['image_folder']}")
+    print(f"K: {config['k']}")
+    print(f"Seed: {config['seed']}")
+
+
     
     ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
     ### ========== ========== ========== ========== ========== ###
