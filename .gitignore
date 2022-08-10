@@ -1,9 +1,18 @@
 .vscode/
 __pycache__/
-myvenv/
 draft.py
 draft.txt
 draft.bat
 draft/
 images/
 log/
+
+# track sklearn.manifold.TSNE
+myvenv/*
+!myvenv/Lib/
+myvenv/Lib/*
+!myvenv/Lib/site-packages
+myvenv/Lib/site-packages/*
+!myvenv/Lib/site-packages/sklearn
+myvenv/Lib/site-packages/sklearn/*
+!myvenv/Lib/site-packages/sklearn/manifold/

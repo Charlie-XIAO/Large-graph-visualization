@@ -47,6 +47,9 @@ def construct_knn_from_embeddings(embeddings, k):
     # return neigh.kneighbors_graph(embeddings)
     return neigh.kneighbors_graph(embeddings).toarray().astype(np.intc)
 
+def graph2embeddingKnn(graph, k):
+    pass
+
 
 def construct_knn_from_graph(graph, k, neighbor_selection_method="knn", sparse=False):
     """
