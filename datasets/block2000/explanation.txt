@@ -1,0 +1,14 @@
+Dataset Name:
+    Block 2000
+Description: 
+    A dataset used in the tsNET essay (DOI: 10.1111/cgf.13187).
+    It focuses on the clustering property of the graph
+    Visually, it has 10 clusters.
+Source: 
+    http://vlado.fmf.uni-lj.si/pub/networks/data/esna/scotland.htm
+Size: 
+    2000 vertices, 9910 edges
+Type: 
+    weighted, undirected
+
+    
