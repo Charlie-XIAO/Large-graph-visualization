@@ -1,13 +1,13 @@
 import pandas as pd
 
 from embedders.utils import *
-from embedders.ShortestPath import ShortestPath
+from embedders.previous_works.GLEE import GLEE
 
 from embedding_tests.AbstractEmbedTest import AbstractEmbedTest
 
-class ShortestPathTest(AbstractEmbedTest):
+class GLEETest(AbstractEmbedTest):
 
-    def __init__(self, edgeset, embed_size, featureset=None):
+    def __init__(self, edgeset, embed_size=128, featureset=None):
         """
         :param self:
         :param edgeset: absolute path of the node-node edgeset in .txt format
@@ -18,6 +18,6 @@ class ShortestPathTest(AbstractEmbedTest):
         self.embed()
     
     def getEmbeddings(self):
-        model = ShortestPath(self.graph)
-        embeddings = pd.DataFrame.from_dict(model.get_embeddings(embed_size=self.embed_size, sampling="random"))
+        model = GLEE(self.graph)
+        embeddings = pd.DataFrame.from_dict(model.get_embeddings(embed_size=self.embed_size))
         self.embeddings = embeddings.T

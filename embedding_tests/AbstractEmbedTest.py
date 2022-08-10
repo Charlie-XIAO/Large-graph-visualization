@@ -5,9 +5,10 @@ import networkx as nx
 
 class AbstractEmbedTest(ABC):
 
-    def __init__(self, edgeset, featureset=None):
+    def __init__(self, edgeset, embed_size=128, featureset=None):
         self.edgeset = edgeset
         self.graph = self.readGraph()
+        self.embed_size = embed_size
         self.featureset = featureset
         self.embeddings = None
         self.has_feature = False

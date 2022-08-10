@@ -4,12 +4,25 @@ import sys
 
 # DeepWalk + vis
 from tests.DeepWalk_TSNE_test import DeepWalk_TSNE_test
+from tests.DeepWalk_PCA_test import DeepWalk_PCA_test
 # Node2Vec + vis
 from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
+from tests.Node2Vec_PCA_test import Node2Vec_PCA_test
 # SDNE + vis
 from tests.SDNE_TSNE_test import SDNE_TSNE_test
+from tests.SDNE_PCA_test import SDNE_PCA_test
 # ShortestPath + vis
 from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
+from tests.ShortestPath_PCA_test import ShortestPath_PCA_test
+# LEE + vis
+from tests.LEE_TSNE_test import LEE_TSNE_test
+from tests.LEE_PCA_test import LEE_PCA_test
+# GLEE + vis
+from tests.GLEE_TSNE_test import GLEE_TSNE_test
+from tests.GLEE_PCA_test import GLEE_PCA_test
+# SPLEE + vis
+from tests.SPLEE_TSNE_test import SPLEE_TSNE_test
+from tests.SPLEE_PCA_test import SPLEE_PCA_test
 
 
 if __name__ == "__main__":
@@ -42,21 +55,32 @@ if __name__ == "__main__":
     config["edgeset"] = os.path.join(config["dataset_folder"], f"{config['data']}_edgelist.txt")
     config["featureset"] = os.path.join(config["dataset_folder"], f"{config['data']}_labels.txt")
 
-    if not os.path.exists(dataset_folder):
-        os.makedirs(dataset_folder)
     if not os.path.exists(image_folder):
         os.makedirs(image_folder)
 
-
+    ### ========== ========== ========== ========== ========== ###
+    ###           EMBEDDING AND VISUALIZING METHODS            ###
+    ### ========== ========== ========== ========== ========== ###
+    ### V V V V V V V V V V V V V V V V V V V V V V V V V V V  ###
+    
     EMBED_METHODS = {
         "deepwalk": "DeepWalk", 
         "node2vec": "Node2Vec", 
         "sdne": "SDNE",
         "shortestpath": "ShortestPath",
+        "lee": "LEE",
+        "glee": "GLEE",
+        "splee": "SPLEE",
         }
     VIS_METHODS = {
         "tsne": "TSNE",
+        "pca": "PCA",
         }
+    
+    ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
+    ### ========== ========== ========== ========== ========== ###
+    ###       END OF EMBEDDING AND VISUALIZING METHODS         ###
+    ### ========== ========== ========== ========== ========== ###
     
     if config["embed"].lower() not in EMBED_METHODS:
         print(f"{config['embed']} is not a valid embedding method. Valid methods are:", end=" ")
@@ -65,7 +89,7 @@ if __name__ == "__main__":
         print()
         sys.exit(1)
     else:
-        config["embed"] = EMBED_METHODS[config["embed"]]
+        config["embed"] = EMBED_METHODS[config["embed"].lower()]
     
     if config["vis"].lower() not in VIS_METHODS:
         print(f"{config['vis']} is not a valid visualization method. Valid methods are:", end=" ")
@@ -74,25 +98,61 @@ if __name__ == "__main__":
         print()
         sys.exit(1)
     else:
-        config["vis"] = VIS_METHODS[config["vis"]]
+        config["vis"] = VIS_METHODS[config["vis"].lower()]
 
-    if config["image_format"] not in ['png', 'jpg', 'jpeg', 'webp', 'svg', 'pdf', 'eps', 'json']:
-        print(f"{config['image_format']} is not a valid image format. Valid formats are: 'png', 'jpg', 'jpeg', 'webp', 'svg', 'pdf', 'eps', 'json'.")
+    if config["image_format"] not in ["png", "jpg", "jpeg", "webp", "svg", "pdf", "eps", "json"]:
+        print(f"{config['image_format']} is not a valid image format. Valid formats are: png, pdf")
         sys.exit(1)
 
+
+    ### ========== ========== ========== ========== ========== ###
+    ###       CALLING EMBEDDING AND VISUALIZING METHODS        ###
+    ### ========== ========== ========== ========== ========== ###
+    ### V V V V V V V V V V V V V V V V V V V V V V V V V V V  ###
 
     if config["embed"] == "DeepWalk":
         if config["vis"] == "TSNE":
             DeepWalk_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            DeepWalk_PCA_test(config)
 
     elif config["embed"] == "Node2Vec":
         if config["vis"] == "TSNE":
             Node2Vec_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            Node2Vec_PCA_test(config)
     
     elif config["embed"] == "SDNE":
         if config["vis"] == "TSNE":
             SDNE_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            SDNE_PCA_test(config)
     
     elif config["embed"] == "ShortestPath":
         if config["vis"] == "TSNE":
             ShortestPath_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            ShortestPath_PCA_test(config)
+    
+    elif config["embed"] == "LEE":
+        if config["vis"] == "TSNE":
+            LEE_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            LEE_PCA_test(config)
+    
+    elif config["embed"] == "GLEE":
+        if config["vis"] == "TSNE":
+            GLEE_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            GLEE_PCA_test(config)
+
+    elif config["embed"] == "SPLEE":
+        if config["vis"] == "TSNE":
+            SPLEE_TSNE_test(config)
+        elif config["vis"] == "PCA":
+            SPLEE_PCA_test(config)
+
+    ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
+    ### ========== ========== ========== ========== ========== ###
+    ###   END OF CALLING EMBEDDING AND VISUALIZING METHODS     ###
+    ### ========== ========== ========== ========== ========== ###

@@ -1,10 +1,10 @@
-from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
 
 from visualizing_tests.AbstractVisTest import AbstractVisTest
 
-class TSNETest(AbstractVisTest):
+class PCATest(AbstractVisTest):
 
-    def __init__(self, embeddings, has_feature, location, n_components=2, verbose=1, random_state=0):
+    def __init__(self, embeddings, has_feature, location, n_components=2, random_state=0):
         """
         :param self:
         :param embeddings: high-dimensional embeddings from cls.embeddings of any class that implements AbstractEmbedTest
@@ -17,10 +17,9 @@ class TSNETest(AbstractVisTest):
         """
         super().__init__(embeddings, has_feature, location)
         self.n_components = n_components
-        self.verbose = verbose
         self.random_state = random_state
         self.savePlot()
     
     def getProjection(self):
-        model = TSNE(n_components=self.n_components, verbose=self.verbose, random_state=self.random_state)
+        model = PCA(n_components=self.n_components, random_state=self.random_state)
         self.projections = model.fit_transform(self.X)

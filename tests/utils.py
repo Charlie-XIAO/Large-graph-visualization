@@ -180,9 +180,10 @@ def density_check(projections, k=10, threshold=0.5):
     x_unit = (x_max - x_min) / k
     y_unit = (y_max - y_min) / k
     grid_dic = density_grid(k)
-    grid_dic_input = density_grid_input(projections, x_min, y_min, x_unit, y_unit, grid_dic, k)
-    portion = density_grid_cal(grid_dic_input, k, threshold)
-    return portion
+    grid_dic_input, feature_dic = density_grid_input(projections, x_min, y_min, x_unit, y_unit, grid_dic, k)
+    portion, feature_dic_final = density_grid_cal(grid_dic_input, k, threshold, feature_dic)
+    distance_rate=feature_dis_cal(feature_dic_final, k)
+    return portion, distance_rate
 
 def density_grid(k):
     """
@@ -197,6 +198,7 @@ def density_grid(k):
     return grid_dic
 
 def density_grid_input(projections, x_min, y_min, x_unit, y_unit, grid_dic, k):
+    feature_dic={}
     for i in range(projections.shape[0]):
         x = (projections[i][0] - x_min) // x_unit
         if x == k:
@@ -205,28 +207,55 @@ def density_grid_input(projections, x_min, y_min, x_unit, y_unit, grid_dic, k):
         if y == k:
             y -= 1
         feature = int(projections[i][2])
-        try:
+        feature_dic[feature]=[]
+        try: 
             grid_dic[x][y][0][feature] += 1
         except:
             grid_dic[x][y][0][feature] = 1
         grid_dic[x][y][1] += 1
-    return grid_dic
+    return grid_dic, feature_dic
 
-def density_grid_cal(grid_dic_input, k, threshold):
+def density_grid_cal(grid_dic_input, k, threshold, feature_dic):
     satisfy_num = 0
     for i in range(k):
         for j in range(k):
             total = grid_dic_input[i][j][1]
-            not_found, all_zero = True, True
-            for n in grid_dic_input[i][j][0].values():
-                if n != 0:
-                    all_zero = False
+            not_found = True
+            dominant, dominant_value = None, 0
+            for feature, n in grid_dic_input[i][j][0].items():
                 if not_found and n > total * threshold:
                     satisfy_num += 1
                     not_found = False
-            if all_zero:
-                satisfy_num += 1
-    return satisfy_num / (k * k)
+                    dominant, dominant_value = feature, n
+                elif n > dominant_value:
+                    dominant, dominant_value = feature, n
+            if dominant is not None:
+                feature_dic[dominant].append([i, j])
+    return satisfy_num / (k * k), feature_dic
+
+def feature_dis_cal(feature_dic_final,k):
+    feature_count = 0
+    x_total_sum, y_total_sum = 0, 0
+    for _, grid_list in feature_dic_final.items():
+        feature_count += 1
+        grid_n = len(grid_list)
+        x_dis_sum, y_dis_sum = 0, 0
+        if grid_list:
+            for i in range(grid_n):
+                for j in range(grid_n):
+                    if abs(grid_list[i][0] - grid_list[j][0]) > 1:
+                        x_dis_sum += abs(grid_list[i][0] - grid_list[j][0])
+                    if abs(grid_list[i][1] - grid_list[j][1]) > 1:
+                        y_dis_sum += abs(grid_list[i][1] - grid_list[j][1])
+        if len(grid_list) == 0:
+            x_total_sum += 1
+            y_total_sum += 1
+        elif len(grid_list) > 1:
+            x_avr = x_dis_sum / (grid_n * (grid_n - 1))
+            y_avr = y_dis_sum / (grid_n * (grid_n - 1))
+            x_total_sum += x_avr / k
+            y_total_sum += y_avr / k
+    return (x_total_sum / feature_count) * (y_total_sum / feature_count)
 
 
 ### ========== ========== ========== ========== ========== ###
@@ -251,12 +280,27 @@ def print_block(title):
         print("### " + "========== " * 5 + "###")
     print()
 
-def show_evaluation_results(embed_obj, vis_obj, k=10):
+def show_evaluation_results(config, embed_obj, vis_obj, k=10):
 
-    print()
+    print_block("EVALUATION RESULTS on {} EDGELIST".format(config["data"]))
+
+    print("Embedding method: {}".format(config["embed"]), end=" ( ")
+    for x in vars(embed_obj):
+        if x not in ["edgeset", "graph", "featureset", "embeddings", "has_feature"]:
+            print("{}={}".format(x, vars(embed_obj)[x]), end=", ")
+    print(")")
+    print("Visualization method: {}".format(config["vis"]), end=" ( ")
+    for x in vars(vis_obj):
+        if x not in ["embeddings", "has_feature", "X", "location", "projections"]:
+            print("{}={}".format(x, vars(vis_obj)[x]), end=", ")
+    print(")\n")
+
     if embed_obj.has_feature:
         featured_projection = np.insert(vis_obj.projections, 2, list(vis_obj.embeddings.feature), axis=1)
-        print("Visualization quality: {}\n".format(density_check(featured_projection, k=10, threshold=0.5)))
+        density, distance = density_check(featured_projection, k=10, threshold=0.6)
+        print("Visualization quality (density): {:.4f}".format(density))
+        print("Visualization quality (distance): {:.4f}".format(distance))
+        print("Score (lower is better): {:.4f}\n".format(distance / (density ** 2)))
     
     graph = embed_obj.graph
     highDimEmbed = embed_obj.embeddings
@@ -265,24 +309,24 @@ def show_evaluation_results(embed_obj, vis_obj, k=10):
     randomLowDimEmbed = randomEmbeddings(vis_obj.projections)
 
     high = compare_KNN(graph, highDimEmbed, k)
-    print("Embedding KNN accuracy: {:.2f}".format(high), end=" ")
+    print("k = {}, Embedding KNN accuracy: {:.4f}".format(k, high), end=", ")
     high_base = compare_KNN(graph, randomHighDimEmbed, k)
-    print("(Baseline) {:.2f}".format(high_base))
+    print("with baseline {:.4f}".format(high_base))
     low = compare_KNN(graph, lowDimEmbed, k)
-    print("Visualization KNN accuracy: {:.2f}".format(low), end=" ")
+    print("k = {}, Visualization KNN accuracy: {:.4f}".format(k, low), end=", ")
     low_base = compare_KNN(graph, randomLowDimEmbed, k)
-    print("(Baseline) {:.2f}".format(low_base))
+    print("with baseline {:.4f}".format(low_base))
     high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
-    print("Dimension reduction KNN accuracy: {:.2f}".format(high_v_low))
+    print("k = {}, Dimension reduction KNN accuracy: {:.4f}".format(k, high_v_low))
 
 def setup(config):
     """
     :param config:
-    :return: edgeset, featureset, location
+    :return: dim, edgeset, featureset, location
     """
     print_block(f"Running {config['embed']} + {config['vis']} on {config['data']}")
     if config["description"] == "":
         config["location"] = os.path.join(config["image_folder"], f"{config['data']}_{config['embed']}_{config['vis']}.{config['image_format']}")
     else:
         config["location"] = os.path.join(config["image_folder"], f"{config['data']}_{config['embed']}_{config['vis']}_{config['description']}.{config['image_format']}")
-    return config["edgeset"], config["featureset"], config["location"]
+    return config["dim"], config["edgeset"], config["featureset"], config["location"]
