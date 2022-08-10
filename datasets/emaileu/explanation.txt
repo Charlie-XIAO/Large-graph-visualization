@@ -1,0 +1,10 @@
+Dataset Name:
+    emaileu
+Description: 
+    #
+Source: 
+    #
+Size: 
+    1005 vertices, 16706 edges
+Type: 
+    unweighted, undirected
