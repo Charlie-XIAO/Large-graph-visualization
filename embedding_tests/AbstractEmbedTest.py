@@ -52,6 +52,5 @@ class AbstractEmbedTest(ABC):
     def embed(self):
         self.getEmbeddings()
         self.addFeature()
-        print("Embeddings generated as follows:")
-        print(self.embeddings)
+        print(f"Embeddings of size {self.embeddings.shape} is generated")
         print()
