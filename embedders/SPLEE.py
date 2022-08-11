@@ -16,16 +16,20 @@ class SPLEE:
         self.graph = graph
         self._embeddings = {}
     
-    def get_embeddings(self, embed_size=128, iter=100, shape="gaussian", epsilon=0.5):
+    def get_embeddings(self, embed_size=128, iter=100, shape="gaussian", epsilon=0.5, threshold=8):
         """
         :param self:
         :param embed_size DEFAULT 128:
         :param iter DEFAULT 100:
         :return: embedding
         """
-        dist = RBF_distance_metric(distance_matrix(self.graph), shape=shape, epsilon=epsilon)
-        laplacian = unnormalized_laplacian_matrix(dist)
         import time
+        t0 = time.time()
+        dist = RBF_distance_metric(distance_matrix(self.graph, threshold=threshold), shape=shape, epsilon=epsilon)
+        print(time.time() - t0)
+        t0 = time.time()
+        laplacian = unnormalized_laplacian_matrix(dist)
+        print(time.time() - t0)
         t0 = time.time()
         node_embedding = la.eigsh(laplacian, k=embed_size, which="SM", maxiter=iter*self.graph.number_of_nodes(), return_eigenvectors=True)[1]
         print(time.time() - t0)
