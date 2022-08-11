@@ -32,7 +32,7 @@ def generate_lfr_graph(n=1000, mu=0.6, seed=10):
 
 def save_graph_edgelist(G, filename):
     with open(filename, "w") as file:
-        file.write("source target\n")
+        #file.write("source target\n")
         for edge in G.edges():
             file.write(str(edge[0]) + " " + str(edge[1]) + "\n")
     print("Saving Completed")
@@ -57,7 +57,7 @@ def save_node_property(G, filename):
             count += 1
 
     with open(filename, "w") as f:
-        f.write("node community\n")
+        #f.write("node community\n")
         for node in G.nodes():
             f.write(str(node) + " " + str(labels[node]) + "\n")
     print("Saving Completed")
