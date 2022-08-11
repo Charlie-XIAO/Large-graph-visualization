@@ -16,4 +16,4 @@ myvenv/Lib/*
 myvenv/Lib/site-packages/*
 !myvenv/Lib/site-packages/sklearn
 myvenv/Lib/site-packages/sklearn/*
-!myvenv/Lib/site-packages/sklearn/manifold/
+!myvenv/Lib/site-packages/sklearn/manifold/_t_sne.py
