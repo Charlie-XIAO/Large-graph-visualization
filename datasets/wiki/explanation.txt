@@ -1,0 +1,6 @@
+Dataset Name:
+    wiki
+Size: 
+    2405 vertices, 12761 edges
+Type: 
+    unweighted, undirected

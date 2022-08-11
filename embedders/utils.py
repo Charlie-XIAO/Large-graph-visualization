@@ -175,6 +175,7 @@ def distance_matrix(graph):
     :param graph:
     :return: a numpy matrix that is the distance matrix of the graph
     """
+    threshold=graph.number_of_edges()**(1/2)
     nodecount = graph.number_of_nodes()
     node2idx = {node: i for i, node in enumerate(graph.nodes())}
     dists = np.zeros(shape=(nodecount, nodecount))
@@ -191,7 +192,11 @@ def distance_matrix(graph):
                 if not visited[neighbor_i]:
                     visited[neighbor_i] = 1
                     queue.append(neighbor)
-                    dists[node_i, neighbor_i] = dists[node_i, curNode_i] + 1
+                    dis=dists[node_i, curNode_i] + 1
+                    if dis<threshold:
+                        dists[node_i, neighbor_i] = dists[node_i, curNode_i] + 1
+                    else:
+                        queue=[]
     return dists
 
 def RBF_distance_metric(D, shape="gaussian", epsilon=0.5):
