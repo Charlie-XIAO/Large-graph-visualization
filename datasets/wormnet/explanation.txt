@@ -1,0 +1,43 @@
+Dataset Name:
+    wormnet
+Description: 
+   Gene functional associations, where vertices represent the genes.
+   Wormnet is a network by integration of all data-type-specific networks by modified Bayesian integration.
+   This includes: CE-CX, CE-GN, CE-GT, CE-HT, CE-LC, CE-PG, DM-CX, DM-HT, DM-LC, DR-CX, HS-CX, HS-HT, HS-LC, SC-CC, SC-CX, SC-HT, SC-LC, SC-TS.
+Source: 
+    WormNet; see http://www.inetbio.org/wormnet/
+Size: 
+    2.4K vertices, 78.7Kedges
+Type: 
+    unweighted, undirected
+Statistics:
+    Density                             0.0263526
+    Maximum degree	                    347
+    Minimum degree	                    1
+    Average degree	                    64
+    Assortativity	                    0.310895
+    Number of triangles	                6M
+    Average number of triangles	        2.5K
+    Maximum number of triangles	        18.2K
+    Average clustering coefficient	    0.838977
+    Fraction of closed triangles	    0.721098
+    Maximum k-core	                    126
+    Lower bound of Maximum Clique	    126
+Citation:
+    @inproceedings{nr-aaai15,
+        title = {The Network Data Repository with Interactive Graph Analytics and Visualization},
+        author={Ryan A. Rossi and Nesreen K. Ahmed},
+        booktitle = {Proceedings of the Twenty-Ninth AAAI Conference on Artificial Intelligence},
+        url={http://networkrepository.com},
+        year={2015}
+    }
+    @article{cho2014wormnet,
+        title={WormNet v3: a network-assisted hypothesis-generating server for Caenorhabditis elegans},
+        author={Cho, Ara and Shin, Junha and Hwang, Sohyun and Kim, Chanyoung and Shim, Hongseok and Kim, Hyojin and Kim, Hanhae and Lee, Insuk},
+        journal={Nucleic acids research},
+        volume={42},
+        number={W1},
+        pages={W76--W82},
+        year={2014},
+        publisher={Oxford University Press}
+    }
