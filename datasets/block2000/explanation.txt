@@ -10,5 +10,3 @@ Size:
     2000 vertices, 9910 edges
 Type: 
     weighted, undirected
-
-    
