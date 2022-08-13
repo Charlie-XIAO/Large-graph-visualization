@@ -1,0 +1,6 @@
+Dataset Name:
+    hr2
+Size: 
+    2164 vertices, 2144 edges
+Type: 
+    uweighted, undirected
