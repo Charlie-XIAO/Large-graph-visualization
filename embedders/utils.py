@@ -170,9 +170,10 @@ def create_model(node_size, hidden_size=[256, 128], l1=1e-5, l2=1e-4):
     emb = Model(inputs=A, outputs=Y)
     return model, emb
 
-def distance_matrix(graph, threshold):
+def k_distance_matrix(graph, threshold):
     """
     :param graph:
+    :param threshold: only compute within k steps of each node where k = threshold
     :return: a numpy matrix that is the distance matrix of the graph
     """
     nodecount = graph.number_of_nodes()
@@ -196,6 +197,31 @@ def distance_matrix(graph, threshold):
                         dists[node_i, neighbor_i] = temp
                     else:
                         queue = []
+    return dists
+
+def distance_matrix(graph):
+    """
+    :param graph:
+    :return: a numpy matrix that is the distance matrix of the graph
+    """
+    nodecount = graph.number_of_nodes()
+    node2idx = {node: i for i, node in enumerate(graph.nodes())}
+    dists = np.zeros(shape=(nodecount, nodecount))
+    for node in graph.nodes():
+        node_i = node2idx[node]
+        queue = [node]
+        visited = [0] * nodecount
+        visited[node_i] = 1
+        while queue:
+            curNode = queue.pop(0)
+            curNode_i = node2idx[curNode]
+            for neighbor in graph.neighbors(curNode):
+                neighbor_i = node2idx[neighbor]
+                if not visited[neighbor_i]:
+                    visited[neighbor_i] = 1
+                    queue.append(neighbor)
+                    dists[node_i, neighbor_i] = dists[node_i, curNode_i] + 1
+
     return dists
 
 def RBF_distance_metric(D, shape="gaussian", epsilon=0.5):
@@ -254,7 +280,7 @@ def unnormalized_laplacian_matrix(A):
     """
     :param A: adjacency matrix of a graph (can be weighted), should be a numpy matrix
     :return L: the unnormalized Laplacian matrix of the graph corresponding to A, which is a sparse matrix
-    -------------------------------------------------------------------------------
+    ----------------------------------------------------------------------------------------------------------------
     Explanation: L = D - W, where W is the adjacency matrix (weight matrix) and D is s.t. $D_{ii} = \sum_j W_{ji}$
 
     """
