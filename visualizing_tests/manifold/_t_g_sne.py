@@ -186,36 +186,35 @@ class TGSNE(TSNE):
             if self.verbose:
                 print("[t-SNE] Computing {} nearest neighbors...".format(n_neighbors))
 
-            # Find the nearest neighbors for every point
-            #TODO: use graph input to find knn
-            if self.knn_matrix is None:
-                # compute neighbors using Euclidean distance
-                knn = NearestNeighbors(
-                    algorithm="auto",
-                    n_jobs=self.n_jobs,
-                    n_neighbors=n_neighbors,
-                    metric=self.metric,
-                    metric_params=self.metric_params,
-                )
-                t0 = time()
-                knn.fit(X)
-                duration = time() - t0
-                if self.verbose:
-                    print(
-                        "[t-SNE] Indexed {} samples in {:.3f}s...".format(
-                            n_samples, duration
-                        )
-                    )
+            # # Find the nearest neighbors for every point
+            # #TODO: use graph input to find knn
+            # if self.knn_matrix is None:
+            #     # compute neighbors using Euclidean distance
+            #     knn = NearestNeighbors(
+            #         algorithm="auto",
+            #         n_jobs=self.n_jobs,
+            #         n_neighbors=n_neighbors,
+            #         metric=self.metric,
+            #         metric_params=self.metric_params,
+            #     )
+            #     t0 = time()
+            #     knn.fit(X)
+            #     duration = time() - t0
+            #     if self.verbose:
+            #         print(
+            #             "[t-SNE] Indexed {} samples in {:.3f}s...".format(
+            #                 n_samples, duration
+            #             )
+            #         )
 
-                t0 = time()
-                distances_nn = knn.kneighbors_graph(mode="connectivity")
-                # distances_nn = knn.kneighbors_graph(mode="distance")
-                print("[t-SNE] Computing nearest neighbors for the embedding using Euclidean distance")
-            else:
-                t0 = time()
-                # compute neighbors using a given KNN sparse matrix
-                distances_nn = self.knn_matrix
-                print("[t-SNE] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
+            #     t0 = time()
+            #     distances_nn = knn.kneighbors_graph(mode="connectivity")
+            #     # distances_nn = knn.kneighbors_graph(mode="distance")
+            #     print("[t-SNE] Computing nearest neighbors for the embedding using Euclidean distance")
+            t0 = time()
+            # compute neighbors using a given KNN sparse matrix
+            distances_nn = self.knn_matrix
+            print("[t-SNE] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
 
             duration = time() - t0
             if self.verbose:

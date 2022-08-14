@@ -15,5 +15,6 @@ def DeepWalk_TGSNE_test(config):
         location,
         n_components=2, 
         verbose=1, 
-        random_state=0)
+        random_state=0,
+        mode=config["knn_mode"],)
     show_evaluation_results(config, deepwalk, tgsne, k=10)

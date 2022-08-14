@@ -47,6 +47,7 @@ if __name__ == "__main__":
     parser.add_argument("--seed", help="random seed", type=int, default=20220804)             #TODO: fix a random seed for reproducibility
     parser.add_argument("--image_format", help="image format", default="png")
     parser.add_argument("--description", help="extra description of current test", default="")
+    parser.add_argument("--knn_mode", help="The mode of knn matrix constructed from graph ('connectivity' or 'distance')", default="connectivity")
 
 
     ###  parse arguments
@@ -164,6 +165,12 @@ if __name__ == "__main__":
             SPLEE_TSNE_test(config)
         elif config["vis"] == "PCA":
             SPLEE_PCA_test(config)
+    
+    elif config["embed"] == "Random":
+        if config["vis"] == "TGSNE":
+            pass    
+        else:
+            NotImplementedError("Random embedding + other visualization is not implemented yet")
 
     ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
     ### ========== ========== ========== ========== ========== ###
