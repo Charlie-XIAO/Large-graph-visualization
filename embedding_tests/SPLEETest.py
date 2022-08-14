@@ -7,7 +7,7 @@ from embedding_tests.AbstractEmbedTest import AbstractEmbedTest
 
 class SPLEETest(AbstractEmbedTest):
 
-    def __init__(self, edgeset, embed_size=128, featureset=None, iter=100, shape="gaussian", epsilon=0.5):
+    def __init__(self, edgeset, embed_size=128, featureset=None, iter=100, shape="gaussian", epsilon=7, threshold=8):
         """
         :param self:
         :param edgeset: absolute path of the node-node edgeset in .txt format
@@ -21,9 +21,10 @@ class SPLEETest(AbstractEmbedTest):
         self.iter = iter
         self.shape = shape
         self.epsilon = epsilon
+        self.threshold = threshold
         self.embed()
     
     def getEmbeddings(self):
         model = SPLEE(self.graph)
-        embeddings = pd.DataFrame.from_dict(model.get_embeddings(embed_size=self.embed_size, iter=self.iter, shape=self.shape, epsilon=self.epsilon))
+        embeddings = pd.DataFrame.from_dict(model.get_embeddings(embed_size=self.embed_size, iter=self.iter, shape=self.shape, epsilon=self.epsilon, threshold=self.threshold))
         self.embeddings = embeddings.T

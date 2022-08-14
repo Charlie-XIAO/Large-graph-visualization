@@ -1,0 +1,42 @@
+Dataset Name:
+    emailia
+Description: 
+    Email communication network at the University Rovira i Virgili in Tarragona in the south of Catalonia in Spain.
+    Nodes are users and edges indicate that at least one email was sent.
+Source: 
+    https://networkrepository.com/ia-email-univ.php
+Size: 
+    1.1K vertices, 5.5K edges
+Type: 
+    unweighted, undirected
+Statistics:
+    Density	                        0.00850021
+    Maximum degree	                71
+    Minimum degree	                1
+    Average degree	                9
+    Assortativity	                0.078201
+    Number of triangles	            16K
+    Average number of triangles	    14
+    Maximum number of triangles	    261
+    Average clustering coefficient  0.220176
+    Fraction of closed triangles	0.16625
+    Maximum k-core	                12
+    Lower bound of Maximum Clique	12
+Citation:
+    @inproceedings{nr-aaai15,
+        title = {The Network Data Repository with Interactive Graph Analytics and Visualization},
+        author={Ryan A. Rossi and Nesreen K. Ahmed},
+        booktitle = {AAAI},
+        url={http://networkrepository.com},
+        year={2015}
+    }
+    @article{guimera2003self,
+        title={Self-similar community structure in a network of human interactions},
+        author={Guimera, Roger and Danon, Leon and Diaz-Guilera, Albert and Giralt, Francesc and Arenas, Alex},
+        journal={Physical review E},
+        volume={68},
+        number={6},
+        pages={065103},
+        year={2003},
+        publisher={APS}
+    }
