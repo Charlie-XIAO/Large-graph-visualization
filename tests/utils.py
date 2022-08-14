@@ -3,7 +3,8 @@ import numpy as np
 import networkx as nx
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
-
+import scipy.sparse
+import time
 
 ### ========== ========== ========== ========== ========== ###
 ###                      KNN ACCURACY                      ###
@@ -35,7 +36,7 @@ def construct_knn_from_embeddings(embeddings, k):
     Construct a KNN graph from a embedding.
 
     :param embeddings: the embedding of the graph, of type numpy.ndarray or pandas.DataFrame
-    :param k: the size of neighborhood, the K in KNN
+    :param k: the size of neighborhood, the K in KNN. The point itself is not included.
     return: the KNN matrix of the embeddings, of type numpy.ndaray
     """
     # convert embeddings to adjacency matrix of KNN Graph
@@ -45,49 +46,60 @@ def construct_knn_from_embeddings(embeddings, k):
     neigh.fit(embeddings)
     
     # return neigh.kneighbors_graph(embeddings)
-    return neigh.kneighbors_graph(embeddings).toarray().astype(np.intc)
+    return neigh.kneighbors_graph(mode="connectivity").toarray()
+
+def graph2embeddingKnn(graph, k):
+    pass
 
 
-def construct_knn_from_graph(graph, k, neighbor_selection_method="knn", sparse=False):
-    """
-    Construct a KNN graph from a graph.
+def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
+    graph = nx.convert_node_labels_to_integers(graph)
+    t0 = time.time()
+    knn_of_graph = np.zeros((len(graph), len(graph)))
+    if k >= len(graph) - 1:
+        raise ValueError(f"k={k} is too large to perform KNN search on a graph with {len(graph)} nodes")
+    for v in graph:
+        visited = np.zeros(len(graph), dtype=bool)       # to avoid duplicated visiting
+        visited[v] = True
+        queue = [v]
+        cur_layer_loc = 0
+        next_layer_loc = 1
+        layer_len = 0
+        step = 1
 
-    :param graph: the graph-structured data, of type nx.Graph
-    :param k: the size of neighborhood, the K in KNN
-    :param neighbor_selection_method: the method to use to select the neighbors of a node.
-    return: the KNN matrix of the graph
-    """
-    knn_of_graph = np.eye(len(graph), len(graph), dtype=np.bool)  # initialize the knn matrix
-    # if sparse:
-    #     knn_of_graph = scipy.sparse.lil_matrix(knn_of_graph)
+        while np.sum(visited) - 1 < k and len(queue[cur_layer_loc: next_layer_loc]) > 0:   
+            layer_len = 0  
+            for q in queue[cur_layer_loc: next_layer_loc]:
+                neigh = np.array(graph[q], dtype=np.int64)
+                unvisited_neigh = neigh[visited[neigh] == 0]     # slice `neigh`` using a mask computed from `visited``
 
-    # For each node, perform BFS for k steps
-    if neighbor_selection_method == "knn":        # based on knn
-        for v in range(len(graph)):
-            visited = [v]
-            cur_at_visited_index = 0
-            queue = [v]
-            count = 1
-
-            while knn_of_graph[v,:].sum() < k:
-                if len(queue) == 0:
-                    cur_at_visited_index += 1
-                    queue = list(graph[cur_at_visited_index])
-                cur_probe = queue.pop()
-                visited.append(cur_probe)
-                if len(graph[cur_probe]) + count < k:
-                    knn_of_graph[v, graph[cur_probe]] = 1
+                if np.sum(visited) - 1 + len(unvisited_neigh) < k:
+                    knn_of_graph[v, unvisited_neigh] = step
+                    visited[unvisited_neigh] = True
                 else:
-                    knn_of_graph[v, list(graph[cur_probe])[0: k-count]] = 1
+                    remainder = k - (np.sum(visited) - 1)            
+                    knn_of_graph[v, unvisited_neigh[0: remainder]] = step
+                    visited[unvisited_neigh[0: remainder]] = True
+                    break
+                queue.extend(unvisited_neigh)
+                layer_len += len(unvisited_neigh)
 
-    elif neighbor_selection_method == "random walk":      # based on random walk
-        # random walk over each node for k steps
-        # for v in range(len(graph)):
-        #     pass
-        pass
+            cur_layer_loc = next_layer_loc
+            next_layer_loc += layer_len
+            step += 1
 
-    # if sparse:
-    #     return scipy.sparse.csr_matrix(knn_of_graph)
+        # if there is not enough neighbor, sample the rest from the non-neighbor points
+        if np.sum(visited) - 1 < k:
+            remainder = k - (np.sum(visited) - 1)
+            sampled_indices = np.random.choice(np.nonzero(visited == 0)[0], remainder, replace=False)
+            knn_of_graph[v, sampled_indices] = len(graph)      # set distance to large number
+    t1 = time.time()
+    print(f"Average time to construct knn graph: {t1 - t0}")
+
+    if mode == "connectivity":
+        knn_of_graph = knn_of_graph.toarray().astype(bool)
+    if sparse:
+        return scipy.sparse.csr_matrix(knn_of_graph)
     return knn_of_graph
 
 
@@ -144,7 +156,8 @@ def compare_KNN(graph, embeddings, k):
         (e.g. 1 means two KNNs are exactly the same, 0 means exactly different)
 
     """
-    
+    # if isinstance(graph.nodes[0], str):
+    graph = nx.convert_node_labels_to_integers(graph)
     knn_of_graph = construct_knn_from_graph(nx.convert_node_labels_to_integers(graph), k)
     knn_of_embed = construct_knn_from_embeddings(embeddings, k)
 
@@ -330,3 +343,16 @@ def setup(config):
     else:
         config["location"] = os.path.join(config["image_folder"], f"{config['data']}_{config['embed']}_{config['vis']}_{config['description']}.{config['image_format']}")
     return config["dim"], config["edgeset"], config["featureset"], config["location"]
+
+
+if __name__ == "__main__":
+    graph =  nx.Graph(nx.gnm_random_graph(30, 50))
+    highDimEmbed = np.random.rand(30,64)
+    k = 6
+
+    knn_of_graph = construct_knn_from_graph(nx.convert_node_labels_to_integers(graph), k)
+
+    for n in range(30):
+        print(np.sum(knn_of_graph[n,:]))
+
+    print(compare_KNN(graph, highDimEmbed, k))

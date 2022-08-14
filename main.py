@@ -5,6 +5,7 @@ from tests.utils import print_block
 
 # DeepWalk + vis
 from tests.DeepWalk_TSNE_test import DeepWalk_TSNE_test
+from tests.DeepWalk_TGSNE_test import DeepWalk_TGSNE_test
 from tests.DeepWalk_PCA_test import DeepWalk_PCA_test
 # Node2Vec + vis
 from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
@@ -14,6 +15,7 @@ from tests.SDNE_TSNE_test import SDNE_TSNE_test
 from tests.SDNE_PCA_test import SDNE_PCA_test
 # ShortestPath + vis
 from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
+from tests.ShortestPath_TGSNE_test import ShortestPath_TGSNE_test
 from tests.ShortestPath_PCA_test import ShortestPath_PCA_test
 # LEE + vis
 from tests.LEE_TSNE_test import LEE_TSNE_test
@@ -36,10 +38,11 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", help="name of the dataset to use", default="lock")
     parser.add_argument("--embed", help="name of the graph embedding method to use", default="deepwalk")
-    parser.add_argument("--vis", help="name of the visualization method to use", default="tsne")
+    parser.add_argument("--vis", help="name of the visualization method to use", default="tgsne")
     
     # Below are some less used options. Feel free to tune them.
     parser.add_argument("--dim", help="dimension of the high-dimensional embedding", type=int, default=128)
+    # According to sklearn implemnetation, k should be calculated using perplexity (k = min(n_samples - 1, int(3.0 * self.perplexity + 1)))
     parser.add_argument("--k", help="k neighbors to use for the knn graph construction", type=int, default=10)
     parser.add_argument("--seed", help="random seed", type=int, default=20220804)             #TODO: fix a random seed for reproducibility
     parser.add_argument("--image_format", help="image format", default="png")
@@ -78,6 +81,7 @@ if __name__ == "__main__":
         }
     VIS_METHODS = {
         "tsne": "TSNE",
+        "tgsne": "TGSNE",
         "pca": "PCA",
         }
 
@@ -118,6 +122,8 @@ if __name__ == "__main__":
     if config["embed"] == "DeepWalk":
         if config["vis"] == "TSNE":
             DeepWalk_TSNE_test(config)
+        elif config["vis"] == "TGSNE":
+            DeepWalk_TGSNE_test(config)
         elif config["vis"] == "PCA":
             DeepWalk_PCA_test(config)
 
@@ -136,6 +142,8 @@ if __name__ == "__main__":
     elif config["embed"] == "ShortestPath":
         if config["vis"] == "TSNE":
             ShortestPath_TSNE_test(config)
+        elif config["vis"] == "TGSNE":
+            ShortestPath_TGSNE_test(config)
         elif config["vis"] == "PCA":
             ShortestPath_PCA_test(config)
     
