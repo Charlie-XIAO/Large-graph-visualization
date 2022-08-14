@@ -3,17 +3,20 @@ __pycache__/
 draft.py
 draft.txt
 draft.bat
+draft_mp.py
+todo_list.txt
 draft/
-draft_mp.py/
 images/
 log/
+myvenv/
 
-# track sklearn.manifold.TSNE
-myvenv/*
-!myvenv/Lib/
-myvenv/Lib/*
-!myvenv/Lib/site-packages
-myvenv/Lib/site-packages/*
-!myvenv/Lib/site-packages/sklearn
-myvenv/Lib/site-packages/sklearn/*
-!myvenv/Lib/site-packages/sklearn/manifold/_t_sne.py
+
+# # track sklearn.manifold.TSNE
+# myvenv/*
+# !myvenv/Lib/
+# myvenv/Lib/*
+# !myvenv/Lib/site-packages
+# myvenv/Lib/site-packages/*
+# !myvenv/Lib/site-packages/sklearn
+# myvenv/Lib/site-packages/sklearn/*
+# !myvenv/Lib/site-packages/sklearn/manifold/_t_sne.py

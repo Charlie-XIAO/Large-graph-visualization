@@ -4,7 +4,8 @@ t-distributed Graph Stochastic Neighbor Embedding (TGSNE)
 The KNN of each point is directly selected from the corresponding graph (i.e. use the graph neighbors).
 """
 
-from sklearn.manifold import TSNE
+# from sklearn.manifold import TSNE
+from visualizing_tests.manifold import TGSNE
 
 from visualizing_tests.AbstractVisTest import AbstractVisTest
 
@@ -39,7 +40,7 @@ class TGSNETest(AbstractVisTest):
     
     def getProjection(self):
 
-        model = TSNE(
+        model = TGSNE(
             perplexity=self.perplexity,
             n_components=self.n_components, 
             verbose=self.verbose, 
