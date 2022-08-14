@@ -7,7 +7,7 @@ Description:
 Source: 
     WormNet; see http://www.inetbio.org/wormnet/
 Size: 
-    2.4K vertices, 78.7K edges
+    2445 vertices, 78736 edges
 Type: 
     unweighted, undirected
 Statistics:

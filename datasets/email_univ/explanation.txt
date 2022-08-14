@@ -3,7 +3,7 @@ Dataset Name:
 Source: 
     https://networkrepository.com/email-univ.php
 Size: 
-    1.1K vertices, 5.5K edges
+    1133 vertices, 5451 edges
 Type:
     unweighted, undirected
 Statistics:
