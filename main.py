@@ -31,6 +31,8 @@ from tests.SPLEE_TSNE_test import SPLEE_TSNE_test
 from tests.SPLEE_TGSNE_test import SPLEE_TGSNE_test
 from tests.SPLEE_PCA_test import SPLEE_PCA_test
 
+from tests.RandomEmbed_TGSNE_test import RandomEmbed_TGSNE_test
+
 
 if __name__ == "__main__":
     
@@ -51,7 +53,7 @@ if __name__ == "__main__":
     parser.add_argument("--seed", help="random seed", type=int, default=20220804)             #TODO: fix a random seed for reproducibility
     parser.add_argument("--image_format", help="image format", default="png")
     parser.add_argument("--description", help="extra description of current test", default="")
-    parser.add_argument("--knn_mode", help="The mode of knn matrix constructed from graph ('connectivity' or 'distance')", default="connectivity")
+    parser.add_argument("--knn_mode", help="The mode of knn matrix constructed from graph ('connectivity' or 'distance')", default="distance")
 
 
     ###  parse arguments
@@ -83,6 +85,7 @@ if __name__ == "__main__":
         "lee": "LEE",
         "glee": "GLEE",
         "splee": "SPLEE",
+        "randomembed": "RandomEmbed",
         }
     VIS_METHODS = {
         "tsne": "TSNE",
@@ -180,9 +183,9 @@ if __name__ == "__main__":
         elif config["vis"] == "PCA":
             SPLEE_PCA_test(config)
     
-    elif config["embed"] == "Random":
+    elif config["embed"] == "RandomEmbed":
         if config["vis"] == "TGSNE":
-            pass    
+            RandomEmbed_TGSNE_test(config)
         else:
             NotImplementedError("Random embedding + other visualization is not implemented yet")
 
