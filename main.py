@@ -85,17 +85,6 @@ if __name__ == "__main__":
         "pca": "PCA",
         }
 
-    print_block("Configuration")
-    print(f"Dataset: {config['data']}")
-    print(f"Embedding: {EMBED_METHODS[config['embed']]}")
-    print(f"Dimension: {config['dim']}")
-    print(f"Visualization: {VIS_METHODS[config['vis']]}")
-    print(f"dataset_folder: {config['dataset_folder']}")
-    print(f"image_folder: {config['image_folder']}")
-    print(f"K: {config['k']}")
-    print(f"Seed: {config['seed']}")
-
-
     
     ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
     ### ========== ========== ========== ========== ========== ###

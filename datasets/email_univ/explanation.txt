@@ -1,0 +1,29 @@
+Dataset Name:
+    email_univ
+Source: 
+    https://networkrepository.com/email-univ.php
+Size: 
+    1.1K vertices, 5.5K edges
+Type:
+    unweighted, undirected
+Statistics:
+    Density	                        0.00850021
+    Maximum degree	                71
+    Minimum degree	                1
+    Average degree	                9
+    Assortativity	                0.078201
+    Number of triangles	            16K
+    Average number of triangles	    14
+    Maximum number of triangles	    261
+    Average clustering coefficient	0.220176
+    Fraction of closed triangles    0.16625
+    Maximum k-core	                12
+    Lower bound of Maximum Clique	12
+Citation:
+    @inproceedings{nr-aaai15,
+        title = {The Network Data Repository with Interactive Graph Analytics and Visualization},
+        author={Ryan A. Rossi and Nesreen K. Ahmed},
+        booktitle = {AAAI},
+        url={http://networkrepository.com},
+        year={2015}
+    }

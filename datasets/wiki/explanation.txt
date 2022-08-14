@@ -1,6 +1,6 @@
 Dataset Name:
-    emaileu
+    wiki
 Size: 
-    1005 vertices, 16706 edges
+    2405 vertices, 12761 edges
 Type: 
     unweighted, undirected
