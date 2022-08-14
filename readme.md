@@ -22,7 +22,7 @@ pip install -r requirements.txt
 4. Run `main.py` using the following command line in Command Prompt:
 
 ```
-python main.py --dataset lock --embedding deepwalk --visualization tsne --timing 1
+python main.py --dataset lock --embed deepwalk --vis tsne
 ```
 
 # Graph Embedding

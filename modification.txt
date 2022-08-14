@@ -1,2 +1,0 @@
--   Compute KNN matrix of high-dim embedding using connectivity instead of distance
--   Compute KNN matrix of high-dim embedding using graph KNN instead of distance
