@@ -1,7 +1,6 @@
 import argparse
 import os
 import sys
-from tests.utils import print_block
 
 # DeepWalk + vis
 from tests.DeepWalk_TSNE_test import DeepWalk_TSNE_test
@@ -9,9 +8,11 @@ from tests.DeepWalk_TGSNE_test import DeepWalk_TGSNE_test
 from tests.DeepWalk_PCA_test import DeepWalk_PCA_test
 # Node2Vec + vis
 from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
+from tests.Node2Vec_TGSNE_test import Node2Vec_TGSNE_test
 from tests.Node2Vec_PCA_test import Node2Vec_PCA_test
 # SDNE + vis
 from tests.SDNE_TSNE_test import SDNE_TSNE_test
+from tests.SDNE_TGSNE_test import SDNE_TGSNE_test
 from tests.SDNE_PCA_test import SDNE_PCA_test
 # ShortestPath + vis
 from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
@@ -19,12 +20,15 @@ from tests.ShortestPath_TGSNE_test import ShortestPath_TGSNE_test
 from tests.ShortestPath_PCA_test import ShortestPath_PCA_test
 # LEE + vis
 from tests.LEE_TSNE_test import LEE_TSNE_test
+from tests.LEE_TGSNE_test import LEE_TGSNE_test
 from tests.LEE_PCA_test import LEE_PCA_test
 # GLEE + vis
 from tests.GLEE_TSNE_test import GLEE_TSNE_test
+from tests.GLEE_TGSNE_test import GLEE_TGSNE_test
 from tests.GLEE_PCA_test import GLEE_PCA_test
 # SPLEE + vis
 from tests.SPLEE_TSNE_test import SPLEE_TSNE_test
+from tests.SPLEE_TGSNE_test import SPLEE_TGSNE_test
 from tests.SPLEE_PCA_test import SPLEE_PCA_test
 
 
@@ -131,12 +135,16 @@ if __name__ == "__main__":
     elif config["embed"] == "Node2Vec":
         if config["vis"] == "TSNE":
             Node2Vec_TSNE_test(config)
+        elif config["vis"] == "TGSNE":
+            Node2Vec_TGSNE_test(config)
         elif config["vis"] == "PCA":
             Node2Vec_PCA_test(config)
     
     elif config["embed"] == "SDNE":
         if config["vis"] == "TSNE":
             SDNE_TSNE_test(config)
+        elif config["vis"] == "TGSNE":
+            SDNE_TGSNE_test(config)
         elif config["vis"] == "PCA":
             SDNE_PCA_test(config)
     
@@ -151,18 +159,24 @@ if __name__ == "__main__":
     elif config["embed"] == "LEE":
         if config["vis"] == "TSNE":
             LEE_TSNE_test(config)
+        elif config["vis"] == "TGSNE":
+            LEE_TGSNE_test(config)
         elif config["vis"] == "PCA":
             LEE_PCA_test(config)
     
     elif config["embed"] == "GLEE":
         if config["vis"] == "TSNE":
             GLEE_TSNE_test(config)
+        elif config["vis"] == "TGSNE":
+            GLEE_TGSNE_test(config)
         elif config["vis"] == "PCA":
             GLEE_PCA_test(config)
 
     elif config["embed"] == "SPLEE":
         if config["vis"] == "TSNE":
             SPLEE_TSNE_test(config)
+        elif config["vis"] == "TGSNE":
+            SPLEE_TGSNE_test(config)
         elif config["vis"] == "PCA":
             SPLEE_PCA_test(config)
     

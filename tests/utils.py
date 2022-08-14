@@ -105,7 +105,7 @@ def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
         t1 = time.time()
         print(f"Time to construct knn matrix of graph ({mode}): {t1 - t0}")
 
-    elif mode == "distance":        # TODO: implement this mode
+    elif mode == "distance":
         t0 = time.time()
         # knn_of_graph = np.zeros((len(graph), len(graph)), dtype=KNN_DTYPE)
         knn_of_graph = scipy.sparse.lil_matrix((len(graph), len(graph)), dtype=KNN_DTYPE)
@@ -349,7 +349,7 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
     print(")")
     print("Visualization method: {}".format(config["vis"]), end=" ( ")
     for x in vars(vis_obj):
-        if x not in ["embeddings", "has_feature", "X", "location", "projections"]:
+        if x not in ["embeddings", "has_feature", "X", "location", "projections", "graph", "knn_matrix"]:
             print("{}={}".format(x, vars(vis_obj)[x]), end=", ")
     print(")\n")
 
@@ -360,22 +360,23 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
         print("Visualization quality (distance): {:.4f}".format(distance))
         print("Score (lower is better): {:.4f}\n".format(distance / (density ** 2)))
     
-    graph = embed_obj.graph
-    highDimEmbed = embed_obj.embeddings
-    lowDimEmbed = vis_obj.projections
-    randomHighDimEmbed = randomEmbeddings(embed_obj.embeddings)
-    randomLowDimEmbed = randomEmbeddings(vis_obj.projections)
+    if False:
+        graph = embed_obj.graph
+        highDimEmbed = embed_obj.embeddings
+        lowDimEmbed = vis_obj.projections
+        randomHighDimEmbed = randomEmbeddings(embed_obj.embeddings)
+        randomLowDimEmbed = randomEmbeddings(vis_obj.projections)
 
-    high = compare_KNN(graph, highDimEmbed, k)
-    print("k = {}, Embedding KNN accuracy: {:.4f}".format(k, high), end=", ")
-    high_base = compare_KNN(graph, randomHighDimEmbed, k)
-    print("with baseline {:.4f}".format(high_base))
-    low = compare_KNN(graph, lowDimEmbed, k)
-    print("k = {}, Visualization KNN accuracy: {:.4f}".format(k, low), end=", ")
-    low_base = compare_KNN(graph, randomLowDimEmbed, k)
-    print("with baseline {:.4f}".format(low_base))
-    high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
-    print("k = {}, Dimension reduction KNN accuracy: {:.4f}".format(k, high_v_low))
+        high = compare_KNN(graph, highDimEmbed, k)
+        print("k = {}, Embedding KNN accuracy: {:.4f}".format(k, high), end=", ")
+        high_base = compare_KNN(graph, randomHighDimEmbed, k)
+        print("with baseline {:.4f}".format(high_base))
+        low = compare_KNN(graph, lowDimEmbed, k)
+        print("k = {}, Visualization KNN accuracy: {:.4f}".format(k, low), end=", ")
+        low_base = compare_KNN(graph, randomLowDimEmbed, k)
+        print("with baseline {:.4f}".format(low_base))
+        high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
+        print("k = {}, Dimension reduction KNN accuracy: {:.4f}".format(k, high_v_low))
 
 def setup(config):
     """
