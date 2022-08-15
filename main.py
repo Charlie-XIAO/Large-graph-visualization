@@ -40,7 +40,7 @@ if __name__ == "__main__":
 
     ###  set up argument parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data", help="name of the dataset to use", default="lock")
+    parser.add_argument("--data", help="name of the dataset to use", default="wiki")
     parser.add_argument("--embed", help="name of the graph embedding method to use", default="deepwalk")
     parser.add_argument("--vis", help="name of the visualization method to use", default="tgsne")
     

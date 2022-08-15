@@ -2,9 +2,11 @@ import os
 import numpy as np
 import networkx as nx
 import pandas as pd
-from sklearn.neighbors import NearestNeighbors
 import scipy.sparse
-import time
+
+from sklearn.neighbors import NearestNeighbors
+from sklearn.cluster import KMeans
+
 
 ### ========== ========== ========== ========== ========== ###
 ###                      KNN ACCURACY                      ###
@@ -266,6 +268,14 @@ def feature_dis_cal(feature_dic_final,k):
             x_total_sum += x_avr / k
             y_total_sum += y_avr / k
     return (x_total_sum / feature_count) * (y_total_sum / feature_count)
+
+
+### ========== ========== ========== ========== ========== ###
+###                  CLUSTERING ACCURACY                   ###
+### ========== ========== ========== ========== ========== ###
+
+def clustering_accuracy(graph, projection):
+    pass
 
 
 ### ========== ========== ========== ========== ========== ###

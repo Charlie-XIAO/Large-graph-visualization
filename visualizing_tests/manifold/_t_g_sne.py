@@ -31,7 +31,7 @@ class TGSNE(TSNE):
 
     def __init__(self, *args, **kwargs):
         if "knn_matrix" not in kwargs:
-            raise ValueError("knn_matrix is required for TGSNE")
+            raise ValueError("KNN matrix required for t-GSNE")
         self.knn_matrix = kwargs.pop("knn_matrix")
         super().__init__(*args, **kwargs)
         
@@ -145,7 +145,7 @@ class TGSNE(TSNE):
                 distances = X
             else:
                 if self.verbose:
-                    print("[t-SNE] Computing pairwise distances...")
+                    print("[t-GSNE] Computing pairwise distances...")
 
                 if self.metric == "euclidean":
                     # Euclidean is squared here, rather than using **= 2,
@@ -184,7 +184,7 @@ class TGSNE(TSNE):
             n_neighbors = min(n_samples - 1, int(3.0 * self.perplexity + 1))
 
             if self.verbose:
-                print("[t-SNE] Computing {} nearest neighbors...".format(n_neighbors))
+                print("[t-GSNE] Computing {} nearest neighbors...".format(n_neighbors))
 
             # Find the nearest neighbors for every point
             #TODO: use graph input to find knn
@@ -202,7 +202,7 @@ class TGSNE(TSNE):
                 duration = time() - t0
                 if self.verbose:
                     print(
-                        "[t-SNE] Indexed {} samples in {:.3f}s...".format(
+                        "[t-GSNE] Indexed {} samples in {:.3f}s...".format(
                             n_samples, duration
                         )
                     )
@@ -210,17 +210,17 @@ class TGSNE(TSNE):
                 t0 = time()
                 distances_nn = knn.kneighbors_graph(mode="connectivity")
                 # distances_nn = knn.kneighbors_graph(mode="distance")
-                print("[t-SNE] Computing nearest neighbors for the embedding using Euclidean distance")
+                print("[t-GSNE] Computing nearest neighbors for the embedding using Euclidean distance")
             else:
                 t0 = time()
                 # compute neighbors using a given KNN sparse matrix
                 distances_nn = self.knn_matrix
-                print("[t-SNE] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
+                print("[t-GSNE] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
 
             duration = time() - t0
             if self.verbose:
                 print(
-                    "[t-SNE] Computed neighbors for {} samples in {:.3f}s...".format(
+                    "[t-GSNE] Computed neighbors for {} samples in {:.3f}s...".format(
                         n_samples, duration
                     )
                 )
@@ -236,8 +236,8 @@ class TGSNE(TSNE):
                 # metric.
                 distances_nn.data **= 2
 
-            print(f"[t-SNE] distance_nn is of type {type(distances_nn)} of size {distances_nn.shape} The first two rows and columns are:")
-            print(distances_nn[:2, :2])
+            print(f"[t-GSNE] distance_nn is of type {type(distances_nn)} of size {distances_nn.shape}. The first two rows and columns are:")
+            print("         {}".format(distances_nn[:2, :2].todense().tolist()))
 
             # compute the joint probability distribution for the input space
             P = _joint_probabilities_nn(distances_nn, self.perplexity, self.verbose)

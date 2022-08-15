@@ -126,17 +126,12 @@ def chooseNeighbor(v, graphs, layers_alias, layers_accept, layer):
 
 def l_2nd(beta):
     def loss_2nd(y_true, y_pred):
-    #    b_ = K.ones_like(y_true)
-    #    b_[y_true != 0] = beta
-    #    x = K.square((y_true - y_pred) * b_)
-    #    t = K.sum(x, axis=-1, )
-    #    return K.mean(t)
-        b_ = K.ones_like(y_true)
-        x = K.square((y_true - tf.cast(y_pred, tf.int32)) * b_)
-        t = K.sum(x, axis=-1)
+        b_ = np.ones(y_true.shape)
+        b_[(y_true != 0).numpy()] = beta
+        x = K.square((tf.cast(y_true, tf.float32) - y_pred) * b_)
+        t = K.sum(x, axis=-1, )
         return K.mean(t)
     return loss_2nd
-
 
 def l_1st(alpha):
     def loss_1st(y_true, y_pred):

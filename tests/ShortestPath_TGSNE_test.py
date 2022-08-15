@@ -1,4 +1,3 @@
-from re import M
 from tests.utils import *
 
 from embedding_tests.ShortestPathTest import ShortestPathTest

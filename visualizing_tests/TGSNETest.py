@@ -33,7 +33,7 @@ class TGSNETest(AbstractVisTest):
         self.random_state = random_state
         
         self.n_neighbors = min(len(self.graph) - 1, int(3.0 * self.perplexity + 1))
-        print(f"Using k={self.n_neighbors} for KNN in tsne")
+        print(f"Using k={self.n_neighbors} for KNN in t-SNE")
         self.knn_matrix = construct_knn_from_graph(self.graph, k=self.n_neighbors, sparse=True)
 
         self.savePlot()

@@ -47,7 +47,7 @@ class SDNE(object):
         :return: None
         """
         self.model, self.emb_model = create_model(self.node_size, hidden_size=self.hidden_size, l1=self.nu1, l2=self.nu2)
-        self.model.compile(opt, [l_2nd(self.beta), l_1st(self.alpha)])
+        self.model.compile(opt, [l_2nd(self.beta), l_1st(self.alpha)], run_eagerly=True)
         self.get_embeddings()
 
     def train(self, batch_size=1024, epochs=1, initial_epoch=0, verbose=1):
@@ -87,8 +87,7 @@ class SDNE(object):
                 epoch_time = int(time.time() - start_time)
                 hist.on_epoch_end(epoch, logs)
                 if verbose > 0:
-                    print("Epoch {0}/{1}".format(epoch + 1, epochs))
-                    print("{0}s - loss: {1: .4f} - 2nd_loss: {2: .4f} - 1st_loss: {3: .4f}".format(epoch_time, losses[0], losses[1], losses[2]))
+                    print("Epoch {}/{}: {}s - loss: {:.4f}; 2nd_loss: {:.4f}; 1st_loss: {:.4f}".format(epoch + 1, epochs, epoch_time, losses[0], losses[1], losses[2]))
             return hist
 
     def evaluate(self):
