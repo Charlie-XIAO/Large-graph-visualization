@@ -202,20 +202,19 @@ class TGSNE(TSNE):
                 duration = time() - t0
                 if self.verbose:
                     print(
-                        "[t-GSNE] Indexed {} samples in {:.3f}s...".format(
+                        "[t-SNE] Indexed {} samples in {:.3f}s...".format(
                             n_samples, duration
                         )
                     )
 
-                t0 = time()
-                distances_nn = knn.kneighbors_graph(mode="connectivity")
-                # distances_nn = knn.kneighbors_graph(mode="distance")
-                print("[t-GSNE] Computing nearest neighbors for the embedding using Euclidean distance")
-            else:
-                t0 = time()
-                # compute neighbors using a given KNN sparse matrix
-                distances_nn = self.knn_matrix
-                print("[t-GSNE] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
+            #     t0 = time()
+            #     distances_nn = knn.kneighbors_graph(mode="connectivity")
+            #     # distances_nn = knn.kneighbors_graph(mode="distance")
+            #     print("[t-SNE] Computing nearest neighbors for the embedding using Euclidean distance")
+            t0 = time()
+            # compute neighbors using a given KNN sparse matrix
+            distances_nn = self.knn_matrix
+            print("[t-SNE] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
 
             duration = time() - t0
             if self.verbose:

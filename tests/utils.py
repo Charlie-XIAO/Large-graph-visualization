@@ -1,11 +1,14 @@
 import os
 import numpy as np
 import networkx as nx
+from networkx import bfs_edges as bfs_edges_without_depth_now
+from tests import bfs_edges as bfs_edges_with_depth_now
 import pandas as pd
 import scipy.sparse
 
 from sklearn.neighbors import NearestNeighbors
 from sklearn.cluster import KMeans
+
 
 
 ### ========== ========== ========== ========== ========== ###
@@ -48,58 +51,103 @@ def construct_knn_from_embeddings(embeddings, k):
     neigh.fit(embeddings)
     
     # return neigh.kneighbors_graph(embeddings)
-    return neigh.kneighbors_graph(mode="connectivity").toarray()
+    return neigh.kneighbors_graph(mode="distance").toarray()
 
 def graph2embeddingKnn(graph, k):
     pass
 
 
+# size of int16, int32, int64 
+MAXSIZE = {
+    np.int16: 2**15,
+    np.int32: 2**31,
+    np.int64: 2**63
+}
+
+# TODO: Reasonable dtype for knn
+# Intuitively, KNN shouldn't be that large. 2**15 ~= 32768 should be enough
+KNN_DTYPE = np.int32
+
 def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
     graph = nx.convert_node_labels_to_integers(graph)
-    knn_of_graph = np.zeros((len(graph), len(graph)))
-    if k >= len(graph) - 1:
-        raise ValueError(f"k={k} is too large to perform KNN search on a graph with {len(graph)} nodes")
-    for v in graph:
-        visited = np.zeros(len(graph), dtype=bool)       # to avoid duplicated visiting
-        visited[v] = True
-        queue = [v]
-        cur_layer_loc = 0
-        next_layer_loc = 1
-        layer_len = 0
-        step = 1
-
-        while np.sum(visited) - 1 < k and len(queue[cur_layer_loc: next_layer_loc]) > 0:   
-            layer_len = 0  
-            for q in queue[cur_layer_loc: next_layer_loc]:
-                neigh = np.array(graph[q], dtype=np.int64)
-                unvisited_neigh = neigh[visited[neigh] == 0]     # slice `neigh`` using a mask computed from `visited``
-
-                if np.sum(visited) - 1 + len(unvisited_neigh) < k:
-                    knn_of_graph[v, unvisited_neigh] = step
-                    visited[unvisited_neigh] = True
-                else:
-                    remainder = k - (np.sum(visited) - 1)            
-                    knn_of_graph[v, unvisited_neigh[0: remainder]] = step
-                    visited[unvisited_neigh[0: remainder]] = True
-                    break
-                queue.extend(unvisited_neigh)
-                layer_len += len(unvisited_neigh)
-
-            cur_layer_loc = next_layer_loc
-            next_layer_loc += layer_len
-            step += 1
-
-        # if there is not enough neighbor, sample the rest from the non-neighbor points
-        if np.sum(visited) - 1 < k:
-            remainder = k - (np.sum(visited) - 1)
-            sampled_indices = np.random.choice(np.nonzero(visited == 0)[0], remainder, replace=False)
-            knn_of_graph[v, sampled_indices] = len(graph)      # set distance to large number
 
     if mode == "connectivity":
-        knn_of_graph = knn_of_graph.toarray().astype(bool)
+
+        t0 = time.time()
+        # knn_of_graph = np.zeros((len(graph), len(graph)), dtype=KNN_DTYPE)
+        knn_of_graph = scipy.sparse.lil_matrix((len(graph), len(graph)), dtype=KNN_DTYPE)
+        
+        for v in range(len(graph)):
+            
+            ### avoid duplicated visiting
+            # method 1: set
+            visited = {v}
+
+            bfs_iter = bfs_edges_without_depth_now(graph, v)
+            try:
+                while len(visited) - 1 < k and bfs_iter:
+                    e = next(bfs_iter)
+                    knn_of_graph[v, e[1]] = 1
+                    visited.add(e[1])
+            except StopIteration:   # the last element is iterated
+                print(f"End early at {v}")
+                if len(visited) - 1 < k:
+                    remainder = k - len(visited) + 1
+                    # # sample implementation #1
+                    # sampled_indices = np.random.choice(np.nonzero(knn_of_graph[v, :] == 0)[1], remainder, replace=False)
+                    
+                    # sample implementation #2 (lim_matrix == 0 is inefficient)
+                    sampled_indices = np.random.choice(
+                        np.nonzero(knn_of_graph[v, :].toarray() == 0)[1], 
+                        remainder, 
+                        replace=False)
+
+                    knn_of_graph[v, sampled_indices] = np.min((len(graph), 2**15))      # set distance to large number
+
+        t1 = time.time()
+        print(f"Time to construct knn matrix of graph ({mode}): {t1 - t0}")
+
+    elif mode == "distance":
+        t0 = time.time()
+        # knn_of_graph = np.zeros((len(graph), len(graph)), dtype=KNN_DTYPE)
+        knn_of_graph = scipy.sparse.lil_matrix((len(graph), len(graph)), dtype=KNN_DTYPE)
+        
+        for v in range(len(graph)):
+            
+            ### avoid duplicated visiting
+            # method 1: set
+            visited = {v}
+
+            bfs_iter = bfs_edges_with_depth_now(graph, v)
+            try:
+                while len(visited) - 1 < k and bfs_iter:
+                    e, depth_now = next(bfs_iter)
+                    knn_of_graph[v, e[1]] = depth_now
+                    visited.add(e[1])
+            except StopIteration:   # the last element is iterated
+                # print("End early")
+                if len(visited) - 1 < k:
+                    remainder = k - len(visited) + 1
+                    # # sample implementation #1
+                    # sampled_indices = np.random.choice(np.nonzero(knn_of_graph[v, :] == 0)[1], remainder, replace=False)
+                    
+                    # sample implementation #2 (lim_matrix == 0 is inefficient)
+                    sampled_indices = np.random.choice(
+                        np.nonzero(knn_of_graph[v, :].toarray() == 0)[1], 
+                        remainder, 
+                        replace=False)
+
+                    knn_of_graph[v, sampled_indices] = np.min((len(graph), 2**15))      # set distance to large number
+
+        t1 = time.time()
+        print(f"Time to construct knn matrix of graph (distance): {t1 - t0}")
+
+    else:
+        raise ValueError(f"Mode {mode} is not supported. Use 'connectivity' or 'distance' instead")
+
     if sparse:
         return scipy.sparse.csr_matrix(knn_of_graph)
-    return knn_of_graph
+    return knn_of_graph.toarray()
 
 
 def compare_KNN_matrix(A: np.ndarray, B: np.ndarray):

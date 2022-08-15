@@ -13,7 +13,7 @@ from tests.utils import construct_knn_from_graph
 
 class TGSNETest(AbstractVisTest):
 
-    def __init__(self, graph, embeddings, has_feature, location, perplexity=30, n_components=2, verbose=1, random_state=0):
+    def __init__(self, graph, embeddings, has_feature, location, perplexity=30, n_components=2, verbose=1, random_state=0, mode="connectivity"):
         """
         :param self:
         :param graph: graph of the dataset
@@ -31,9 +31,10 @@ class TGSNETest(AbstractVisTest):
         self.n_components = n_components
         self.verbose = verbose
         self.random_state = random_state
+        self.mode = mode
         
         self.n_neighbors = min(len(self.graph) - 1, int(3.0 * self.perplexity + 1))
-        print(f"Using k={self.n_neighbors} for KNN in t-SNE")
+        print(f"Using k={self.n_neighbors} for KNN in tsne")
         self.knn_matrix = construct_knn_from_graph(self.graph, k=self.n_neighbors, sparse=True)
 
         self.savePlot()
