@@ -30,7 +30,7 @@ from tests.GLEE_PCA_test import GLEE_PCA_test
 from tests.SPLEE_TSNE_test import SPLEE_TSNE_test
 from tests.SPLEE_TGSNE_test import SPLEE_TGSNE_test
 from tests.SPLEE_PCA_test import SPLEE_PCA_test
-
+# RandomEmbed + vis (for testing purpose only)
 from tests.RandomEmbed_TGSNE_test import RandomEmbed_TGSNE_test
 
 
@@ -88,8 +88,8 @@ if __name__ == "__main__":
         "randomembed": "RandomEmbed",
         }
     VIS_METHODS = {
-        "tsne": "TSNE",
-        "tgsne": "TGSNE",
+        "tsne": "t-SNE",
+        "tgsne": "t-GSNE",
         "pca": "PCA",
         }
 
@@ -128,63 +128,63 @@ if __name__ == "__main__":
     ### V V V V V V V V V V V V V V V V V V V V V V V V V V V  ###
 
     if config["embed"] == "DeepWalk":
-        if config["vis"] == "TSNE":
+        if config["vis"] == "t-SNE":
             DeepWalk_TSNE_test(config)
-        elif config["vis"] == "TGSNE":
+        elif config["vis"] == "t-GSNE":
             DeepWalk_TGSNE_test(config)
         elif config["vis"] == "PCA":
             DeepWalk_PCA_test(config)
 
     elif config["embed"] == "Node2Vec":
-        if config["vis"] == "TSNE":
+        if config["vis"] == "t-SNE":
             Node2Vec_TSNE_test(config)
-        elif config["vis"] == "TGSNE":
+        elif config["vis"] == "t-GSNE":
             Node2Vec_TGSNE_test(config)
         elif config["vis"] == "PCA":
             Node2Vec_PCA_test(config)
     
     elif config["embed"] == "SDNE":
-        if config["vis"] == "TSNE":
+        if config["vis"] == "t-SNE":
             SDNE_TSNE_test(config)
-        elif config["vis"] == "TGSNE":
+        elif config["vis"] == "t-GSNE":
             SDNE_TGSNE_test(config)
         elif config["vis"] == "PCA":
             SDNE_PCA_test(config)
     
     elif config["embed"] == "ShortestPath":
-        if config["vis"] == "TSNE":
+        if config["vis"] == "t-SNE":
             ShortestPath_TSNE_test(config)
-        elif config["vis"] == "TGSNE":
+        elif config["vis"] == "t-GSNE":
             ShortestPath_TGSNE_test(config)
         elif config["vis"] == "PCA":
             ShortestPath_PCA_test(config)
     
     elif config["embed"] == "LEE":
-        if config["vis"] == "TSNE":
+        if config["vis"] == "t-SNE":
             LEE_TSNE_test(config)
-        elif config["vis"] == "TGSNE":
+        elif config["vis"] == "t-GSNE":
             LEE_TGSNE_test(config)
         elif config["vis"] == "PCA":
             LEE_PCA_test(config)
     
     elif config["embed"] == "GLEE":
-        if config["vis"] == "TSNE":
+        if config["vis"] == "t-SNE":
             GLEE_TSNE_test(config)
-        elif config["vis"] == "TGSNE":
+        elif config["vis"] == "t-GSNE":
             GLEE_TGSNE_test(config)
         elif config["vis"] == "PCA":
             GLEE_PCA_test(config)
 
     elif config["embed"] == "SPLEE":
-        if config["vis"] == "TSNE":
+        if config["vis"] == "t-SNE":
             SPLEE_TSNE_test(config)
-        elif config["vis"] == "TGSNE":
+        elif config["vis"] == "t-GSNE":
             SPLEE_TGSNE_test(config)
         elif config["vis"] == "PCA":
             SPLEE_PCA_test(config)
     
     elif config["embed"] == "RandomEmbed":
-        if config["vis"] == "TGSNE":
+        if config["vis"] == "t-GSNE":
             RandomEmbed_TGSNE_test(config)
         else:
             NotImplementedError("Random embedding + other visualization is not implemented yet")

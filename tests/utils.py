@@ -3,6 +3,7 @@ import numpy as np
 import networkx as nx
 import pandas as pd
 import scipy.sparse
+from prettytable import PrettyTable
 
 from sklearn.neighbors import NearestNeighbors
 from sklearn.cluster import KMeans
@@ -354,15 +355,22 @@ def get_graph_clustering_labels(graph):
     # propagation = PropagationClustering().fit_transform(A)
     return len(set(louvain)), louvain
 
-def clustering_accuracy(graph, projections):
+def clustering_accuracy(graph, projections, has_feature=False, features=None):
     """
     :param graph: the networkx graph to be clustered
     :param projections: a numpy ndarray, representing the 2D projections of the graph
-    
-    Returned values:
-    ------------------------------------------------------------------------------------------------
-    - k         the number of clusters
+    :param has_feature: if True, also return the evaluation between the graph labels and the projections clustering
+    :param features: vis_obj.embeddings.feature, pd.DataFrame series object, containing the DEFAULT labels of the nodes
 
+    :return: ks, a python list including the number of clusters when evaluating the graph clustering and the projections clustering
+             if has_feature = True, also includes the number of clusters when evaluating the graph labels and the projections clustering
+    :return: NMIscores, a python list including the NMI between the graph clustering and the projections clustering
+             if has_feature = True, also includes the NMI between the graph labels and the projections clustering
+    :return: RIscores, a python list including the RI between the graph clustering and the projections clustering
+             if has_feature = True, also includes the RI between the graph labels and the projections clustering
+
+    Explanation:
+    ------------------------------------------------------------------------------------------------
     - NMIscore  Score between 0.0 and 1.0 in normalized nats (based on the natural logarithm).
                 1.0 stands for perfectly complete labeling.
                 
@@ -396,8 +404,17 @@ def clustering_accuracy(graph, projections):
     NMIscore = normalized_mutual_info_score(graph_labels, proj_labels)
     RIscore = rand_score(graph_labels, proj_labels)
     # Fmeasure = f1_score(graph_labels, proj_labels)
-    return k, NMIscore, RIscore
-
+    ks, NMIscores, RIscores = [k], [NMIscore], [RIscore]
+    # ks, NMIscores, RIscores, Fmeasures = [k], [NMIscore], [RIscore], [Fmeasure]
+    if has_feature and features is not None:
+        graph_labels = np.array(features)
+        k = len(set(graph_labels))
+        ks.append(k)
+        proj_labels = get_projection_clustering_labels(projections, n_clusters=k)[2]
+        NMIscores.append(normalized_mutual_info_score(graph_labels, proj_labels))
+        RIscores.append(rand_score(graph_labels, proj_labels))
+        # Fmeasures.append(f1_score(graph_labels, proj_labels))
+    return ks, NMIscores, RIscores
 
 
 ### ========== ========== ========== ========== ========== ###
@@ -426,27 +443,57 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
 
     print_block("EVALUATION RESULTS on {} EDGELIST".format(config["data"]))
 
-    print("Embedding method: {}".format(config["embed"]), end=" ( ")
-    for x in vars(embed_obj):
+    embedding_table = PrettyTable()
+    field_names, row_contents = ["Embedding"], [config["embed"]]
+    embedding_vars = vars(embed_obj)
+    for x in embedding_vars:
         if x not in ["edgeset", "graph", "featureset", "embeddings", "has_feature"]:
-            print("{}={}".format(x, vars(embed_obj)[x]), end=", ")
-    print(")")
-    print("Visualization method: {}".format(config["vis"]), end=" ( ")
-    for x in vars(vis_obj):
+            field_names.append(x)
+            row_contents.append(embedding_vars[x])
+    embedding_table.field_names = field_names
+    embedding_table.add_row(row_contents)
+    print(embedding_table.get_string())
+
+    visualization_table = PrettyTable()
+    field_names, row_contents = ["Visualization"], [config["vis"]]
+    visualization_vars = vars(vis_obj)
+    for x in visualization_vars:
         if x not in ["embeddings", "has_feature", "X", "location", "projections", "graph", "knn_matrix"]:
-            print("{}={}".format(x, vars(vis_obj)[x]), end=", ")
-    print(")\n")
+            field_names.append(x)
+            row_contents.append(visualization_vars[x])
+    visualization_table.field_names = field_names
+    visualization_table.add_row(row_contents)
+    print(visualization_table.get_string())
+
+
+    score_table = PrettyTable()
+    field_names, row_contents = [], []
+
+    features = None
+    if embed_obj.has_feature:
+        features = vis_obj.embeddings.feature
+        featured_projection = np.insert(vis_obj.projections, 2, list(features), axis=1)
+        density, distance = density_check(featured_projection, k=10, threshold=0.6)
+        #print("Visualization quality: (density) {:.4f} (distance) {:.4f}".format(density, distance))
+        #print("Overall score: {:.4f}\n".format(distance / (density ** 2)))
+        field_names.extend(["Density", "Distance"])
+        row_contents.extend([format(density, ".4f"), format(distance, ".4f")])
+
+    ks, NMIscores, RIscores = clustering_accuracy(embed_obj.graph, vis_obj.projections, embed_obj.has_feature, features)
+    #print("k={}, clustering NMI score: {:.4f}".format(ks[0], NMIscores[0]))
+    #print("k={}, clustering RI score: {:.4f}".format(ks[0], RIscores[0]))
+    field_names.extend(["Clustering NMI", "Clustering RI"])
+    row_contents.extend(["(k={}) {:.4f}".format(ks[0], NMIscores[0]), "(k={}) {:.4f}".format(ks[0], RIscores[0])])
 
     if embed_obj.has_feature:
-        featured_projection = np.insert(vis_obj.projections, 2, list(vis_obj.embeddings.feature), axis=1)
-        density, distance = density_check(featured_projection, k=10, threshold=0.6)
-        print("Visualization quality (density): {:.4f}".format(density))
-        print("Visualization quality (distance): {:.4f}".format(distance))
-        print("Score (lower is better): {:.4f}\n".format(distance / (density ** 2)))
-
-    k, NMIscore, RIscore = clustering_accuracy(embed_obj.graph, vis_obj.projections)
-    print("k={}, NMI score: {:.4f}".format(k, NMIscore))
-    print("k={}, RI score: {:.4f}".format(k, RIscore))
+        #print("k={}, labels NMI score: {:.4f}".format(ks[1], NMIscores[1]))
+        #print("k={}, labels RI score: {:.4f}".format(ks[1], RIscores[1]))
+        field_names.extend(["Labels NMI", "Labels RI"])
+        row_contents.extend(["(k={}) {:.4f}".format(ks[1], NMIscores[1]), "(k={}) {:.4f}".format(ks[1], RIscores[1])])
+    
+    score_table.field_names = field_names
+    score_table.add_row(row_contents)
+    print(score_table.get_string())
 
     if False:
         graph = embed_obj.graph
@@ -479,9 +526,12 @@ def setup(config):
     return config["dim"], config["edgeset"], config["featureset"], config["location"]
 
 
+### ========== ========== ========== ========== ========== ###
+###      THE CODES BELOW ARE FOR TESING PURPOSE ONLY       ###
+### ========== ========== ========== ========== ========== ###
 if __name__ == "__main__":
     graph =  nx.Graph(nx.gnm_random_graph(30, 50))
-    highDimEmbed = np.random.rand(30,64)
+    highDimEmbed = np.random.rand(30, 64)
     k = 6
 
     knn_of_graph = construct_knn_from_graph(nx.convert_node_labels_to_integers(graph), k)

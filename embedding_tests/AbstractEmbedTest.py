@@ -53,5 +53,5 @@ class AbstractEmbedTest(ABC):
         self.getEmbeddings()
         self.addFeature()
         print("Embeddings of size {} is generated. The first two rows and columns are:".format(self.embeddings.shape))
-        print(self.embeddings.iloc[[0, 1], [0, 1]].to_numpy())
+        print(self.embeddings.iloc[[0, 1], [0, 1]].to_numpy().tolist())
         print()
