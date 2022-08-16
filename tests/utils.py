@@ -349,7 +349,7 @@ def get_graph_clustering_labels(graph):
     :return: k, which is the number of clusters
     :return: graph_labels
     """
-    A = nx.adjacency_matrix(graph)
+    A = nx.to_scipy_sparse_matrix(graph)
     louvain = Louvain().fit_transform(A)
     # propagation = PropagationClustering().fit_transform(A)
     return len(set(louvain)), louvain
