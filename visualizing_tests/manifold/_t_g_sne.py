@@ -202,7 +202,7 @@ class TGSNE(TSNE):
                 duration = time() - t0
                 if self.verbose:
                     print(
-                        "[t-SNE] Indexed {} samples in {:.3f}s...".format(
+                        "[t-GSNE] Indexed {} samples in {:.3f}s...".format(
                             n_samples, duration
                         )
                     )
@@ -210,11 +210,11 @@ class TGSNE(TSNE):
             #     t0 = time()
             #     distances_nn = knn.kneighbors_graph(mode="connectivity")
             #     # distances_nn = knn.kneighbors_graph(mode="distance")
-            #     print("[t-SNE] Computing nearest neighbors for the embedding using Euclidean distance")
+            #     print("[t-GSNE] Computing nearest neighbors for the embedding using Euclidean distance")
             t0 = time()
             # compute neighbors using a given KNN sparse matrix
             distances_nn = self.knn_matrix
-            print("[t-SNE] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
+            print("[t-GSNE] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
 
             duration = time() - t0
             if self.verbose:
@@ -235,8 +235,7 @@ class TGSNE(TSNE):
                 # metric.
                 distances_nn.data **= 2
 
-            print(f"[t-GSNE] distance_nn is of type {type(distances_nn)} of size {distances_nn.shape}. The first two rows and columns are:")
-            print("         {}".format(distances_nn[:2, :2].todense().tolist()))
+            print(f"[t-GSNE] distance_nn is of size {distances_nn.shape}. The first two rows and columns are: {distances_nn[:2, :2].todense().tolist()}")
 
             # compute the joint probability distribution for the input space
             P = _joint_probabilities_nn(distances_nn, self.perplexity, self.verbose)

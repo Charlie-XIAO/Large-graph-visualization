@@ -1,14 +1,17 @@
 import os
 import numpy as np
 import networkx as nx
-from networkx import bfs_edges as bfs_edges_without_depth_now
-from tests import bfs_edges as bfs_edges_with_depth_now
 import pandas as pd
 import scipy.sparse
 
 from sklearn.neighbors import NearestNeighbors
 from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_score
+from sklearn.metrics import normalized_mutual_info_score, rand_score, f1_score
+from sknetwork.clustering import Louvain, PropagationClustering
 
+from networkx import bfs_edges as bfs_edges_without_depth_now
+from tests import bfs_edges as bfs_edges_with_depth_now
 
 
 ### ========== ========== ========== ========== ========== ###
@@ -73,7 +76,6 @@ def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
 
     if mode == "connectivity":
 
-        t0 = time.time()
         # knn_of_graph = np.zeros((len(graph), len(graph)), dtype=KNN_DTYPE)
         knn_of_graph = scipy.sparse.lil_matrix((len(graph), len(graph)), dtype=KNN_DTYPE)
         
@@ -104,11 +106,8 @@ def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
 
                     knn_of_graph[v, sampled_indices] = np.min((len(graph), 2**15))      # set distance to large number
 
-        t1 = time.time()
-        print(f"Time to construct knn matrix of graph ({mode}): {t1 - t0}")
-
     elif mode == "distance":
-        t0 = time.time()
+
         # knn_of_graph = np.zeros((len(graph), len(graph)), dtype=KNN_DTYPE)
         knn_of_graph = scipy.sparse.lil_matrix((len(graph), len(graph)), dtype=KNN_DTYPE)
         
@@ -139,8 +138,6 @@ def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
 
                     knn_of_graph[v, sampled_indices] = np.min((len(graph), 2**15))      # set distance to large number
 
-        t1 = time.time()
-        print(f"Time to construct knn matrix of graph (distance): {t1 - t0}")
 
     else:
         raise ValueError(f"Mode {mode} is not supported. Use 'connectivity' or 'distance' instead")
@@ -322,8 +319,85 @@ def feature_dis_cal(feature_dic_final,k):
 ###                  CLUSTERING ACCURACY                   ###
 ### ========== ========== ========== ========== ========== ###
 
-def clustering_accuracy(graph, projection):
-    pass
+def get_projection_clustering_labels(projections, n_clusters=8):
+    """
+    :param projections: a numpy ndarray, representing the 2D projections of the graph
+    :param n_clusters: the number of clusters to form as well as the number of centroids to generate,
+                       alternatively, can be a range of such numbers, then use silhouette scores to find out the optimal choice
+
+    :return: opt_k, which is the optimal number of clusters for kMeans clustering, determined by Silhoutte score
+    :return: opt_score, which is the Silhoutte score corresponding to opt_k, float of range [-1, 1]
+    :return: proj_labels, which is a numpy array containing labels of each node as clustered in the 2D projections,
+             where the labels are in the same node ordering as in graph.nodes()
+    """
+    if isinstance(n_clusters, range):
+        opt_k, opt_score, proj_labels = 0, -2, None
+        for k in n_clusters:
+            kmeans = KMeans(n_clusters=k, verbose=0, random_state=0).fit(projections)
+            score = silhouette_score(projections, kmeans.labels_)
+            if score > opt_score:
+                opt_k, opt_score, proj_labels = k, score, kmeans.labels_
+        return opt_k, opt_score, proj_labels
+    else:
+        kmeans = KMeans(n_clusters=n_clusters, verbose=0, random_state=0).fit(projections)
+        score = silhouette_score(projections, kmeans.labels_)
+        return n_clusters, score, kmeans.labels_
+
+def get_graph_clustering_labels(graph):
+    """
+    :param graph: the networkx graph to be clustered
+    :return: k, which is the number of clusters
+    :return: graph_labels
+    """
+    A = nx.adjacency_matrix(graph)
+    louvain = Louvain().fit_transform(A)
+    # propagation = PropagationClustering().fit_transform(A)
+    return len(set(louvain)), louvain
+
+def clustering_accuracy(graph, projections):
+    """
+    :param graph: the networkx graph to be clustered
+    :param projections: a numpy ndarray, representing the 2D projections of the graph
+    
+    Returned values:
+    ------------------------------------------------------------------------------------------------
+    - k         the number of clusters
+
+    - NMIscore  Score between 0.0 and 1.0 in normalized nats (based on the natural logarithm).
+                1.0 stands for perfectly complete labeling.
+                
+        Normalized Mutual Information between two clusterings. Normalized Mutual Information (NMI)
+        is a normalization of the Mutual Information (MI) score to scale the results between 0
+        (no mutual information) and 1 (perfect correlation). In this function, mutual information
+        is normalized by some generalized mean of H(labels_true) and H(labels_pred)), defined by the
+        average_method. This measure is not adjusted for chance. Therefore adjusted_mutual_info_score
+        might be preferred. This metric is independent of the absolute values of the labels: a
+        permutation of the class or cluster label values won't change the score value in any way.
+        This metric is furthermore symmetric: switching label_true with label_pred will return the
+        same score value. This can be useful to measure the agreement of two independent label
+        assignments strategies on the same dataset when the real ground truth is not known.
+    
+    - RIscore   Similarity score between 0.0 and 1.0, inclusive, 1.0 stands for perfect match.
+
+        The Rand Index (RI) computes a similarity measure between two clusterings by considering all
+        pairs of samples and counting pairs that are assigned in the same or different clusters in
+        the predicted and true clusterings. The raw RI score is: RI = (number of agreeing pairs) / (number of pairs)
+
+    - Fmeasure  F1 score of the positive class in binary classification.
+
+        Compute the F1 score, also known as balanced F-score or F-measure. The F1 score can be
+        interpreted as a harmonic mean of the precision and recall, where an F1 score reaches its
+        best value at 1 and worst score at 0. The relative contribution of precision and recall to
+        the F1 score are equal. The formula for the F1 score is: F1 = 2 * (precision * recall) / (precision + recall)
+
+    """
+    k, graph_labels = get_graph_clustering_labels(graph)
+    proj_labels = get_projection_clustering_labels(projections, n_clusters=k)[2]
+    NMIscore = normalized_mutual_info_score(graph_labels, proj_labels)
+    RIscore = rand_score(graph_labels, proj_labels)
+    # Fmeasure = f1_score(graph_labels, proj_labels)
+    return k, NMIscore, RIscore
+
 
 
 ### ========== ========== ========== ========== ========== ###
@@ -369,7 +443,11 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
         print("Visualization quality (density): {:.4f}".format(density))
         print("Visualization quality (distance): {:.4f}".format(distance))
         print("Score (lower is better): {:.4f}\n".format(distance / (density ** 2)))
-    
+
+    k, NMIscore, RIscore = clustering_accuracy(embed_obj.graph, vis_obj.projections)
+    print("k={}, NMI score: {:.4f}".format(k, NMIscore))
+    print("k={}, RI score: {:.4f}".format(k, RIscore))
+
     if False:
         graph = embed_obj.graph
         highDimEmbed = embed_obj.embeddings
