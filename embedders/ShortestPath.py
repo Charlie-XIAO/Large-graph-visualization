@@ -28,7 +28,7 @@ class ShortestPath:
         node_count=self.graph.number_of_nodes()
         #embed_size=node_count//int((10*(edge_count/node_count)**(1/2)))
         #embed_size=node_count//10
-        embed_size=min(int(node_count*(edge_count/node_count)**(1/2))//10, 500)
+        #embed_size=min(int(node_count*(edge_count/node_count)**(1/2))//10, 500)
 
         if sampling == "random":
             # Random node sampling
@@ -59,6 +59,38 @@ class ShortestPath:
             print("Unknown sampling method, switched to random sampling.")
 
         # Generate node embeddings
+        
+        threshold=int(edge_count**(1/2))
+        node2idx = {node: i for i, node in enumerate(self.graph.nodes())}
+        dists = np.zeros(shape=(node_count, node_count))
+        self._embeddings={}
+        for node in self.graph.nodes():
+            self._embeddings[node] = [threshold+2]*embed_size
+        target_index=0
+        for node in X:
+            node_i = node2idx[node]
+            queue = [node]
+            visited = [0] * node_count
+            visited[node_i] = 1
+            while queue:
+                curNode = queue.pop(0)
+                curNode_i = node2idx[curNode]
+                for neighbor in self.graph.neighbors(curNode):
+                    neighbor_i = node2idx[neighbor]
+                    if not visited[neighbor_i]:
+                        visited[neighbor_i] = 1
+                        queue.append(neighbor)
+                        temp = dists[node_i, curNode_i] + 1
+                        if temp < threshold:
+                            dists[node_i, neighbor_i] = temp
+                            self._embeddings[neighbor][target_index]=temp
+                        else:
+                            self._embeddings[neighbor][target_index]=threshold+1
+                            queue = []
+            target_index+=1
+        return self._embeddings
+        
+        '''
         self._embeddings = {}
         edge_count = self.graph.number_of_edges()
         node_count=self.graph.number_of_nodes()
@@ -76,3 +108,4 @@ class ShortestPath:
                     position.append((threshold)+2)
             self._embeddings[source] = position
         return self._embeddings
+        '''
