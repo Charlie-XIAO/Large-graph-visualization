@@ -25,11 +25,10 @@ def exhaustive_experiment(data):
 
     output_file = "exhaustive_experiemnt.log"
 
-    cmd = "python main.py --data {} --embed {} --vis {} >> {}"
+    cmd = "python main.py --data {} --embed {} --vis {} >> log\{}"
 
     if not os.path.exists("log"):
         os.mkdir("log")
-    os.chdir("log")
 
     for vis in VIS_METHODS:
         for embed in EMBED_METHODS:  
@@ -46,11 +45,10 @@ def refined_experiment(data):
     VIS_METHODS = ["t-sne", "t-sgne"]
     output_file = "refined_experiemnt.log"
 
-    cmd = "python main.py --data {} --embed {} --vis {} >> {}"
+    cmd = "python main.py --data {} --embed {} --vis {} >> log\{}"
 
     if not os.path.exists("log"):
         os.mkdir("log")
-    os.chdir("log")
 
     for vis in VIS_METHODS:
         for embed in EMBED_METHODS:  
