@@ -1,1 +1,1 @@
-from ._t_g_sne import TGSNE
+from ._t_sgne import TSGNE

@@ -27,12 +27,13 @@ MACHINE_EPSILON = np.finfo(np.double).eps
 
 
 
-class TGSNE(TSNE):
+class TSGNE(TSNE):
 
     def __init__(self, *args, **kwargs):
         if "knn_matrix" not in kwargs:
-            raise ValueError("KNN matrix required for t-GSNE")
+            raise ValueError("KNN matrix required for t-sgne")
         self.knn_matrix = kwargs.pop("knn_matrix")
+        self.mode = kwargs.pop("mode", "connectivity")
         super().__init__(*args, **kwargs)
         
         
@@ -145,7 +146,7 @@ class TGSNE(TSNE):
                 distances = X
             else:
                 if self.verbose:
-                    print("[t-GSNE] Computing pairwise distances...")
+                    print("[t-sgne] Computing pairwise distances...")
 
                 if self.metric == "euclidean":
                     # Euclidean is squared here, rather than using **= 2,
@@ -184,61 +185,24 @@ class TGSNE(TSNE):
             n_neighbors = min(n_samples - 1, int(3.0 * self.perplexity + 1))
 
             if self.verbose:
-                print("[t-GSNE] Computing {} nearest neighbors...".format(n_neighbors))
+                print("[t-sgne] Computing {} nearest neighbors...".format(n_neighbors))
 
             # Find the nearest neighbors for every point
-            #TODO: use graph input to find knn
-            if self.knn_matrix is None:
-                # compute neighbors using Euclidean distance
-                knn = NearestNeighbors(
-                    algorithm="auto",
-                    n_jobs=self.n_jobs,
-                    n_neighbors=n_neighbors,
-                    metric=self.metric,
-                    metric_params=self.metric_params,
-                )
-                t0 = time()
-                knn.fit(X)
-                duration = time() - t0
-                if self.verbose:
-                    print(
-                        "[t-GSNE] Indexed {} samples in {:.3f}s...".format(
-                            n_samples, duration
-                        )
-                    )
+            # In t-SGNE, we use graph input to find knn
 
-            #     t0 = time()
-            #     distances_nn = knn.kneighbors_graph(mode="connectivity")
-            #     # distances_nn = knn.kneighbors_graph(mode="distance")
-            #     print("[t-GSNE] Computing nearest neighbors for the embedding using Euclidean distance")
-            t0 = time()
-            # compute neighbors using a given KNN sparse matrix
-            distances_nn = self.knn_matrix
-            print("[t-GSNE] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
 
-            duration = time() - t0
-            if self.verbose:
-                print(
-                    "[t-GSNE] Computed neighbors for {} samples in {:.3f}s...".format(
-                        n_samples, duration
-                    )
-                )
 
-            # Free the memory used by the ball_tree
-            if self.knn_matrix is None:
-                del knn
+            # knn return the euclidean distance but we need it squared
+            # to be consistent with the 'exact' method. Note that the
+            # the method was derived using the euclidean method as in the
+            # input space. Not sure of the implication of using a different
+            # metric.
+            # distances_nn.data **= 2
 
-                # knn return the euclidean distance but we need it squared
-                # to be consistent with the 'exact' method. Note that the
-                # the method was derived using the euclidean method as in the
-                # input space. Not sure of the implication of using a different
-                # metric.
-                distances_nn.data **= 2
-
-            print(f"[t-GSNE] distance_nn is of size {distances_nn.shape}. The first two rows and columns are: {distances_nn[:2, :2].todense().tolist()}")
+            print(f"[t-sgne] knn matrix is of size {self.knn_matrix.shape}. The first two rows and columns are: {self.knn_matrix[:2, :2].todense().tolist()}")
 
             # compute the joint probability distribution for the input space
-            P = _joint_probabilities_nn(distances_nn, self.perplexity, self.verbose)
+            P = _joint_probabilities_nn(self.knn_matrix, self.perplexity, self.verbose)
 
         if isinstance(self._init, np.ndarray):
             X_embedded = self._init

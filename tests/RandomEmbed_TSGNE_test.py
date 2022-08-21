@@ -1,15 +1,15 @@
 from tests.utils import *
 
 from embedding_tests.RandomEmbedTest import RandomEmbedTest
-from visualizing_tests.TGSNETest import TGSNETest
+from visualizing_tests.TSGNETest import TSGNETest
 
-def RandomEmbed_TGSNE_test(config):
+def RandomEmbed_TSGNE_test(config):
 
     dim, edgeset, featureset, location = setup(config)
 
     randomembed = RandomEmbedTest(edgeset, embed_size=dim, featureset=featureset)
     
-    tgsne = TGSNETest(
+    TSGNE = TSGNETest(
         randomembed.graph, 
         randomembed.embeddings, 
         randomembed.has_feature, 
@@ -18,4 +18,4 @@ def RandomEmbed_TGSNE_test(config):
         verbose=1, 
         random_state=0,
         mode=config["knn_mode"],)
-    show_evaluation_results(config, randomembed, tgsne, k=10)
+    show_evaluation_results(config, randomembed, TSGNE, k=10)

@@ -1,17 +1,18 @@
 """
-t-distributed Graph Stochastic Neighbor Embedding (TGSNE)
+t-distributed Stochastic Graph Neighbor Embedding (TSGNE)
 
 The KNN of each point is directly selected from the corresponding graph (i.e. use the graph neighbors).
 """
 
 # from sklearn.manifold import TSNE
-from visualizing_tests.manifold import TGSNE
+from time import time
+from visualizing_tests.manifold import TSGNE
 
 from visualizing_tests.AbstractVisTest import AbstractVisTest
 
 from tests.utils import construct_knn_from_graph
 
-class TGSNETest(AbstractVisTest):
+class TSGNETest(AbstractVisTest):
 
     def __init__(self, graph, embeddings, has_feature, location, perplexity=30, n_components=2, verbose=1, random_state=0, mode="connectivity"):
         """
@@ -35,17 +36,28 @@ class TGSNETest(AbstractVisTest):
         
         self.n_neighbors = min(len(self.graph) - 1, int(3.0 * self.perplexity + 1))
         print(f"Using k={self.n_neighbors} for KNN in tsne")
-        self.knn_matrix = construct_knn_from_graph(self.graph, k=self.n_neighbors, sparse=True)
 
+        t0 = time()
+        print("[t-sgne] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
+
+        duration = time() - t0
+        self.knn_matrix = construct_knn_from_graph(self.graph, k=self.n_neighbors, sparse=True)
+        
+        print(
+            "[t-sgne] Computed neighbors for {} samples in {:.3f}s...".format(
+                len(self.graph), duration
+            )
+        )
         self.savePlot()
     
     def getProjection(self):
 
-        model = TGSNE(
+        model = TSGNE(
             perplexity=self.perplexity,
             n_components=self.n_components, 
             verbose=self.verbose, 
             random_state=self.random_state,
             knn_matrix = self.knn_matrix,
+            mode=self.mode,
         )
         self.projections = model.fit_transform(self.X)

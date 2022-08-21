@@ -4,34 +4,34 @@ import sys
 
 # DeepWalk + vis
 from tests.DeepWalk_TSNE_test import DeepWalk_TSNE_test
-from tests.DeepWalk_TGSNE_test import DeepWalk_TGSNE_test
+from tests.DeepWalk_TSGNE_test import DeepWalk_TSGNE_test
 from tests.DeepWalk_PCA_test import DeepWalk_PCA_test
 # Node2Vec + vis
 from tests.Node2Vec_TSNE_test import Node2Vec_TSNE_test
-from tests.Node2Vec_TGSNE_test import Node2Vec_TGSNE_test
+from tests.Node2Vec_TSGNE_test import Node2Vec_TSGNE_test
 from tests.Node2Vec_PCA_test import Node2Vec_PCA_test
 # SDNE + vis
 from tests.SDNE_TSNE_test import SDNE_TSNE_test
-from tests.SDNE_TGSNE_test import SDNE_TGSNE_test
+from tests.SDNE_TSGNE_test import SDNE_TSGNE_test
 from tests.SDNE_PCA_test import SDNE_PCA_test
 # ShortestPath + vis
 from tests.ShortestPath_TSNE_test import ShortestPath_TSNE_test
-from tests.ShortestPath_TGSNE_test import ShortestPath_TGSNE_test
+from tests.ShortestPath_TSGNE_test import ShortestPath_TSGNE_test
 from tests.ShortestPath_PCA_test import ShortestPath_PCA_test
 # LEE + vis
 from tests.LEE_TSNE_test import LEE_TSNE_test
-from tests.LEE_TGSNE_test import LEE_TGSNE_test
+from tests.LEE_TSGNE_test import LEE_TSGNE_test
 from tests.LEE_PCA_test import LEE_PCA_test
 # GLEE + vis
 from tests.GLEE_TSNE_test import GLEE_TSNE_test
-from tests.GLEE_TGSNE_test import GLEE_TGSNE_test
+from tests.GLEE_TSGNE_test import GLEE_TSGNE_test
 from tests.GLEE_PCA_test import GLEE_PCA_test
 # SPLEE + vis
 from tests.SPLEE_TSNE_test import SPLEE_TSNE_test
-from tests.SPLEE_TGSNE_test import SPLEE_TGSNE_test
+from tests.SPLEE_TSGNE_test import SPLEE_TSGNE_test
 from tests.SPLEE_PCA_test import SPLEE_PCA_test
 # RandomEmbed + vis (for testing purpose only)
-from tests.RandomEmbed_TGSNE_test import RandomEmbed_TGSNE_test
+from tests.RandomEmbed_TSGNE_test import RandomEmbed_TSGNE_test
 
 
 if __name__ == "__main__":
@@ -42,9 +42,9 @@ if __name__ == "__main__":
 
     ###  set up argument parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data", help="name of the dataset to use", default="wiki")
+    parser.add_argument("--data", help="name of the dataset to use", default="lfr_3000_medium")
     parser.add_argument("--embed", help="name of the graph embedding method to use", default="deepwalk")
-    parser.add_argument("--vis", help="name of the visualization method to use", default="tgsne")
+    parser.add_argument("--vis", help="name of the visualization method to use", default="t-sgne")
     
     # Below are some less used options. Feel free to tune them.
     parser.add_argument("--dim", help="dimension of the high-dimensional embedding", type=int, default=128)
@@ -88,8 +88,8 @@ if __name__ == "__main__":
         "randomembed": "RandomEmbed",
         }
     VIS_METHODS = {
-        "tsne": "t-SNE",
-        "tgsne": "t-GSNE",
+        "t-sne": "t-SNE",
+        "t-sgne": "t-SGNE",
         "pca": "PCA",
         }
 
@@ -130,62 +130,62 @@ if __name__ == "__main__":
     if config["embed"] == "DeepWalk":
         if config["vis"] == "t-SNE":
             DeepWalk_TSNE_test(config)
-        elif config["vis"] == "t-GSNE":
-            DeepWalk_TGSNE_test(config)
+        elif config["vis"] == "t-SGNE":
+            DeepWalk_TSGNE_test(config)
         elif config["vis"] == "PCA":
             DeepWalk_PCA_test(config)
 
     elif config["embed"] == "Node2Vec":
         if config["vis"] == "t-SNE":
             Node2Vec_TSNE_test(config)
-        elif config["vis"] == "t-GSNE":
-            Node2Vec_TGSNE_test(config)
+        elif config["vis"] == "t-SGNE":
+            Node2Vec_TSGNE_test(config)
         elif config["vis"] == "PCA":
             Node2Vec_PCA_test(config)
     
     elif config["embed"] == "SDNE":
         if config["vis"] == "t-SNE":
             SDNE_TSNE_test(config)
-        elif config["vis"] == "t-GSNE":
-            SDNE_TGSNE_test(config)
+        elif config["vis"] == "t-SGNE":
+            SDNE_TSGNE_test(config)
         elif config["vis"] == "PCA":
             SDNE_PCA_test(config)
     
     elif config["embed"] == "ShortestPath":
         if config["vis"] == "t-SNE":
             ShortestPath_TSNE_test(config)
-        elif config["vis"] == "t-GSNE":
-            ShortestPath_TGSNE_test(config)
+        elif config["vis"] == "t-SGNE":
+            ShortestPath_TSGNE_test(config)
         elif config["vis"] == "PCA":
             ShortestPath_PCA_test(config)
     
     elif config["embed"] == "LEE":
         if config["vis"] == "t-SNE":
             LEE_TSNE_test(config)
-        elif config["vis"] == "t-GSNE":
-            LEE_TGSNE_test(config)
+        elif config["vis"] == "t-SGNE":
+            LEE_TSGNE_test(config)
         elif config["vis"] == "PCA":
             LEE_PCA_test(config)
     
     elif config["embed"] == "GLEE":
         if config["vis"] == "t-SNE":
             GLEE_TSNE_test(config)
-        elif config["vis"] == "t-GSNE":
-            GLEE_TGSNE_test(config)
+        elif config["vis"] == "t-SGNE":
+            GLEE_TSGNE_test(config)
         elif config["vis"] == "PCA":
             GLEE_PCA_test(config)
 
     elif config["embed"] == "SPLEE":
         if config["vis"] == "t-SNE":
             SPLEE_TSNE_test(config)
-        elif config["vis"] == "t-GSNE":
-            SPLEE_TGSNE_test(config)
+        elif config["vis"] == "t-SGNE":
+            SPLEE_TSGNE_test(config)
         elif config["vis"] == "PCA":
             SPLEE_PCA_test(config)
     
     elif config["embed"] == "RandomEmbed":
-        if config["vis"] == "t-GSNE":
-            RandomEmbed_TGSNE_test(config)
+        if config["vis"] == "t-SGNE":
+            RandomEmbed_TSGNE_test(config)
         else:
             NotImplementedError("Random embedding + other visualization is not implemented yet")
 
