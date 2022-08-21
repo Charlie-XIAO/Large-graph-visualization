@@ -1,3 +1,4 @@
+from time import time
 import pandas as pd
 
 from embedders.utils import *
@@ -32,7 +33,9 @@ class Node2VecTest(AbstractEmbedTest):
         self.embed()
     
     def getEmbeddings(self):
+        t0 = time()
         model = Node2Vec(self.graph, walk_length=self.walk_length, num_walks=self.num_walks, p=self.p, q=self.q, workers=self.workers)
         model.train(embed_size=self.embed_size, window_size=self.window_size, iter=self.iter)
         embeddings = pd.DataFrame.from_dict(model.get_embeddings())
         self.embeddings = embeddings.T
+        self.duration = time() - t0

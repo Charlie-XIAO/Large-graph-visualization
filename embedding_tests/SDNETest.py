@@ -1,3 +1,4 @@
+from time import time
 import pandas as pd
 
 from embedders.utils import *
@@ -26,7 +27,9 @@ class SDNETest(AbstractEmbedTest):
         self.embed()
     
     def getEmbeddings(self):
+        t0 = time()
         model = SDNE(self.graph, hidden_size=self.hidden_size)
         model.train(batch_size=self.batch_size, epochs=self.epochs, verbose=self.verbose)
         embeddings = pd.DataFrame.from_dict(model.get_embeddings())
         self.embeddings = embeddings.T
+        self.duration = time() - t0

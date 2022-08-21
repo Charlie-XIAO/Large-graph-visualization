@@ -1,3 +1,4 @@
+from time import time
 import pandas as pd
 
 from embedders.utils import *
@@ -16,9 +17,11 @@ class RandomEmbedTest(AbstractEmbedTest):
         self.embed()
     
     def getEmbeddings(self):
+        t0 = time()
         self.embeddings = pd.DataFrame(
             np.random.rand(self.graph.number_of_nodes(), self.embed_size),
             columns=[str(num) for num in range(self.embed_size)]
             )
         
         self.embeddings.index = self.embeddings.index.map(str)
+        self.duration = time() - t0

@@ -1,3 +1,6 @@
+
+from time import time
+
 from sklearn.decomposition import PCA
 
 from visualizing_tests.AbstractVisTest import AbstractVisTest
@@ -21,5 +24,7 @@ class PCATest(AbstractVisTest):
         self.savePlot()
     
     def getProjection(self):
+        t0 = time()
         model = PCA(n_components=self.n_components, random_state=self.random_state)
         self.projections = model.fit_transform(self.X)
+        self.duration = time() - t0

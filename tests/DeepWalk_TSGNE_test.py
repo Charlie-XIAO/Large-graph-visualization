@@ -19,3 +19,4 @@ def DeepWalk_TSGNE_test(config):
         mode=config["knn_mode"]
         )
     show_evaluation_results(config, deepwalk, tsgne, k=10)
+    

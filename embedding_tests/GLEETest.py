@@ -1,3 +1,4 @@
+from time import time
 import pandas as pd
 
 from embedders.utils import *
@@ -18,6 +19,8 @@ class GLEETest(AbstractEmbedTest):
         self.embed()
     
     def getEmbeddings(self):
+        t0 = time()
         model = GLEE(self.graph)
         embeddings = pd.DataFrame.from_dict(model.get_embeddings(embed_size=self.embed_size))
         self.embeddings = embeddings.T
+        self.duration = time() - t0

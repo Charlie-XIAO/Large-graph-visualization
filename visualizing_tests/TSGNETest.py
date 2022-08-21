@@ -33,24 +33,23 @@ class TSGNETest(AbstractVisTest):
         self.verbose = verbose
         self.random_state = random_state
         self.mode = mode
-        
+        self.savePlot()
+    
+    def getProjection(self):
+        t0 = time()
         self.n_neighbors = min(len(self.graph) - 1, int(3.0 * self.perplexity + 1))
         print(f"Using k={self.n_neighbors} for KNN in tsne")
 
-        t0 = time()
+        t1 = time()
         print("[t-sgne] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
 
-        duration = time() - t0
         self.knn_matrix = construct_knn_from_graph(self.graph, k=self.n_neighbors, sparse=True)
         
         print(
             "[t-sgne] Computed neighbors for {} samples in {:.3f}s...".format(
-                len(self.graph), duration
+                len(self.graph), t1 - time()
             )
         )
-        self.savePlot()
-    
-    def getProjection(self):
 
         model = TSGNE(
             perplexity=self.perplexity,
@@ -61,3 +60,4 @@ class TSGNETest(AbstractVisTest):
             mode=self.mode,
         )
         self.projections = model.fit_transform(self.X)
+        self.duration = time() - t0

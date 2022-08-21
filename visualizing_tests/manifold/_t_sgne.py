@@ -146,7 +146,7 @@ class TSGNE(TSNE):
                 distances = X
             else:
                 if self.verbose:
-                    print("[t-sgne] Computing pairwise distances...")
+                    print("[t-SGNE] Computing pairwise distances...")
 
                 if self.metric == "euclidean":
                     # Euclidean is squared here, rather than using **= 2,
@@ -185,7 +185,7 @@ class TSGNE(TSNE):
             n_neighbors = min(n_samples - 1, int(3.0 * self.perplexity + 1))
 
             if self.verbose:
-                print("[t-sgne] Computing {} nearest neighbors...".format(n_neighbors))
+                print("[t-SGNE] Computing {} nearest neighbors...".format(n_neighbors))
 
             # Find the nearest neighbors for every point
             # In t-SGNE, we use graph input to find knn
@@ -199,7 +199,7 @@ class TSGNE(TSNE):
             # metric.
             # distances_nn.data **= 2
 
-            print(f"[t-sgne] knn matrix is of size {self.knn_matrix.shape}. The first two rows and columns are: {self.knn_matrix[:2, :2].todense().tolist()}")
+            print(f"[t-SGNE knn matrix is of size {self.knn_matrix.shape}. The first two rows and columns are: {self.knn_matrix[:2, :2].todense().tolist()}")
 
             # compute the joint probability distribution for the input space
             P = _joint_probabilities_nn(self.knn_matrix, self.perplexity, self.verbose)

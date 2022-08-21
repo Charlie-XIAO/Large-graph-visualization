@@ -12,6 +12,7 @@ class AbstractEmbedTest(ABC):
         self.featureset = featureset
         self.embeddings = None
         self.has_feature = False
+        self.duration = None
         print(self.graph)
         print()
 

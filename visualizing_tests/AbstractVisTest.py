@@ -14,6 +14,7 @@ class AbstractVisTest(ABC):
             self.X = self.embeddings.iloc[:, :]
         self.location = location
         self.projections = None
+        self.duration = None
     
     @abstractmethod
     def getProjection(self):

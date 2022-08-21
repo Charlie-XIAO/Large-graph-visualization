@@ -445,7 +445,12 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
 
     embedding_table = PrettyTable()
     field_names, row_contents = ["Embedding"], [config["embed"]]
+    assert embed_obj.duration is not None, "embed duration shouldn't be None"
+    field_names.append("Embed Duration")
+    row_contents.append(f"{embed_obj.duration:.3f}s")
     embedding_vars = vars(embed_obj)
+    # pop out duration in embedding_vars
+    embedding_vars.pop("duration")
     for x in embedding_vars:
         if x not in ["edgeset", "graph", "featureset", "embeddings", "has_feature"]:
             field_names.append(x)
@@ -456,6 +461,9 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
 
     visualization_table = PrettyTable()
     field_names, row_contents = ["Visualization"], [config["vis"]]
+    assert vis_obj.duration is not None, "vis duration shouldn't be None"
+    field_names.append("Vis Duration")
+    row_contents.append(f"{vis_obj.duration:.3f}s")
     visualization_vars = vars(vis_obj)
     for x in visualization_vars:
         if x not in ["embeddings", "has_feature", "X", "location", "projections", "graph", "knn_matrix"]:
@@ -468,6 +476,9 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
 
     score_table = PrettyTable()
     field_names, row_contents = [], []
+
+    field_names.append("Total Duration")
+    row_contents.append(f"{embed_obj.duration + vis_obj.duration:.3f}s")
 
     features = None
     if embed_obj.has_feature:

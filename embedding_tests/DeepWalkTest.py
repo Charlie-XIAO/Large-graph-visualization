@@ -1,4 +1,5 @@
 import pandas as pd
+from time import time
 
 from embedders.utils import *
 from embedders.previous_works.DeepWalk import DeepWalk
@@ -28,7 +29,9 @@ class DeepWalkTest(AbstractEmbedTest):
         self.embed()
     
     def getEmbeddings(self):
+        t0 = time()
         model = DeepWalk(self.graph, walk_length=self.walk_length, num_walks=self.num_walks, workers=self.workers)
         model.train(embed_size=self.embed_size, window_size=self.window_size, iter=self.iter)
         embeddings = pd.DataFrame.from_dict(model.get_embeddings())
         self.embeddings = embeddings.T
+        self.duration = time() - t0
