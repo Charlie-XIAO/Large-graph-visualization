@@ -6,7 +6,7 @@ lastfm 7.6k
 random 3k
 wiki 2.4k
 wormnet 2.4k
-eu2 32.4k (not sure)
+eu2 32.4k
 email_univ 1k
 condmat 23k
 hepph 12k
