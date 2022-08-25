@@ -1,5 +1,7 @@
 # Instructions
 
+0. Install python 3.9 (we assume the command below are running in python 3.9).
+
 1. Clone the repository. Use `Clone Git Repository...` tab in an empty window of VSCode or use the following command line in Command Prompt:
 
 ```
