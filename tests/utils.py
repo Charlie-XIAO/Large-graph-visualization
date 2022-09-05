@@ -1,4 +1,5 @@
 import os
+import datetime
 import numpy as np
 import networkx as nx
 import pandas as pd
@@ -439,7 +440,7 @@ def print_block(title):
         print("### " + "========== " * 5 + "###")
     print()
 
-def show_evaluation_results(config, embed_obj, vis_obj, k=10):
+def show_evaluation_results(config, embed_obj, vis_obj, k=10, write_to_log=False):
 
     print_block("EVALUATION RESULTS on {} EDGELIST".format(config["data"]))
 
@@ -506,23 +507,68 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
     score_table.add_row(row_contents)
     print(score_table.get_string())
 
-    if False:
-        graph = embed_obj.graph
-        highDimEmbed = embed_obj.embeddings
-        lowDimEmbed = vis_obj.projections
-        randomHighDimEmbed = randomEmbeddings(embed_obj.embeddings)
-        randomLowDimEmbed = randomEmbeddings(vis_obj.projections)
 
-        high = compare_KNN(graph, highDimEmbed, k)
-        print("k = {}, Embedding KNN accuracy: {:.4f}".format(k, high), end=", ")
-        high_base = compare_KNN(graph, randomHighDimEmbed, k)
-        print("with baseline {:.4f}".format(high_base))
-        low = compare_KNN(graph, lowDimEmbed, k)
-        print("k = {}, Visualization KNN accuracy: {:.4f}".format(k, low), end=", ")
-        low_base = compare_KNN(graph, randomLowDimEmbed, k)
-        print("with baseline {:.4f}".format(low_base))
-        high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
-        print("k = {}, Dimension reduction KNN accuracy: {:.4f}".format(k, high_v_low))
+    # write log file for *each dataset*
+    if not os.path.exists(os.path.join( os.getcwd(), "log",)):
+        os.mkdir("log")
+    os.chdir(os.path.join(os.getcwd(), "log",))
+    if not os.path.exists(os.path.join( os.getcwd(), config['data'],)):
+        os.mkdir(config['data'])
+    os.chdir(config['data'])
+
+    if not os.path.exists(f"log_{config['data']}.csv"):
+        with open(f"log_{config['data']}.csv", "a") as log_file:
+                log_file.write(
+                    "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
+                        "Time",
+                        "Dataset",
+                        "Embedding method",
+                        "Visualization method",
+                        "Embedding duration",
+                        "Visualization duration",
+                        "Total duration",
+                        "Density",
+                        "Distance",
+                        "k0",
+                        "Clustering NMI",
+                        "Clustering RI",
+                        "k1",
+                        "Labels NMI",
+                        "Labels RI",
+                    )
+                )
+    # check if indices exist.
+    if 'density' not in locals():
+        density = -1
+    if 'distance' not in locals():
+        distance = -1
+    if len(ks) < 2:
+        ks.append(-1)
+        NMIscores.append(-1)
+        RIscores.append(-1)
+
+    with open(f"log_{config['data']}.csv", "a") as log_file:
+        log_file.write(
+            "{},{},{},{},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{},{:.3f},{:.3f},{},{:.3f},{:.3f}\n".format(
+                datetime.datetime.now().__str__(),
+                config['data'],
+                config['embed'],
+                config['vis'],
+                embed_obj.duration,
+                vis_obj.duration,
+                embed_obj.duration + vis_obj.duration,
+                density,
+                distance,
+                ks[0],
+                NMIscores[0],
+                RIscores[0],
+                ks[1],
+                NMIscores[1],
+                RIscores[1],
+            )
+        )
+
+
 
 def setup(config):
     """
