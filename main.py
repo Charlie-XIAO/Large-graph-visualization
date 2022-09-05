@@ -35,7 +35,28 @@ from tests.RandomEmbed_TSGNE_test import RandomEmbed_TSGNE_test
 
 
 if __name__ == "__main__":
+
+    ### ========== ========== ========== ========== ========== ###
+    ###           EMBEDDING AND VISUALIZING METHODS            ###
+    ### ========== ========== ========== ========== ========== ###
+    ### V V V V V V V V V V V V V V V V V V V V V V V V V V V  ###
     
+    EMBED_METHODS = {
+        "deepwalk": "DeepWalk", 
+        "node2vec": "Node2Vec", 
+        "sdne": "SDNE",
+        "shortestpath": "ShortestPath",
+        "lee": "LEE",
+        "glee": "GLEE",
+        "splee": "SPLEE",
+        "randomembed": "RandomEmbed",
+        }
+    VIS_METHODS = {
+        "t-sne": "t-SNE",
+        "t-sgne": "t-SGNE",
+        "pca": "PCA",
+        }
+
     ### default settings
     dataset_folder = os.path.join(os.path.dirname(__file__), "datasets")
     image_folder = os.path.join(os.path.dirname(__file__), "images")
@@ -43,8 +64,14 @@ if __name__ == "__main__":
     ###  set up argument parser
     parser = argparse.ArgumentParser()
     parser.add_argument("--data", help="name of the dataset to use", default="lfr_3000_medium")
-    parser.add_argument("--embed", help="name of the graph embedding method to use", default="deepwalk")
-    parser.add_argument("--vis", help="name of the visualization method to use", default="t-sgne")
+    parser.add_argument(
+        "--embed", 
+        help=f"name of the graph embedding method to use, choices are {list(EMBED_METHODS.keys())}", 
+        default="deepwalk")
+    parser.add_argument(
+        "--vis", 
+        help=f"name of the visualization method to use, choices are {list(VIS_METHODS.keys())}", 
+        default="t-sgne")
     
     # Below are some less used options. Feel free to tune them.
     parser.add_argument("--dim", help="dimension of the high-dimensional embedding", type=int, default=128)
@@ -69,29 +96,6 @@ if __name__ == "__main__":
     if not os.path.exists(config["image_folder"]):
         os.makedirs(config["image_folder"])
         print(f"Created folder: {config['image_folder']}")
-
-
-
-    ### ========== ========== ========== ========== ========== ###
-    ###           EMBEDDING AND VISUALIZING METHODS            ###
-    ### ========== ========== ========== ========== ========== ###
-    ### V V V V V V V V V V V V V V V V V V V V V V V V V V V  ###
-    
-    EMBED_METHODS = {
-        "deepwalk": "DeepWalk", 
-        "node2vec": "Node2Vec", 
-        "sdne": "SDNE",
-        "shortestpath": "ShortestPath",
-        "lee": "LEE",
-        "glee": "GLEE",
-        "splee": "SPLEE",
-        "randomembed": "RandomEmbed",
-        }
-    VIS_METHODS = {
-        "t-sne": "t-SNE",
-        "t-sgne": "t-SGNE",
-        "pca": "PCA",
-        }
 
     
     ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###

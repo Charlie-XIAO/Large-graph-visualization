@@ -12,7 +12,7 @@ images/
 log/
 .log
 myvenv/
-
+datasets/lfr_*/
 
 # # track sklearn.manifold.TSNE
 # myvenv/*

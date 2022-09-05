@@ -58,7 +58,6 @@ def refined_experiment(data):
                 stderr=sys.stdout.fileno(),
                 shell=True)
 
-
 if __name__ == "__main__":
     data = "lfr_3000_medium"
     # refined_experiment(data)
