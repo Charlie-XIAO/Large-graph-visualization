@@ -448,11 +448,10 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
     assert embed_obj.duration is not None, "embed duration shouldn't be None"
     field_names.append("Embed Duration")
     row_contents.append(f"{embed_obj.duration:.3f}s")
+    print(f"embed.obj.duration = {embed_obj.duration}")
     embedding_vars = vars(embed_obj)
-    # pop out duration in embedding_vars
-    embedding_vars.pop("duration")
     for x in embedding_vars:
-        if x not in ["edgeset", "graph", "featureset", "embeddings", "has_feature"]:
+        if x not in ["edgeset", "graph", "featureset", "embeddings", "has_feature", "duration"]:
             field_names.append(x)
             row_contents.append(embedding_vars[x])
     embedding_table.field_names = field_names
@@ -466,7 +465,7 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
     row_contents.append(f"{vis_obj.duration:.3f}s")
     visualization_vars = vars(vis_obj)
     for x in visualization_vars:
-        if x not in ["embeddings", "has_feature", "X", "location", "projections", "graph", "knn_matrix"]:
+        if x not in ["embeddings", "has_feature", "X", "location", "projections", "graph", "knn_matrix", "duration"]:
             field_names.append(x)
             row_contents.append(visualization_vars[x])
     visualization_table.field_names = field_names
@@ -478,7 +477,8 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
     field_names, row_contents = [], []
 
     field_names.append("Total Duration")
-    row_contents.append(f"{embed_obj.duration + vis_obj.duration:.3f}s")
+    total_duration = embed_obj.duration + vis_obj.duration
+    row_contents.append(f"{total_duration:.3f}s")
 
     features = None
     if embed_obj.has_feature:
