@@ -47,7 +47,7 @@ class TSGNETest(AbstractVisTest):
         
         print(
             "[t-sgne] Computed neighbors for {} samples in {:.3f}s...".format(
-                len(self.graph), t1 - time()
+                len(self.graph), time() - t1
             )
         )
 
