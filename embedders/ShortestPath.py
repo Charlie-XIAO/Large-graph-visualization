@@ -2,6 +2,7 @@ import numpy as np
 import networkx as nx
 import heapq
 import math
+import scipy.sparse
 
 ### ========== ========== ========= ========== ========== ###
 ### CLASS SHORTEST PATH ###
@@ -62,7 +63,8 @@ class ShortestPath:
         
         threshold=int(edge_count**(1/2))
         node2idx = {node: i for i, node in enumerate(self.graph.nodes())}
-        dists = np.zeros(shape=(node_count, node_count))
+        # dists = np.zeros(shape=(node_count, node_count))
+        dists = scipy.sparse.lil_matrix((node_count, node_count))
         self._embeddings={}
         for node in self.graph.nodes():
             self._embeddings[node] = [threshold+2]*embed_size

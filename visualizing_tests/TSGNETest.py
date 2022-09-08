@@ -14,7 +14,7 @@ from tests.utils import construct_knn_from_graph
 
 class TSGNETest(AbstractVisTest):
 
-    def __init__(self, graph, embeddings, has_feature, location, perplexity=30, n_components=2, verbose=1, random_state=0, mode="connectivity"):
+    def __init__(self, graph, embeddings, has_feature, location, perplexity=30, n_components=2, verbose=1, random_state=0, mode="distance"):
         """
         :param self:
         :param graph: graph of the dataset
@@ -47,7 +47,7 @@ class TSGNETest(AbstractVisTest):
         
         print(
             "[t-sgne] Computed neighbors for {} samples in {:.3f}s...".format(
-                len(self.graph), t1 - time()
+                len(self.graph), time() - t1
             )
         )
 

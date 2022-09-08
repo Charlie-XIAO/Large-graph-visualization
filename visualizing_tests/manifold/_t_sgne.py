@@ -33,7 +33,7 @@ class TSGNE(TSNE):
         if "knn_matrix" not in kwargs:
             raise ValueError("KNN matrix required for t-sgne")
         self.knn_matrix = kwargs.pop("knn_matrix")
-        self.mode = kwargs.pop("mode", "connectivity")
+        self.mode = kwargs.pop("mode", "distance")
         super().__init__(*args, **kwargs)
         
         

@@ -35,42 +35,6 @@ from tests.RandomEmbed_TSGNE_test import RandomEmbed_TSGNE_test
 
 
 if __name__ == "__main__":
-    
-    ### default settings
-    dataset_folder = os.path.join(os.path.dirname(__file__), "datasets")
-    image_folder = os.path.join(os.path.dirname(__file__), "images")
-
-    ###  set up argument parser
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--data", help="name of the dataset to use", default="lfr_3000_medium")
-    parser.add_argument("--embed", help="name of the graph embedding method to use", default="deepwalk")
-    parser.add_argument("--vis", help="name of the visualization method to use", default="t-sgne")
-    
-    # Below are some less used options. Feel free to tune them.
-    parser.add_argument("--dim", help="dimension of the high-dimensional embedding", type=int, default=128)
-    # According to sklearn implemnetation, k should be calculated using perplexity (k = min(n_samples - 1, int(3.0 * self.perplexity + 1)))
-    parser.add_argument("--k", help="k neighbors to use for the knn graph construction", type=int, default=10)
-    parser.add_argument("--seed", help="random seed", type=int, default=20220804)             #TODO: fix a random seed for reproducibility
-    parser.add_argument("--image_format", help="image format", default="png")
-    parser.add_argument("--description", help="extra description of current test", default="")
-    parser.add_argument("--knn_mode", help="The mode of knn matrix constructed from graph ('connectivity' or 'distance')", default="distance")
-
-
-    ###  parse arguments
-    args = parser.parse_args()
-    config = dict()
-    for arg in vars(args):
-        config[arg] = getattr(args, arg)
-    config["dataset_folder"] = os.path.join(dataset_folder, config["data"])
-    config["image_folder"] = os.path.join(image_folder, config["data"])
-    config["edgeset"] = os.path.join(config["dataset_folder"], f"{config['data']}_edgelist.txt")
-    config["featureset"] = os.path.join(config["dataset_folder"], f"{config['data']}_labels.txt")
-
-    if not os.path.exists(config["image_folder"]):
-        os.makedirs(config["image_folder"])
-        print(f"Created folder: {config['image_folder']}")
-
-
 
     ### ========== ========== ========== ========== ========== ###
     ###           EMBEDDING AND VISUALIZING METHODS            ###
@@ -92,6 +56,48 @@ if __name__ == "__main__":
         "t-sgne": "t-SGNE",
         "pca": "PCA",
         }
+
+    ### default settings
+    dataset_folder = os.path.join(os.path.dirname(__file__), "datasets")
+    image_folder = os.path.join(os.path.dirname(__file__), "images")
+
+    ###  set up argument parser
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--data", help="name of the dataset to use", default="lfr_3000_medium")
+    parser.add_argument(
+        "--embed", 
+        help=f"name of the graph embedding method to use, choices are {list(EMBED_METHODS.keys())}", 
+        default="shortestpath")
+    parser.add_argument(
+        "--vis", 
+        help=f"name of the visualization method to use, choices are {list(VIS_METHODS.keys())}", 
+        default="t-sgne")
+    
+    # Below are some less used options. Feel free to tune them.
+
+    parser.add_argument("--dim", help="dimension of the high-dimensional embedding", type=int, default=128)
+    # According to sklearn implemnetation, k should be calculated using perplexity (k = min(n_samples - 1, int(3.0 * self.perplexity + 1)))
+    parser.add_argument("--k", help="k neighbors to use for the knn graph construction", type=int, default=10)
+    parser.add_argument("--seed", help="random seed", type=int, default=20220804)             #TODO: fix a random seed for reproducibility
+    parser.add_argument("--image_format", help="image format", default="png")
+    parser.add_argument("--description", help="extra description of current test", default="")
+    parser.add_argument("--knn_mode", help="The mode of knn matrix constructed from graph ('connectivity' or 'distance')", default="distance")
+    # whether or not to apply NMI / RI metrics on the final result
+    parser.add_argument("--eval", help="whether or not to evaluate the result (calculate density / NMI / RI)", type=int, default=1)
+
+    ###  parse arguments
+    args = parser.parse_args()
+    config = dict()
+    for arg in vars(args):
+        config[arg] = getattr(args, arg)
+    config["dataset_folder"] = os.path.join(dataset_folder, config["data"])
+    config["image_folder"] = os.path.join(image_folder, config["data"])
+    config["edgeset"] = os.path.join(config["dataset_folder"], f"{config['data']}_edgelist.txt")
+    config["featureset"] = os.path.join(config["dataset_folder"], f"{config['data']}_labels.txt")
+
+    if not os.path.exists(config["image_folder"]):
+        os.makedirs(config["image_folder"])
+        print(f"Created folder: {config['image_folder']}")
 
     
     ### A A A A A A A A A A A A A A A A A A A A A A A A A A A  ###
