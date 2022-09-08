@@ -63,7 +63,7 @@ def experiment_02(data):
     VIS_METHODS = ["t-sgne"]
     output_file = "experiemnt_02.log"
 
-    cmd = "python main.py --data {} --embed {} --vis {} >> log\{}"
+    cmd = "python main.py --data {} --embed {} --vis {} --eval 0 >> log\\{}"
 
     if not os.path.exists("log"):
         os.mkdir("log")
@@ -78,8 +78,16 @@ def experiment_02(data):
  
 
 if __name__ == "__main__":
-    datasets = ["ytbcm"]
-
+    datasets = [
+        "lfr_30000_0.18",
+        "lfr_300000_0.18",
+       "lfr_3000000_0.18"
+       ]
+    # datasets = [
+    #     "lock",
+    #     "lock",
+    #     "lock"
+    # ]
     for data in datasets:
-        exhaustive_experiment(data)
+        experiment_02(data)
     

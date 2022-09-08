@@ -1,0 +1,329 @@
+Created folder: /nfs/embedding-visualization-test/images/lfr_30000_0.18
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###    Running ShortestPath + t-SGNE on lfr_30000_0.18     ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+Reading graph data... Done.
+Graph with 30000 nodes and 75656 edges
+
+Reading features data... Done.
+Embeddings of size (30000, 129) is generated. The first two rows and columns are:
+[[7.0, 7.0], [7.0, 7.0]]
+
+Using k=91 for KNN in tsne
+[t-sgne] Computing nearest neighbors for the embedding using a given KNN sparse matrix
+[t-sgne] Computed neighbors for 30000 samples in -15.008s...
+[t-SGNE] Computing 91 nearest neighbors...
+[t-SGNE knn matrix is of size (30000, 30000). The first two rows and columns are: [[0, 1], [1, 0]]
+[t-SNE] Computed conditional probabilities for sample 1000 / 30000
+[t-SNE] Computed conditional probabilities for sample 2000 / 30000
+[t-SNE] Computed conditional probabilities for sample 3000 / 30000
+[t-SNE] Computed conditional probabilities for sample 4000 / 30000
+[t-SNE] Computed conditional probabilities for sample 5000 / 30000
+[t-SNE] Computed conditional probabilities for sample 6000 / 30000
+[t-SNE] Computed conditional probabilities for sample 7000 / 30000
+[t-SNE] Computed conditional probabilities for sample 8000 / 30000
+[t-SNE] Computed conditional probabilities for sample 9000 / 30000
+[t-SNE] Computed conditional probabilities for sample 10000 / 30000
+[t-SNE] Computed conditional probabilities for sample 11000 / 30000
+[t-SNE] Computed conditional probabilities for sample 12000 / 30000
+[t-SNE] Computed conditional probabilities for sample 13000 / 30000
+[t-SNE] Computed conditional probabilities for sample 14000 / 30000
+[t-SNE] Computed conditional probabilities for sample 15000 / 30000
+[t-SNE] Computed conditional probabilities for sample 16000 / 30000
+[t-SNE] Computed conditional probabilities for sample 17000 / 30000
+[t-SNE] Computed conditional probabilities for sample 18000 / 30000
+[t-SNE] Computed conditional probabilities for sample 19000 / 30000
+[t-SNE] Computed conditional probabilities for sample 20000 / 30000
+[t-SNE] Computed conditional probabilities for sample 21000 / 30000
+[t-SNE] Computed conditional probabilities for sample 22000 / 30000
+[t-SNE] Computed conditional probabilities for sample 23000 / 30000
+[t-SNE] Computed conditional probabilities for sample 24000 / 30000
+[t-SNE] Computed conditional probabilities for sample 25000 / 30000
+[t-SNE] Computed conditional probabilities for sample 26000 / 30000
+[t-SNE] Computed conditional probabilities for sample 27000 / 30000
+[t-SNE] Computed conditional probabilities for sample 28000 / 30000
+[t-SNE] Computed conditional probabilities for sample 29000 / 30000
+[t-SNE] Computed conditional probabilities for sample 30000 / 30000
+[t-SNE] Mean sigma: 0.703853
+[t-SNE] KL divergence after 50 iterations with early exaggeration: 111.893242
+[t-SNE] KL divergence after 100 iterations: 6.839679
+Projections done.
+Scatter plot created.
+Saving scatter plot... Done.
+Location: /nfs/embedding-visualization-test/images/lfr_30000_0.18/lfr_30000_0.18_ShortestPath_t-SGNE.png
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###     EVALUATION RESULTS on lfr_30000_0.18 EDGELIST      ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+embed.obj.duration = 39.682210206985474
++--------------+----------------+------------+
+|  Embedding   | Embed Duration | embed_size |
++--------------+----------------+------------+
+| ShortestPath |    39.682s     |    128     |
++--------------+----------------+------------+
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+| Visualization | Vis Duration | perplexity | n_components | verbose | random_state |   mode   | n_neighbors |
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+|     t-SGNE    |   22.217s    |     30     |      2       |    1    |      0       | distance |      91     |
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###    Running ShortestPath + t-SGNE on lfr_300000_0.18    ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+Reading graph data... Created folder: /nfs/embedding-visualization-test/images/lfr_3000000_0.18
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###   Running ShortestPath + t-SGNE on lfr_3000000_0.18    ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+Reading graph data... Done.
+Graph with 3000000 nodes and 7570531 edges
+
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###         Running ShortestPath + t-SGNE on lock          ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+Reading graph data... Done.
+Graph with 228 nodes and 358 edges
+
+Reading features data... Failed: [Errno 2] No such file or directory: '/nfs/embedding-visualization-test/datasets/lock/lock_labels.txt'
+Embeddings of size (228, 128) is generated. The first two rows and columns are:
+[[5.0, 3.0], [4.0, 4.0]]
+
+Using k=91 for KNN in tsne
+[t-sgne] Computing nearest neighbors for the embedding using a given KNN sparse matrix
+[t-sgne] Computed neighbors for 228 samples in -0.113s...
+[t-SGNE] Computing 91 nearest neighbors...
+[t-SGNE knn matrix is of size (228, 228). The first two rows and columns are: [[0, 1], [1, 0]]
+[t-SNE] Computed conditional probabilities for sample 228 / 228
+[t-SNE] Mean sigma: 0.916581
+[t-SNE] KL divergence after 250 iterations with early exaggeration: 63.848995
+[t-SNE] KL divergence after 1000 iterations: 0.809294
+Projections done.
+Scatter plot created.
+Saving scatter plot... Done.
+Location: /nfs/embedding-visualization-test/images/lock/lock_ShortestPath_t-SGNE.png
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###          EVALUATION RESULTS on lock EDGELIST           ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+embed.obj.duration = 0.13198256492614746
++--------------+----------------+------------+
+|  Embedding   | Embed Duration | embed_size |
++--------------+----------------+------------+
+| ShortestPath |     0.132s     |    128     |
++--------------+----------------+------------+
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+| Visualization | Vis Duration | perplexity | n_components | verbose | random_state |   mode   | n_neighbors |
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+|     t-SGNE    |    0.782s    |     30     |      2       |    1    |      0       | distance |      91     |
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###         Running ShortestPath + t-SGNE on lock          ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+Reading graph data... Done.
+Graph with 228 nodes and 358 edges
+
+Reading features data... Failed: [Errno 2] No such file or directory: '/nfs/embedding-visualization-test/datasets/lock/lock_labels.txt'
+Embeddings of size (228, 128) is generated. The first two rows and columns are:
+[[5.0, 5.0], [6.0, 6.0]]
+
+Using k=91 for KNN in tsne
+[t-sgne] Computing nearest neighbors for the embedding using a given KNN sparse matrix
+[t-sgne] Computed neighbors for 228 samples in -0.112s...
+[t-SGNE] Computing 91 nearest neighbors...
+[t-SGNE knn matrix is of size (228, 228). The first two rows and columns are: [[0, 1], [1, 0]]
+[t-SNE] Computed conditional probabilities for sample 228 / 228
+[t-SNE] Mean sigma: 0.916581
+[t-SNE] KL divergence after 250 iterations with early exaggeration: 63.782890
+[t-SNE] KL divergence after 1000 iterations: 0.773596
+Projections done.
+Scatter plot created.
+Saving scatter plot... Done.
+Location: /nfs/embedding-visualization-test/images/lock/lock_ShortestPath_t-SGNE.png
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###          EVALUATION RESULTS on lock EDGELIST           ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+embed.obj.duration = 0.13898634910583496
++--------------+----------------+------------+
+|  Embedding   | Embed Duration | embed_size |
++--------------+----------------+------------+
+| ShortestPath |     0.139s     |    128     |
++--------------+----------------+------------+
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+| Visualization | Vis Duration | perplexity | n_components | verbose | random_state |   mode   | n_neighbors |
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+|     t-SGNE    |    1.894s    |     30     |      2       |    1    |      0       | distance |      91     |
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###         Running ShortestPath + t-SGNE on lock          ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+Reading graph data... Done.
+Graph with 228 nodes and 358 edges
+
+Reading features data... Failed: [Errno 2] No such file or directory: '/nfs/embedding-visualization-test/datasets/lock/lock_labels.txt'
+Embeddings of size (228, 128) is generated. The first two rows and columns are:
+[[4.0, 4.0], [5.0, 5.0]]
+
+Using k=91 for KNN in tsne
+[t-sgne] Computing nearest neighbors for the embedding using a given KNN sparse matrix
+[t-sgne] Computed neighbors for 228 samples in -0.110s...
+[t-SGNE] Computing 91 nearest neighbors...
+[t-SGNE knn matrix is of size (228, 228). The first two rows and columns are: [[0, 1], [1, 0]]
+[t-SNE] Computed conditional probabilities for sample 228 / 228
+[t-SNE] Mean sigma: 0.916581
+[t-SNE] KL divergence after 250 iterations with early exaggeration: 65.099579
+[t-SNE] KL divergence after 1000 iterations: 0.847320
+Projections done.
+Scatter plot created.
+Saving scatter plot... Done.
+Location: /nfs/embedding-visualization-test/images/lock/lock_ShortestPath_t-SGNE.png
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###          EVALUATION RESULTS on lock EDGELIST           ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+embed.obj.duration = 0.1343517303466797
++--------------+----------------+------------+
+|  Embedding   | Embed Duration | embed_size |
++--------------+----------------+------------+
+| ShortestPath |     0.134s     |    128     |
++--------------+----------------+------------+
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+| Visualization | Vis Duration | perplexity | n_components | verbose | random_state |   mode   | n_neighbors |
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+|     t-SGNE    |    2.276s    |     30     |      2       |    1    |      0       | distance |      91     |
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###    Running ShortestPath + t-SGNE on lfr_30000_0.18     ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+Reading graph data... Done.
+Graph with 30000 nodes and 75656 edges
+
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###    Running ShortestPath + t-SGNE on lfr_30000_0.18     ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+Reading graph data... Done.
+Graph with 30000 nodes and 75656 edges
+
+Reading features data... Done.
+Embeddings of size (30000, 129) is generated. The first two rows and columns are:
+[[6.0, 8.0], [7.0, 8.0]]
+
+Using k=91 for KNN in tsne
+[t-sgne] Computing nearest neighbors for the embedding using a given KNN sparse matrix
+[t-sgne] Computed neighbors for 30000 samples in -14.801s...
+[t-SGNE] Computing 91 nearest neighbors...
+[t-SGNE knn matrix is of size (30000, 30000). The first two rows and columns are: [[0, 1], [1, 0]]
+[t-SNE] Computed conditional probabilities for sample 1000 / 30000
+[t-SNE] Computed conditional probabilities for sample 2000 / 30000
+[t-SNE] Computed conditional probabilities for sample 3000 / 30000
+[t-SNE] Computed conditional probabilities for sample 4000 / 30000
+[t-SNE] Computed conditional probabilities for sample 5000 / 30000
+[t-SNE] Computed conditional probabilities for sample 6000 / 30000
+[t-SNE] Computed conditional probabilities for sample 7000 / 30000
+[t-SNE] Computed conditional probabilities for sample 8000 / 30000
+[t-SNE] Computed conditional probabilities for sample 9000 / 30000
+[t-SNE] Computed conditional probabilities for sample 10000 / 30000
+[t-SNE] Computed conditional probabilities for sample 11000 / 30000
+[t-SNE] Computed conditional probabilities for sample 12000 / 30000
+[t-SNE] Computed conditional probabilities for sample 13000 / 30000
+[t-SNE] Computed conditional probabilities for sample 14000 / 30000
+[t-SNE] Computed conditional probabilities for sample 15000 / 30000
+[t-SNE] Computed conditional probabilities for sample 16000 / 30000
+[t-SNE] Computed conditional probabilities for sample 17000 / 30000
+[t-SNE] Computed conditional probabilities for sample 18000 / 30000
+[t-SNE] Computed conditional probabilities for sample 19000 / 30000
+[t-SNE] Computed conditional probabilities for sample 20000 / 30000
+[t-SNE] Computed conditional probabilities for sample 21000 / 30000
+[t-SNE] Computed conditional probabilities for sample 22000 / 30000
+[t-SNE] Computed conditional probabilities for sample 23000 / 30000
+[t-SNE] Computed conditional probabilities for sample 24000 / 30000
+[t-SNE] Computed conditional probabilities for sample 25000 / 30000
+[t-SNE] Computed conditional probabilities for sample 26000 / 30000
+[t-SNE] Computed conditional probabilities for sample 27000 / 30000
+[t-SNE] Computed conditional probabilities for sample 28000 / 30000
+[t-SNE] Computed conditional probabilities for sample 29000 / 30000
+[t-SNE] Computed conditional probabilities for sample 30000 / 30000
+[t-SNE] Mean sigma: 0.703853
+[t-SNE] KL divergence after 50 iterations with early exaggeration: 111.893265
+[t-SNE] KL divergence after 100 iterations: 6.839678
+Projections done.
+Scatter plot created.
+Saving scatter plot... Done.
+Location: /nfs/embedding-visualization-test/images/lfr_30000_0.18/lfr_30000_0.18_ShortestPath_t-SGNE.png
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###     EVALUATION RESULTS on lfr_30000_0.18 EDGELIST      ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+embed.obj.duration = 38.81484818458557
++--------------+----------------+------------+
+|  Embedding   | Embed Duration | embed_size |
++--------------+----------------+------------+
+| ShortestPath |    38.815s     |    128     |
++--------------+----------------+------------+
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+| Visualization | Vis Duration | perplexity | n_components | verbose | random_state |   mode   | n_neighbors |
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+|     t-SGNE    |   22.331s    |     30     |      2       |    1    |      0       | distance |      91     |
++---------------+--------------+------------+--------------+---------+--------------+----------+-------------+
+
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###    Running ShortestPath + t-SGNE on lfr_300000_0.18    ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+Reading graph data... 
+### ========== ========== ========== ========== ========== ###
+###                                                        ###
+###   Running ShortestPath + t-SGNE on lfr_3000000_0.18    ###
+###                                                        ###
+### ========== ========== ========== ========== ========== ###
+
+Reading graph data... Done.
+Graph with 3000000 nodes and 7570531 edges
+
