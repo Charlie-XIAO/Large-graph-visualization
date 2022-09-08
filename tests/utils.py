@@ -3,6 +3,7 @@ import numpy as np
 import networkx as nx
 import pandas as pd
 import scipy.sparse
+from datetime import datetime
 from prettytable import PrettyTable
 
 from sklearn.neighbors import NearestNeighbors
@@ -443,16 +444,17 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
 
     print_block("EVALUATION RESULTS on {} EDGELIST".format(config["data"]))
 
+    print(datetime.now().strftime("%m/%d/%Y %H:%M:%S"))
+    print()
+
     embedding_table = PrettyTable()
     field_names, row_contents = ["Embedding"], [config["embed"]]
     assert embed_obj.duration is not None, "embed duration shouldn't be None"
     field_names.append("Embed Duration")
     row_contents.append(f"{embed_obj.duration:.3f}s")
     embedding_vars = vars(embed_obj)
-    # pop out duration in embedding_vars
-    embedding_vars.pop("duration")
     for x in embedding_vars:
-        if x not in ["edgeset", "graph", "featureset", "embeddings", "has_feature"]:
+        if x not in ["duration", "edgeset", "graph", "featureset", "embeddings", "has_feature"]:
             field_names.append(x)
             row_contents.append(embedding_vars[x])
     embedding_table.field_names = field_names
@@ -466,7 +468,7 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
     row_contents.append(f"{vis_obj.duration:.3f}s")
     visualization_vars = vars(vis_obj)
     for x in visualization_vars:
-        if x not in ["embeddings", "has_feature", "X", "location", "projections", "graph", "knn_matrix"]:
+        if x not in ["duration", "embeddings", "has_feature", "X", "location", "projections", "graph", "knn_matrix"]:
             field_names.append(x)
             row_contents.append(visualization_vars[x])
     visualization_table.field_names = field_names
@@ -505,24 +507,6 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10):
     score_table.field_names = field_names
     score_table.add_row(row_contents)
     print(score_table.get_string())
-
-    if False:
-        graph = embed_obj.graph
-        highDimEmbed = embed_obj.embeddings
-        lowDimEmbed = vis_obj.projections
-        randomHighDimEmbed = randomEmbeddings(embed_obj.embeddings)
-        randomLowDimEmbed = randomEmbeddings(vis_obj.projections)
-
-        high = compare_KNN(graph, highDimEmbed, k)
-        print("k = {}, Embedding KNN accuracy: {:.4f}".format(k, high), end=", ")
-        high_base = compare_KNN(graph, randomHighDimEmbed, k)
-        print("with baseline {:.4f}".format(high_base))
-        low = compare_KNN(graph, lowDimEmbed, k)
-        print("k = {}, Visualization KNN accuracy: {:.4f}".format(k, low), end=", ")
-        low_base = compare_KNN(graph, randomLowDimEmbed, k)
-        print("with baseline {:.4f}".format(low_base))
-        high_v_low = np.average(compare_KNN_matrix(construct_knn_from_embeddings(highDimEmbed, k), construct_knn_from_embeddings(lowDimEmbed, k)))
-        print("k = {}, Dimension reduction KNN accuracy: {:.4f}".format(k, high_v_low))
 
 def setup(config):
     """

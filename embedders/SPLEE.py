@@ -24,19 +24,12 @@ class SPLEE:
         :param iter DEFAULT 100:
         :return: embedding
         """
-        import time
-        t0 = time.time()
         if threshold is None:
             dist = RBF_distance_metric(distance_matrix(self.graph), shape=shape, epsilon=epsilon)
         else:
             dist = RBF_distance_metric(k_distance_matrix(self.graph, threshold=threshold), shape=shape, epsilon=epsilon)
-        print(time.time() - t0)
-        t0 = time.time()
         laplacian = unnormalized_laplacian_matrix(dist)
-        print(time.time() - t0)
-        t0 = time.time()
         node_embedding = la.eigsh(laplacian, k=embed_size, which="SM", maxiter=iter*self.graph.number_of_nodes(), return_eigenvectors=True)[1]
-        print(time.time() - t0)
         self._embeddings = {}
         i = 0
         for node in self.graph.nodes():

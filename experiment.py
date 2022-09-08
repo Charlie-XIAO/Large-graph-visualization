@@ -23,7 +23,7 @@ def exhaustive_experiment(data):
         "pca": "PCA",
         }
 
-    output_file = "exhaustive_experiemnt.log"
+    output_file = "exhaustive_experiment.log"
 
     cmd = "python main.py --data {} --embed {} --vis {} >> log\{}"
 
@@ -43,7 +43,7 @@ def refined_experiment(data):
 
     EMBED_METHODS = ["deepwalk", "shortestpath", "splee"]
     VIS_METHODS = ["t-sne", "t-sgne"]
-    output_file = "refined_experiemnt.log"
+    output_file = "refined_experiment.log"
 
     cmd = "python main.py --data {} --embed {} --vis {} >> log\{}"
 
@@ -52,7 +52,7 @@ def refined_experiment(data):
 
     for vis in VIS_METHODS:
         for embed in EMBED_METHODS:  
-            print(cmd.format(data, embed, vis, output_file))     
+            print(cmd.format(data, embed, vis, output_file))
             subprocess.call(
                 cmd.format(data, embed, vis, output_file), 
                 stderr=sys.stdout.fileno(),
@@ -60,6 +60,6 @@ def refined_experiment(data):
 
 
 if __name__ == "__main__":
-    data = "lfr_3000_medium"
-    # refined_experiment(data)
-    exhaustive_experiment(data)
+    data = "astro"
+    refined_experiment(data)
+    # exhaustive_experiment(data)
