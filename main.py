@@ -67,7 +67,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--embed", 
         help=f"name of the graph embedding method to use, choices are {list(EMBED_METHODS.keys())}", 
-        default="deepwalk")
+        default="shortestpath")
     parser.add_argument(
         "--vis", 
         help=f"name of the visualization method to use, choices are {list(VIS_METHODS.keys())}", 
