@@ -58,7 +58,28 @@ def refined_experiment(data):
                 stderr=sys.stdout.fileno(),
                 shell=True)
 
+def experiment_02(data):
+    EMBED_METHODS = ["shortestpath"]
+    VIS_METHODS = ["t-sgne"]
+    output_file = "experiemnt_02.log"
+
+    cmd = "python main.py --data {} --embed {} --vis {} >> log\{}"
+
+    if not os.path.exists("log"):
+        os.mkdir("log")
+
+    for vis in VIS_METHODS:
+        for embed in EMBED_METHODS:  
+            print(cmd.format(data, embed, vis, output_file))     
+            subprocess.call(
+                cmd.format(data, embed, vis, output_file), 
+                stderr=sys.stdout.fileno(),
+                shell=True)
+ 
+
 if __name__ == "__main__":
-    data = "lfr_3000_medium"
-    # refined_experiment(data)
-    exhaustive_experiment(data)
+    datasets = ["ytbcm"]
+
+    for data in datasets:
+        exhaustive_experiment(data)
+    

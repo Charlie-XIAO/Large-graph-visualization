@@ -74,6 +74,7 @@ if __name__ == "__main__":
         default="t-sgne")
     
     # Below are some less used options. Feel free to tune them.
+
     parser.add_argument("--dim", help="dimension of the high-dimensional embedding", type=int, default=128)
     # According to sklearn implemnetation, k should be calculated using perplexity (k = min(n_samples - 1, int(3.0 * self.perplexity + 1)))
     parser.add_argument("--k", help="k neighbors to use for the knn graph construction", type=int, default=10)
@@ -81,7 +82,8 @@ if __name__ == "__main__":
     parser.add_argument("--image_format", help="image format", default="png")
     parser.add_argument("--description", help="extra description of current test", default="")
     parser.add_argument("--knn_mode", help="The mode of knn matrix constructed from graph ('connectivity' or 'distance')", default="distance")
-
+    # whether or not to apply NMI / RI metrics on the final result
+    parser.add_argument("--eval", help="whether or not to evaluate the result (calculate density / NMI / RI)", type=int, default=1)
 
     ###  parse arguments
     args = parser.parse_args()
