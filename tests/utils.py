@@ -1,5 +1,4 @@
 import os
-import datetime
 import numpy as np
 import networkx as nx
 import pandas as pd
@@ -453,7 +452,6 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10, write_to_log=False
     assert embed_obj.duration is not None, "embed duration shouldn't be None"
     field_names.append("Embed Duration")
     row_contents.append(f"{embed_obj.duration:.3f}s")
-    print(f"embed.obj.duration = {embed_obj.duration}")
     embedding_vars = vars(embed_obj)
     for x in embedding_vars:
         if x not in ["duration", "edgeset", "graph", "featureset", "embeddings", "has_feature"]:
@@ -524,7 +522,7 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10, write_to_log=False
         with open(f"log_{config['data']}.csv", "a") as log_file:
             log_file.write(
                 "{},{},{},{},{:.3f},{:.3f},{:.3f},{},{},{},{},{},{},{},{}\n".format(
-                    datetime.datetime.now().__str__(),
+                    datetime.now().__str__(),
                     config['data'],
                     config['embed'],
                     config['vis'],
@@ -536,24 +534,17 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10, write_to_log=False
             )
     elif log_write_type == "default":
         features = None
-        if embed_obj.has_feature:
-            features = vis_obj.embeddings.feature
-            featured_projection = np.insert(vis_obj.projections, 2, list(features), axis=1)
-            density, distance = density_check(featured_projection, k=10, threshold=0.6)
-            #print("Visualization quality: (density) {:.4f} (distance) {:.4f}".format(density, distance))
-            #print("Overall score: {:.4f}\n".format(distance / (density ** 2)))
-            field_names.extend(["Density", "Distance"])
-            row_contents.extend([format(density, ".4f"), format(distance, ".4f")])
+        featured_projection = np.insert(vis_obj.projections, 2, list(get_graph_clustering_labels(embed_obj.graph)[1]), axis=1)
+        density, distance = density_check(featured_projection, k=10, threshold=0.6)
+        field_names.extend(["Density", "Distance"])
+        row_contents.extend([format(density, ".4f"), format(distance, ".4f")])
 
         ks, NMIscores, RIscores = clustering_accuracy(embed_obj.graph, vis_obj.projections, embed_obj.has_feature, features)
-        #print("k={}, clustering NMI score: {:.4f}".format(ks[0], NMIscores[0]))
-        #print("k={}, clustering RI score: {:.4f}".format(ks[0], RIscores[0]))
         field_names.extend(["Clustering NMI", "Clustering RI"])
         row_contents.extend(["(k={}) {:.4f}".format(ks[0], NMIscores[0]), "(k={}) {:.4f}".format(ks[0], RIscores[0])])
 
-        if embed_obj.has_feature:
-            #print("k={}, labels NMI score: {:.4f}".format(ks[1], NMIscores[1]))
-            #print("k={}, labels RI score: {:.4f}".format(ks[1], RIscores[1]))
+        if False:
+        # if embed_obj.has_feature:
             field_names.extend(["Labels NMI", "Labels RI"])
             row_contents.extend(["(k={}) {:.4f}".format(ks[1], NMIscores[1]), "(k={}) {:.4f}".format(ks[1], RIscores[1])])
         
@@ -604,7 +595,7 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10, write_to_log=False
         with open(f"log_{config['data']}.csv", "a") as log_file:
             log_file.write(
                 "{},{},{},{},{:.3f},{:.3f},{:.3f},{:.3f},{:.3f},{},{:.3f},{:.3f},{},{:.3f},{:.3f}\n".format(
-                    datetime.datetime.now().__str__(),
+                    datetime.now().__str__(),
                     config['data'],
                     config['embed'],
                     config['vis'],

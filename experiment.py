@@ -60,6 +60,6 @@ def refined_experiment(data):
 
 
 if __name__ == "__main__":
-    data = "astro"
+    data = "lastfm"
     refined_experiment(data)
     # exhaustive_experiment(data)
