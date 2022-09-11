@@ -63,15 +63,15 @@ if __name__ == "__main__":
 
     ###  set up argument parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("--data", help="name of the dataset to use", default="lfr_3000_medium")
+    parser.add_argument("--data", help="name of the dataset to use", default="lastfm")
     parser.add_argument(
         "--embed", 
         help=f"name of the graph embedding method to use, choices are {list(EMBED_METHODS.keys())}", 
-        default="shortestpath")
+        default="splee")
     parser.add_argument(
         "--vis", 
         help=f"name of the visualization method to use, choices are {list(VIS_METHODS.keys())}", 
-        default="t-sgne")
+        default="t-sne")
     
     # Below are some less used options. Feel free to tune them.
 

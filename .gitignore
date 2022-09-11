@@ -13,13 +13,3 @@ log/
 .log
 myvenv/
 datasets/lfr_*/
-
-# # track sklearn.manifold.TSNE
-# myvenv/*
-# !myvenv/Lib/
-# myvenv/Lib/*
-# !myvenv/Lib/site-packages
-# myvenv/Lib/site-packages/*
-# !myvenv/Lib/site-packages/sklearn
-# myvenv/Lib/site-packages/sklearn/*
-# !myvenv/Lib/site-packages/sklearn/manifold/_t_sne.py
