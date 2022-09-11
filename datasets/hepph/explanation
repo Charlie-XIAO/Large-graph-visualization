@@ -1,0 +1,31 @@
+Dataset Name:
+    hepph
+Description:
+    This network dataset is in the category of Collaboration Networks.
+Source:
+    https://networkrepository.com/ca-HepPh.php
+Size:
+    12.0K nodes, 118.5K edges
+Type:
+    undirected, unweighted
+Statistics:
+    Density	                        0.00164363
+    Maximum degree	                491
+    Minimum degree	                0
+    Average degree	                19
+    Assortativity	                0.632275
+    Number of triangles	            10.1M
+    Average number of triangles	    839
+    Maximum number of triangles	    39.6K
+    Average clustering coefficient	0.611483
+    Fraction of closed triangles	0.659477
+    Maximum k-core	                239
+    Lower bound of Maximum Clique	239
+Citation:
+    @inproceedings{nr,
+        title={The Network Data Repository with Interactive Graph Analytics and Visualization},
+        author={Ryan A. Rossi and Nesreen K. Ahmed},
+        booktitle={AAAI},
+        url={https://networkrepository.com},
+        year={2015}
+    }

@@ -1,15 +1,3 @@
-name:  Astrophysics
-code:  AP
-category:  Coauthorship
-long-description:  This is the co-authorship network from the "astrophysics" section (astro-ph) of arXiv.  Nodes are authors and an edge denotes a collaboration. 
-entity-names:  author
-relationship-names:  co-authorship
-extr:  dimacs10
-url:  https://www.cc.gatech.edu/dimacs10/archive/clustering.shtml
-timeiso:  1995-01-01/1999-12-31
-tags:  #join #missingmultiplicity
-cite: konect:newman01
-
 Dataset Name:
     Astrophysics
 Description: 
@@ -21,3 +9,33 @@ Size:
     16706 nodes, 121251 edges
 Type: 
     unweighted, undirected
+Citation:
+
+    @MISC{konect:2018:dimacs10-astro-ph,
+        title = {Astrophysics network dataset -- {KONECT}},
+        month = jan,
+        year = {2018},
+        url = {http://konect.cc/networks/dimacs10-astro-ph}
+    }
+
+    @article{konect:newman01,
+        title = {The Structure of Scientific Collaboration Networks}, 
+        author = {Newman, Mark E. J.}, 
+        journal = {Proc. Natl. Acad. Sci. U.S.A.} ,
+        volume = {98}, 
+        number = {2}, 
+        pages = {404--409}, 
+        year = {2001}, 
+    }
+
+    @inproceedings{konect,
+        title = {{KONECT} -- {The} {Koblenz} {Network} {Collection}},
+        author = {Jérôme Kunegis},
+        year = {2013},
+        booktitle = {Proc. Int. Conf. on World Wide Web Companion},
+        pages = {1343--1350},
+        url = {http://dl.acm.org/citation.cfm?id=2488173},
+        url_presentation = {https://www.slideshare.net/kunegis/presentationwow},
+        url_web = {http://konect.cc/},
+        url_citations = {https://scholar.google.com/scholar?cites=7174338004474749050},
+    }

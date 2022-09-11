@@ -1,0 +1,31 @@
+Dataset Name:
+    eu2
+Description: 
+    This network dataset is in the category of Email Networks.
+Source: 
+    https://networkrepository.com/email-EU.php
+Size: 
+    32.4K vertices, 54.4K edges
+Type: 
+    unweighted, directed
+Statistics:
+    Density	                        0.000103449
+    Maximum degree	                623
+    Minimum degree	                1
+    Average degree	                3
+    Assortativity	                -0.381627
+    Number of triangles	            147K
+    Average number of triangles	    4
+    Maximum number of triangles	    1.6K
+    Average clustering coefficient	0.112681
+    Fraction of closed triangles	0.0267784
+    Maximum k-core	                23
+    Lower bound of Maximum Clique	11
+Citation:
+    @inproceedings{nr,
+        title={The Network Data Repository with Interactive Graph Analytics and Visualization},
+        author={Ryan A. Rossi and Nesreen K. Ahmed},
+        booktitle={AAAI},
+        url={https://networkrepository.com},
+        year={2015}
+    }
