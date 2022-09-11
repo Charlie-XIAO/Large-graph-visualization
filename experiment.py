@@ -71,10 +71,17 @@ def toyexp():
     exp_and_log(["shortestpath"], ["t-sgne"], "lock", "toyexp.log")
 
 if __name__ == "__main__":
-    datasets = [
-        "lfr_30000_0.18",
-        "lfr_300000_0.18",
-        "lfr_3000000_0.18",
+    datasets = [                # Nodes / Edges
+    # synthetic datasests
+        "lfr_30000_0.18",       # Nodes 30,000 / Edges 75,643
+        "lfr_300000_0.18",      # Nodes 300,000 / Edges 656,664
+        "lfr_3000000_0.18",     # Nodes 3,000,000 / Edges 4,937,941
+
+    # real-world datasets
+        "twitch_gamers",        # Nodes 168,114 / Edges 6,797,557
+        "dblp",                 # Nodes	317,080 / Edges 1,049,866
+        "youtube_community",    # Nodes	1,134,890 / Edges 2,987,624
+        "livejournal",          # Nodes	3,997,962 / Edges 34,681,189
        ]
 
     # datasets = [

@@ -13,3 +13,8 @@ log/
 .log
 myvenv/
 datasets/lfr_*/
+datasets/twitch_gamers/
+datasets/dblp/
+datasets/youtube_community/
+datasets/livejournal/
+large_datasets.zip
