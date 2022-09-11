@@ -9,3 +9,15 @@ url:  https://www.cc.gatech.edu/dimacs10/archive/clustering.shtml
 timeiso:  1995-01-01/1999-12-31
 tags:  #join #missingmultiplicity
 cite: konect:newman01
+
+Dataset Name:
+    Astrophysics
+Description: 
+   This is the co-authorship network from the "astrophysics" section (astro-ph) of arXiv. 
+   Nodes are authors and an edge denotes a collaboration.
+Source: 
+    https://www.cc.gatech.edu/dimacs10/archive/clustering.shtml
+Size: 
+    16706 nodes, 121251 edges
+Type: 
+    unweighted, undirected
