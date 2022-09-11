@@ -17,4 +17,4 @@ datasets/twitch_gamers/
 datasets/dblp/
 datasets/youtube_community/
 datasets/livejournal/
-large_datasets.zip
+large_datasets.*
