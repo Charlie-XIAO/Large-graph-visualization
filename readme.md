@@ -35,8 +35,6 @@ python main.py --data <dataset_name> --embed <embedding_method> --vis <visualiza
 
 5. To run the program on large datasets mentioned in the experiment 2 of the essay, download zipped datasets from [this google drive link](https://drive.google.com/file/d/1n4sE6AfZZZU81IeqehnxYmQOHk7CqgAh/view?usp=sharing), and unzip the file in the `datasets` folder.
 
-```
-
 ## Graph Embedding
 
 ### Previous Works
