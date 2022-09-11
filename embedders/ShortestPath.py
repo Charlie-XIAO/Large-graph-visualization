@@ -70,11 +70,11 @@ class ShortestPath:
 
         # Generate node embeddings
         if len(X) < 1000:
-            vis_step = 100
+            vis_step = 10
         elif len(X) >= 1000 and len(X) < 100000:
-            vis_step = 1000
+            vis_step = 100
         else:
-            vis_step = 10000
+            vis_step = 1000
 
         target_index=0
 
