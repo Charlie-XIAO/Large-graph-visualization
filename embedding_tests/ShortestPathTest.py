@@ -2,6 +2,7 @@ from time import time
 import pandas as pd
 
 from embedders.utils import *
+# from embedders.previous_works.Deprecated_ShortestPath import ShortestPath
 from embedders.ShortestPath import ShortestPath
 
 from embedding_tests.AbstractEmbedTest import AbstractEmbedTest

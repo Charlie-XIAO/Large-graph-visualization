@@ -51,7 +51,7 @@ def save_node_property(G, filename):
         # sign = communities[0]       # seelct first element of the community
         # if sign not in record:
         if community not in record:
-            print(f"community #{count} detected, size = {len(community)}")
+            # print(f"community #{count} detected, size = {len(community)}")
             record.append(community)
             labels[community] = count
             count += 1

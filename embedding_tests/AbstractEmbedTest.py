@@ -17,7 +17,7 @@ class AbstractEmbedTest(ABC):
         print()
 
     def readGraph(self):
-        print("Reading graph data", end="... ")
+        print(f"Reading graph data from {self.edgeset}", end="... ")
         G = nx.read_edgelist(self.edgeset, create_using=nx.Graph(), nodetype=None, data=[("weight", int)])
         print("Done.")
         return G

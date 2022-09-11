@@ -3,6 +3,24 @@ import sys
 import os
 from tests.utils import print_block
 
+def exp_and_log(EMBED_METHODS, VIS_METHODS, data, output_file):
+    # write stdout and stderr both to log file and to screen
+    cmd = "python -u main.py --data {} --embed {} --vis {} --eval 0 | tee -a {}"
+
+    if not os.path.exists("log"):
+        os.mkdir("log")
+
+    output_file = os.path.join('log', output_file)
+
+    for embed in EMBED_METHODS:
+        for vis in VIS_METHODS:
+
+            fcmd = cmd.format(data, embed, vis, output_file, output_file)   
+            print(fcmd)     
+            subprocess.call(
+                fcmd, 
+                stderr=sys.stdout.fileno(),
+                shell=True)
 
 def exhaustive_experiment(data):
     print_block("Running exhaustive_experiment")
@@ -25,19 +43,8 @@ def exhaustive_experiment(data):
 
     output_file = "exhaustive_experiment.log"
 
-    cmd = "python main.py --data {} --embed {} --vis {} >> log\{}"
-
-    if not os.path.exists("log"):
-        os.mkdir("log")
-
-    for vis in VIS_METHODS:
-        for embed in EMBED_METHODS:  
-            print(cmd.format(data, embed, vis, output_file))     
-            subprocess.call(
-                cmd.format(data, embed, vis, output_file), 
-                stderr=sys.stdout.fileno(),
-                shell=True)
-
+    exp_and_log(EMBED_METHODS, VIS_METHODS, data, output_file)
+    
 def refined_experiment(data):   
     print_block("Running refined_experiment")
 
@@ -45,21 +52,42 @@ def refined_experiment(data):
     VIS_METHODS = ["t-sne", "t-sgne"]
     output_file = "refined_experiment.log"
 
-    cmd = "python main.py --data {} --embed {} --vis {} >> log\{}"
+    exp_and_log(EMBED_METHODS, VIS_METHODS, data, output_file)
 
-    if not os.path.exists("log"):
-        os.mkdir("log")
+def exp02(datasets):
+    def exp02_per(data):
+        EMBED_METHODS = ["shortestpath"]
+        VIS_METHODS = ["t-sgne"]
+        output_file = "experiment_02.log"
 
-    for vis in VIS_METHODS:
-        for embed in EMBED_METHODS:  
-            print(cmd.format(data, embed, vis, output_file))
-            subprocess.call(
-                cmd.format(data, embed, vis, output_file), 
-                stderr=sys.stdout.fileno(),
-                shell=True)
+        exp_and_log(EMBED_METHODS, VIS_METHODS, data, output_file)
 
+    print_block("Running Experiment 02:")
+
+    for data in datasets:
+        exp02_per(data) 
+
+def toyexp():
+    exp_and_log(["shortestpath"], ["t-sgne"], "lock", "toyexp.log")
 
 if __name__ == "__main__":
-    data = "lastfm"
-    refined_experiment(data)
+    datasets = [
+        "lfr_30000_0.18",
+        "lfr_300000_0.18",
+        "lfr_3000000_0.18",
+       ]
+
+    # datasets = [
+    #     "lock",
+        # "lock",
+        # "lock"
+    # ]
+    
+    exp02(datasets)
+
+    # toyexp()
+    
+    # data = "lastfm"
+    # refined_experiment(data)
     # exhaustive_experiment(data)
+

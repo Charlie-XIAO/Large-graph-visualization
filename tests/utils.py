@@ -489,6 +489,10 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10, write_to_log=False
     }[config["eval"]]
 
     if log_write_type == "minimal":
+        score_table.field_names = field_names
+        score_table.add_row(row_contents)
+        print(score_table.get_string())
+
         # write log file for *each dataset*
         if not os.path.exists(os.path.join( os.getcwd(), "log",)):
             os.mkdir("log")
