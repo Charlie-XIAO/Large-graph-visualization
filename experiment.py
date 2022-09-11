@@ -72,10 +72,10 @@ def toyexp():
 
 if __name__ == "__main__":
     datasets = [                # Nodes / Edges
-    # synthetic datasests
-        "lfr_30000_0.18",       # Nodes 30,000 / Edges 75,643
-        "lfr_300000_0.18",      # Nodes 300,000 / Edges 656,664
-        "lfr_3000000_0.18",     # Nodes 3,000,000 / Edges 4,937,941
+    # # synthetic datasests
+    #     "lfr_30000_0.18",       # Nodes 30,000 / Edges 75,643
+    #     "lfr_300000_0.18",      # Nodes 300,000 / Edges 656,664
+    #     "lfr_3000000_0.18",     # Nodes 3,000,000 / Edges 4,937,941
 
     # real-world datasets
         "twitch_gamers",        # Nodes 168,114 / Edges 6,797,557

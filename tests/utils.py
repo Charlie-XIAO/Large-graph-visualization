@@ -113,8 +113,22 @@ def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
         # knn_of_graph = np.zeros((len(graph), len(graph)), dtype=KNN_DTYPE)
         knn_of_graph = scipy.sparse.lil_matrix((len(graph), len(graph)), dtype=KNN_DTYPE)
         
+        count = 0
+        total = len(graph)
+
+        if total < 1000:
+            vis_step = 100
+        elif total >= 1000 and total < 100000:
+            vis_step = 1000
+        else:
+            vis_step = 10000
+        
+        print(f"[t-SGNE] Finished computing the neighbors of {count}/{total} nodes")
         for v in range(len(graph)):
             
+            if count % vis_step == 0:
+                print(f"[t-SGNE] Finished computing the neighbors of {count}/{total} nodes")
+
             ### avoid duplicated visiting
             # method 1: set
             visited = {v}
