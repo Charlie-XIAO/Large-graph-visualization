@@ -5,7 +5,7 @@ from tests.utils import print_block
 
 def exp_and_log(EMBED_METHODS, VIS_METHODS, data, output_file):
     # write stdout and stderr both to log file and to screen
-    cmd = "(python main.py --data {} --embed {} --vis {} --eval 0 >> {}) 2>&1 | tee {}"
+    cmd = "python -u main.py --data {} --embed {} --vis {} --eval 0 | tee -a {}"
 
     if not os.path.exists("log"):
         os.mkdir("log")
@@ -67,20 +67,25 @@ def exp02(datasets):
     for data in datasets:
         exp02_per(data) 
 
+def toyexp():
+    exp_and_log(["shortestpath"], ["t-sgne"], "lock", "toyexp.log")
 
 if __name__ == "__main__":
-    # datasets = [
-    #     "lfr_30000_0.18",
-    #     "lfr_300000_0.18",
-    #    "lfr_3000000_0.18"
-    #    ]
     datasets = [
-        "lock",
-        "lock",
-        "lock"
-    ]
+        "lfr_30000_0.18",
+        "lfr_300000_0.18",
+       "lfr_3000000_0.18",
+       ]
+
+    # datasets = [
+    #     "lock",
+        # "lock",
+        # "lock"
+    # ]
     
     exp02(datasets)
+
+    # toyexp()
     
 
     # data = "lastfm"
