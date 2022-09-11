@@ -1,0 +1,13 @@
+Dataset Name:
+    condmat
+Description:
+    Collaboration network of Arxiv Condensed Matter category.
+    There is an edge if authors coauthored at least one paper.
+    Each unordered pair of nodes is saved only once.
+Type:
+    Unweighted, directed
+Size:
+    23133 nodes, 186936 edges
+Citation:
+    J. Leskovec, J. Kleinberg and C. Faloutsos. Graph Evolution: Densification and Shrinking Diameters.
+    ACM Transactions on Knowledge Discovery from Data (ACM TKDD), 1(1), 2007.

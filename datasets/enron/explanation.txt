@@ -1,0 +1,31 @@
+Dataset Name:
+    enron
+Description: 
+    This network is in the collection of Miscellaneous Networks.
+Source: 
+    https://networkrepository.com/enron.php
+Size: 
+    69.2K vertices, 274.6K edges
+Type: 
+    unweighted, directed
+Statistics:
+    Density	                        0.000114547
+    Maximum degree	                1.8K
+    Minimum degree	                0
+    Average degree	                7
+    Assortativity	                -0.158995
+    Number of triangles	            5M
+    Average number of triangles	    71
+    Maximum number of triangles	    35.8K
+    Average clustering coefficient	0.198638
+    Fraction of closed triangles	0.0911006
+    Maximum k-core	                62
+    Lower bound of Maximum Clique	14
+Citation:
+    @inproceedings{nr,
+        title={The Network Data Repository with Interactive Graph Analytics and Visualization},
+        author={Ryan A. Rossi and Nesreen K. Ahmed},
+        booktitle={AAAI},
+        url={https://networkrepository.com},
+        year={2015}
+    }
