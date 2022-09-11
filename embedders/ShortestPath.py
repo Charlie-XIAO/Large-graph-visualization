@@ -94,12 +94,12 @@ class ShortestPath:
             # _embeddings_np[neighbors, target_index] = lengths
 
             if target_index % vis_step == 0:
-                print("[ShortestPath] {}/{} embeddings calculated".format(target_index, len(X)))
+                print("[ShortestPath] {}/{} dimensions of embeddings calculated".format(target_index, len(X)))
             target_index += 1
         
         _embeddings_np[_embeddings_np > threshold] = threshold
 
-        print("[ShortestPath] {}/{} embeddings calculated, finished!".format(len(X), len(X)))
+        print("[ShortestPath] {}/{} dimensions of embeddings calculated, finished!".format(len(X), len(X)))
 
         for n in self.graph:
             self._embeddings[n] = _embeddings_np[node2idx[int(n)], :]

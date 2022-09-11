@@ -81,8 +81,14 @@ def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
         # knn_of_graph = np.zeros((len(graph), len(graph)), dtype=KNN_DTYPE)
         knn_of_graph = scipy.sparse.lil_matrix((len(graph), len(graph)), dtype=KNN_DTYPE)
         
+        count = 0
+        total = len(graph)
+
         for v in range(len(graph)):
             
+            if count % vis_step == 0:
+                print(f"[t-SGNE] Finished computing the neighbors of {count}/{total} nodes")
+
             ### avoid duplicated visiting
             # method 1: set
             visited = {v}
@@ -107,6 +113,8 @@ def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
                         replace=False)
 
                     knn_of_graph[v, sampled_indices] = np.min((len(graph), 2**15))      # set distance to large number
+            count += 1
+        print(f"[t-SGNE] Finished computing the neighbors of {count}/{total} nodes, finished!")
 
     elif mode == "distance":
 
@@ -123,7 +131,6 @@ def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
         else:
             vis_step = 10000
         
-        print(f"[t-SGNE] Finished computing the neighbors of {count}/{total} nodes")
         for v in range(len(graph)):
             
             if count % vis_step == 0:
@@ -153,7 +160,8 @@ def construct_knn_from_graph(graph, k, mode="distance", sparse=True):
                         replace=False)
 
                     knn_of_graph[v, sampled_indices] = np.min((len(graph), 2**15))      # set distance to large number
-
+            count += 1
+        print(f"[t-SGNE] Finished computing the neighbors of {count}/{total} nodes, finished!")
 
     else:
         raise ValueError(f"Mode {mode} is not supported. Use 'connectivity' or 'distance' instead")

@@ -41,12 +41,12 @@ class TSGNETest(AbstractVisTest):
         print(f"Using k={self.n_neighbors} for KNN in tsne")
 
         t1 = time()
-        print("[t-sgne] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
+        print("[t-SGNE] Computing nearest neighbors for the embedding using a given KNN sparse matrix")
 
         self.knn_matrix = construct_knn_from_graph(self.graph, k=self.n_neighbors, sparse=True)
         
         print(
-            "[t-sgne] Computed neighbors for {} samples in {:.3f}s...".format(
+            "[t-SGNE] Computed neighbors for {} samples in {:.3f}s...".format(
                 len(self.graph), time() - t1
             )
         )
