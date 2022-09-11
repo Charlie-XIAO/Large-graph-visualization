@@ -69,6 +69,15 @@ class ShortestPath:
         for node in self.graph.nodes():
             self._embeddings[node] = [threshold+2]*embed_size
         target_index=0
+        count = 0
+        step = 100
+        if len(X) < 1000:
+            vis_step = 100
+        elif len(X) >= 1000 and len(X) < 100000:
+            vis_step = 1000
+        else:
+            vis_step = 10000
+
         for node in X:
             node_i = node2idx[node]
             queue = [node]
@@ -90,6 +99,9 @@ class ShortestPath:
                             self._embeddings[neighbor][target_index]=threshold+1
                             queue = []
             target_index+=1
+            count += 1
+            if count % vis_step == 0:
+                print("[ShortestPath] {}/{} embeddings calculated".format(count, len(X)))
         return self._embeddings
         
         '''
