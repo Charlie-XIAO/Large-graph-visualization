@@ -127,7 +127,7 @@ self.projections = model.fit_transform(self.X)
 #### t-SNE
 
 ```python
-model = TSNE(n_components=2, verbose=1, random_state=0)
+model = TSNE(n_components=2, verbose=2, random_state=0)
 self.projections = model.fit_transform(self.X)
 ```
 ### Our Contributions
@@ -135,7 +135,7 @@ self.projections = model.fit_transform(self.X)
 #### t-SGNE
 
 ```python
-model = TSGNE(perplexity=30, n_components=2, verbose=1, random_state=0, knn_matrix=self.knn_matrix, mode="distance")
+model = TSGNE(perplexity=30, n_components=2, verbose=2, random_state=0, knn_matrix=self.knn_matrix, mode="distance")
 self.projections = model.fit_transform(self.X)
 ```
 

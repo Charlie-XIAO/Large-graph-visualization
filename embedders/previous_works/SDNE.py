@@ -50,7 +50,7 @@ class SDNE(object):
         self.model.compile(opt, [l_2nd(self.beta), l_1st(self.alpha)], run_eagerly=True)
         self.get_embeddings()
 
-    def train(self, batch_size=1024, epochs=1, initial_epoch=0, verbose=1):
+    def train(self, batch_size=1024, epochs=1, initial_epoch=0, verbose=2):
         """
         :param self:
         :param batch_size:

@@ -54,43 +54,70 @@ def refined_experiment(data):
 
     exp_and_log(EMBED_METHODS, VIS_METHODS, data, output_file)
 
-def exp02(datasets):
-    def exp02_per(data):
+
+def exp02(data):
+    """ comparison between t-SNE and t-SGNE
+    Compare t-SNE and t-SGNE for
+    -   synthetic datasets (lfr) of increasing size
+    -   increasing size of high dimensional embedding
+
+    Due to neighbor graph construction, t-SNE is $O(d|V|^2)$ where $d$ is the dimension of the embedding. $d$ is
+    involved because we need to compute the Euclidean between two embeddings.
+
+    t-SGNE, on the other hand, is $O(K|V|)$. This is contributed by the $K$-step BFS for all nodes.
+
+    """
+    EMBED_METHODS = ["shortestpath"]
+    VIS_METHODS = ["t-sne", "t-sgne"]
+    output_file = "experiment_03.log"
+
+    exp_and_log(EMBED_METHODS, VIS_METHODS, data, output_file)
+
+
+def exp03(datasets):
+    def exp03_per(data):
         EMBED_METHODS = ["shortestpath"]
         VIS_METHODS = ["t-sgne"]
-        output_file = "experiment_02.log"
+        output_file = "experiment_03.log"
 
         exp_and_log(EMBED_METHODS, VIS_METHODS, data, output_file)
 
-    print_block("Running Experiment 02:")
+    print_block("Running Experiment 03:")
 
     for data in datasets:
-        exp02_per(data) 
+        exp03_per(data) 
+
+
+
+    
 
 def toyexp():
     exp_and_log(["shortestpath"], ["t-sgne"], "lock", "toyexp.log")
 
 if __name__ == "__main__":
     # datasets = [                # Nodes / Edges
-    # # synthetic datasests
-    #     # "lfr_30000_0.18",       # Nodes 30,000 / Edges 75,643
-    #     # "lfr_300000_0.18",      # Nodes 300,000 / Edges 656,664
-    #     "lfr_3000000_0.18",     # Nodes 3,000,000 / Edges 4,937,941
+    # synthetic datasests
+        # "lfr_30000_0.18",       # Nodes 30,000 / Edges 75,643
+        # "lfr_300000_0.18",      # Nodes 300,000 / Edges 656,664
+        # "lfr_3000000_0.18",     # Nodes 3,000,000 / Edges 4,937,941
 
-    # # # real-world datasets
-    # #     "twitch_gamers",        # Nodes 168,114 / Edges 6,797,557
-    # #     "dblp",                 # Nodes	317,080 / Edges 1,049,866
-    # #     "youtube_community",    # Nodes	1,134,890 / Edges 2,987,624
-    # #     "livejournal",          # Nodes	3,997,962 / Edges 34,681,189
+    # # real-world datasets
+    #     "twitch_gamers",        # Nodes 168,114 / Edges 6,797,557
+    #     "dblp",                 # Nodes	317,080 / Edges 1,049,866
+    #     "youtube_community",    # Nodes	1,134,890 / Edges 2,987,624
+    #     "livejournal",          # Nodes	3,997,962 / Edges 34,681,189
     #    ]
 
-    datasets = [
-        "lock",
-        "lock",
-        "lock"
-    ]
+    # datasets = [
+    #     "lock",
+    #     "lock",
+    #     "lock"
+    # ]
     
-    exp02(datasets)
+    # exp03(datasets)
+
+    dataset = "lfr_30000_0.18"
+    exp02(dataset)
 
     # toyexp()
     

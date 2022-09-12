@@ -20,7 +20,7 @@ class DeepWalk:
         self.w2v_nodel = None
         self._embeddings = {}
         self.walker = RandomWalker(graph, p=1, q=1)
-        self.sentences = self.walker.simulate_walks(num_walks=num_walks, walk_length=walk_length, workers=workers, verbose=1)
+        self.sentences = self.walker.simulate_walks(num_walks=num_walks, walk_length=walk_length, workers=workers, verbose=2)
 
     def train(self, embed_size=128, window_size=5, workers=3, iter=5, **kwargs):
         """

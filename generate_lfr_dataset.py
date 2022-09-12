@@ -2,7 +2,7 @@ from dataset_generator.lfr_generator import *
 import os
 
 seed = 20220810
-n = 300000
+n = 100000
 mu = 0.18
 
 G = generate_lfr_graph(

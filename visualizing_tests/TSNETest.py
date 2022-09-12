@@ -6,7 +6,7 @@ from visualizing_tests.AbstractVisTest import AbstractVisTest
 
 class TSNETest(AbstractVisTest):
 
-    def __init__(self, embeddings, has_feature, location, n_components=2, verbose=1, random_state=0):
+    def __init__(self, embeddings, has_feature, location, n_components=2, verbose=2, random_state=0):
         """
         :param self:
         :param embeddings: high-dimensional embeddings from cls.embeddings of any class that implements AbstractEmbedTest

@@ -526,11 +526,12 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10, write_to_log=False
         if not os.path.exists(f"log_{config['data']}.csv"):
             with open(f"log_{config['data']}.csv", "a") as log_file:
                     log_file.write(
-                        "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
+                        "{},{},{},{},{},{},{},{},{},{},{},{},{},{},{},{}\n".format(
                             "Time",
                             "Dataset",
                             "Embedding method",
                             "Visualization method",
+                            "Embedding size",
                             "Embedding duration",
                             "Visualization duration",
                             "Total duration",
@@ -552,6 +553,7 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10, write_to_log=False
                     config['data'],
                     config['embed'],
                     config['vis'],
+                    config['dim'],
                     embed_obj.duration,
                     vis_obj.duration,
                     embed_obj.duration + vis_obj.duration,
@@ -595,6 +597,7 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10, write_to_log=False
                             "Dataset",
                             "Embedding method",
                             "Visualization method",
+                            "Embedding size",
                             "Embedding duration",
                             "Visualization duration",
                             "Total duration",
@@ -625,6 +628,7 @@ def show_evaluation_results(config, embed_obj, vis_obj, k=10, write_to_log=False
                     config['data'],
                     config['embed'],
                     config['vis'],
+                    config['dim'],
                     embed_obj.duration,
                     vis_obj.duration,
                     embed_obj.duration + vis_obj.duration,

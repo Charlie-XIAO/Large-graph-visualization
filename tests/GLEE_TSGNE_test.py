@@ -14,7 +14,7 @@ def GLEE_TSGNE_test(config):
         glee.has_feature, 
         location, 
         n_components=2, 
-        verbose=1, 
+        verbose=2, 
         random_state=0,
         mode=config["knn_mode"]
     )
