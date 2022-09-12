@@ -69,7 +69,7 @@ def exp02(data):
     """
     EMBED_METHODS = ["shortestpath"]
     VIS_METHODS = ["t-sne", "t-sgne"]
-    output_file = "experiment_03.log"
+    output_file = "experiment_02.log"
 
     exp_and_log(EMBED_METHODS, VIS_METHODS, data, output_file)
 
@@ -116,7 +116,7 @@ if __name__ == "__main__":
     
     # exp03(datasets)
 
-    dataset = "lfr_30000_0.18"
+    dataset = "lfr_300000_0.18"
     exp02(dataset)
 
     # toyexp()
